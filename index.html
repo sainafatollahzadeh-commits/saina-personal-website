@@ -238,13 +238,13 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 @keyframes waPen{0%{left:8px}33%{left:38px}34%{left:8px}67%{left:30px}68%{left:8px}99%{left:34px}100%{left:8px}}
 
 /* FaceTime/iMessage-style chat bubbles exchange (sharing page) */
-.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#61678B;border-radius:10px;border:1px solid var(--mid)}
+.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#7c8a98;border-radius:10px;border:1px solid var(--mid)}
 .chat-anim .ca-bubble{position:absolute;height:12px;border-radius:9px;opacity:0;box-shadow:0 1px 2px rgba(0,0,0,.18);animation:caPop 3.6s ease-in-out infinite}
 .chat-anim .ca-bubble::after{content:'';position:absolute;bottom:-1px;width:7px;height:7px;border-radius:50%}
 .chat-anim .ca-1{top:6px;left:6px;width:30px;background:#fff;animation-delay:0s}
 .chat-anim .ca-1::after{left:-2px;background:#fff}
-.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#8488B5;animation-delay:.9s}
-.chat-anim .ca-2::after{right:-2px;background:#8488B5}
+.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#2b9bf4;animation-delay:.9s}
+.chat-anim .ca-2::after{right:-2px;background:#2b9bf4}
 .chat-anim .ca-3{top:34px;left:6px;width:22px;background:#fff;animation-delay:1.8s}
 .chat-anim .ca-3::after{left:-2px;background:#fff}
 @keyframes caPop{0%{opacity:0;transform:translateY(4px) scale(.8)}10%,75%{opacity:1;transform:translateY(0) scale(1)}90%,100%{opacity:0;transform:translateY(0) scale(1)}}
@@ -281,7 +281,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .sessions .section-title{color:#fff}
 .sessions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.1);margin-top:2.8rem}
 .session-item{background:var(--ink);padding:2.3rem 1.8rem;transition:background .2s}
-.session-item:hover{background:#403e56}
+.session-item:hover{background:#111}
 .session-type{font-size:.7rem;color:var(--gold);margin-bottom:.9rem;font-weight:500}
 .session-name{font-size:1.1rem;font-weight:500;margin-bottom:.7rem;line-height:1.5}
 .session-desc{font-size:.81rem;line-height:2;color:rgba(255,255,255,.5);font-weight:300;margin-bottom:1.3rem}
@@ -892,71 +892,71 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 
       <!-- ===== SOFA (puffy, comfortable) ===== -->
       <!-- sofa base frame -->
-      <rect x="150" y="232" width="360" height="78" rx="18" fill="#4e4c68"/>
+      <rect x="150" y="232" width="360" height="78" rx="18" fill="#7a6448"/>
       <!-- seat base platform -->
-      <rect x="158" y="248" width="344" height="58" rx="14" fill="#61678B"/>
+      <rect x="158" y="248" width="344" height="58" rx="14" fill="#96795a"/>
       <!-- left seat cushion (puffy) -->
-      <rect x="166" y="244" width="158" height="58" rx="14" fill="#8488B5"/>
-      <rect x="172" y="248" width="146" height="44" rx="12" fill="#BCB9D8"/>
-      <rect x="178" y="252" width="134" height="28" rx="10" fill="#DEDEEA" opacity=".7"/>
+      <rect x="166" y="244" width="158" height="58" rx="14" fill="#c4956a"/>
+      <rect x="172" y="248" width="146" height="44" rx="12" fill="#d4a87c"/>
+      <rect x="178" y="252" width="134" height="28" rx="10" fill="#dbb489" opacity=".7"/>
       <!-- right seat cushion (puffy) -->
-      <rect x="334" y="244" width="158" height="58" rx="14" fill="#8488B5"/>
-      <rect x="340" y="248" width="146" height="44" rx="12" fill="#BCB9D8"/>
-      <rect x="346" y="252" width="134" height="28" rx="10" fill="#DEDEEA" opacity=".7"/>
+      <rect x="334" y="244" width="158" height="58" rx="14" fill="#c4956a"/>
+      <rect x="340" y="248" width="146" height="44" rx="12" fill="#d4a87c"/>
+      <rect x="346" y="252" width="134" height="28" rx="10" fill="#dbb489" opacity=".7"/>
       <!-- cushion gap shadow -->
-      <rect x="320" y="248" width="18" height="52" rx="3" fill="#4e4c68" opacity=".4"/>
+      <rect x="320" y="248" width="18" height="52" rx="3" fill="#7a6448" opacity=".4"/>
       <!-- backrest base -->
-      <rect x="142" y="172" width="376" height="68" rx="18" fill="#565471"/>
+      <rect x="142" y="172" width="376" height="68" rx="18" fill="#6e5a40"/>
       <!-- left back cushion (puffy) -->
-      <rect x="150" y="176" width="174" height="58" rx="14" fill="#61678B"/>
-      <rect x="156" y="180" width="162" height="46" rx="12" fill="#8488B5"/>
-      <rect x="162" y="184" width="150" height="32" rx="10" fill="#9496bc" opacity=".65"/>
+      <rect x="150" y="176" width="174" height="58" rx="14" fill="#96795a"/>
+      <rect x="156" y="180" width="162" height="46" rx="12" fill="#b08c6a"/>
+      <rect x="162" y="184" width="150" height="32" rx="10" fill="#c09878" opacity=".65"/>
       <!-- right back cushion (puffy) -->
-      <rect x="334" y="176" width="174" height="58" rx="14" fill="#61678B"/>
-      <rect x="340" y="180" width="162" height="46" rx="12" fill="#8488B5"/>
-      <rect x="346" y="184" width="150" height="32" rx="10" fill="#9496bc" opacity=".65"/>
+      <rect x="334" y="176" width="174" height="58" rx="14" fill="#96795a"/>
+      <rect x="340" y="180" width="162" height="46" rx="12" fill="#b08c6a"/>
+      <rect x="346" y="184" width="150" height="32" rx="10" fill="#c09878" opacity=".65"/>
       <!-- back cushion gap -->
-      <rect x="320" y="178" width="18" height="60" rx="3" fill="#565471" opacity=".4"/>
+      <rect x="320" y="178" width="18" height="60" rx="3" fill="#6e5a40" opacity=".4"/>
       <!-- left armrest (puffy rounded) -->
-      <rect x="130" y="188" width="36" height="118" rx="16" fill="#565471"/>
-      <rect x="133" y="188" width="30" height="24" rx="12" fill="#61678B"/>
+      <rect x="130" y="188" width="36" height="118" rx="16" fill="#6e5a40"/>
+      <rect x="133" y="188" width="30" height="24" rx="12" fill="#8a7050"/>
       <!-- right armrest (puffy rounded) -->
-      <rect x="494" y="188" width="36" height="118" rx="16" fill="#565471"/>
-      <rect x="494" y="188" width="30" height="24" rx="12" fill="#61678B"/>
+      <rect x="494" y="188" width="36" height="118" rx="16" fill="#6e5a40"/>
+      <rect x="494" y="188" width="30" height="24" rx="12" fill="#8a7050"/>
       <!-- sofa legs -->
-      <rect x="163" y="304" width="14" height="10" rx="4" fill="#403e56"/>
-      <rect x="482" y="304" width="14" height="10" rx="4" fill="#403e56"/>
-      <rect x="218" y="304" width="12" height="8" rx="3" fill="#403e56"/>
-      <rect x="428" y="304" width="12" height="8" rx="3" fill="#403e56"/>
+      <rect x="163" y="304" width="14" height="10" rx="4" fill="#4a3520"/>
+      <rect x="482" y="304" width="14" height="10" rx="4" fill="#4a3520"/>
+      <rect x="218" y="304" width="12" height="8" rx="3" fill="#4a3520"/>
+      <rect x="428" y="304" width="12" height="8" rx="3" fill="#4a3520"/>
       <!-- highlight sheen on seat -->
-      <rect x="170" y="248" width="318" height="4" rx="2" fill="#BCB9D8" opacity=".18"/>
+      <rect x="170" y="248" width="318" height="4" rx="2" fill="#e8c9a0" opacity=".18"/>
 
       <!-- ===== SIDE TABLE ===== -->
       <!-- table top surface -->
-      <rect x="518" y="220" width="72" height="10" rx="4" fill="#403e56"/>
-      <rect x="520" y="222" width="68" height="6" rx="3" fill="#565471"/>
+      <rect x="518" y="220" width="72" height="10" rx="4" fill="#5a4030"/>
+      <rect x="520" y="222" width="68" height="6" rx="3" fill="#6e5040"/>
       <!-- left leg -->
-      <rect x="524" y="230" width="8" height="80" rx="3" fill="#403e56"/>
+      <rect x="524" y="230" width="8" height="80" rx="3" fill="#4a3525"/>
       <!-- right leg -->
-      <rect x="572" y="230" width="8" height="80" rx="3" fill="#403e56"/>
+      <rect x="572" y="230" width="8" height="80" rx="3" fill="#4a3525"/>
       <!-- stretcher bar -->
-      <rect x="524" y="280" width="56" height="6" rx="3" fill="#403e56"/>
+      <rect x="524" y="280" width="56" height="6" rx="3" fill="#4a3525"/>
 
       <!-- ===== FLOOR LAMP ===== -->
       <!-- lamp base (heavy disc) -->
-      <ellipse cx="556" cy="309" rx="20" ry="5" fill="#403e56"/>
-      <rect x="552" y="230" width="8" height="80" rx="4" fill="#565471"/>
+      <ellipse cx="556" cy="309" rx="20" ry="5" fill="#4a3525"/>
+      <rect x="552" y="230" width="8" height="80" rx="4" fill="#6e5040"/>
       <!-- lamp shade -->
       <polygon points="526,155 588,155 578,110 536,110" fill="#8488B5"/>
-      <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#8488B5" stroke-width="1.5"/>
+      <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#c4a87a" stroke-width="1.5"/>
       <!-- shade inner dark (off) -->
-      <polygon points="530,153 584,153 575,114 539,114" fill="#8488B5" opacity=".5"/>
+      <polygon points="530,153 584,153 575,114 539,114" fill="#b8956e" opacity=".5"/>
       <!-- shade inner bright (on) -->
-      <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#DEDEEA" opacity="0"/>
+      <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#fff5cc" opacity="0"/>
       <!-- bulb -->
       <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#BCB9D8" opacity=".3"/>
       <!-- pole below shade -->
-      <rect x="553" y="155" width="8" height="75" rx="4" fill="#565471"/>
+      <rect x="553" y="155" width="8" height="75" rx="4" fill="#6e5040"/>
 
       <!-- light cone (hover only) -->
       <polygon id="lamp-cone" points="526,157 588,157 640,308 474,308" fill="url(#coneGrad)" opacity="0"/>
@@ -965,12 +965,12 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 
       <!-- ===== FLOWER POT (left side of sofa) ===== -->
       <!-- pot body -->
-      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="#61678B"/>
-      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="none" stroke="#565471" stroke-width="1.2"/>
+      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="#b85c38"/>
+      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="none" stroke="#9a4a2c" stroke-width="1.2"/>
       <!-- pot rim -->
-      <rect x="62" y="252" width="36" height="7" rx="3" fill="#8488B5"/>
+      <rect x="62" y="252" width="36" height="7" rx="3" fill="#c96840"/>
       <!-- soil -->
-      <ellipse cx="80" cy="255" rx="16" ry="4" fill="#403e56"/>
+      <ellipse cx="80" cy="255" rx="16" ry="4" fill="#3d2a1a"/>
       <!-- stem -->
       <line x1="80" y1="255" x2="80" y2="220" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/>
       <!-- branch left -->
@@ -985,7 +985,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- leaf on right branch -->
       <ellipse cx="98" cy="210" rx="9" ry="5" fill="#6aae5e" transform="rotate(20,98,210)"/>
       <!-- small highlight on pot -->
-      <path d="M70,262 Q68,272 69,282" fill="none" stroke="#BCB9D8" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
+      <path d="M70,262 Q68,272 69,282" fill="none" stroke="#d87848" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
         </svg>
         <button class="book-session-btn" onclick="openOv('telegram-page')"
                 onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
