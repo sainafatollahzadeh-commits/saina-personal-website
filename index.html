@@ -154,12 +154,11 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .hero-actions{display:flex;gap:1rem;flex-direction:row-reverse}
 .btn-primary{background:var(--ink);color:#fff;padding:.95rem 2.2rem;font-size:1rem;font-weight:700;border-radius:2px;font-family:'Vazirmatn',sans-serif;cursor:pointer;border:none}
 .btn-ghost{font-size:.84rem;color:var(--black);border-bottom:1px solid var(--black);padding-bottom:2px;cursor:pointer;background:none;border-left:none;border-top:none;border-right:none;font-family:'Vazirmatn',sans-serif}
-.hero-img-col{display:flex;flex-direction:column;margin-bottom:2rem}
-.hero-img-col .img-frame{height:62vh;max-height:520px}
-.img-frame{width:100%;flex:0 0 auto;border-radius:4px;position:relative;overflow:hidden}
-#hero-photo{width:100%;height:62vh;max-height:520px;object-fit:cover;object-position:center 30%;display:none;cursor:grab;user-select:none}
+.hero-img-col{position:relative;height:78vh;max-height:660px;margin-bottom:4rem}
+.img-frame{width:100%;height:100%;border-radius:4px;position:relative;overflow:hidden}
+#hero-photo{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:none;cursor:grab;user-select:none}
 #hero-photo.dragging{cursor:grabbing}
-#hero-photo-ph{width:100%;height:62vh;max-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:1rem}
+#hero-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:1rem}
 .photo-upload-btn{position:absolute;bottom:1rem;left:1rem;background:rgba(255,255,255,.92);border:1px solid var(--light);padding:.45rem .9rem;border-radius:3px;font-size:.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;z-index:5;display:none}
 .admin-mode .photo-upload-btn{display:block}
 .bio-photo-frame{width:calc(100% - 2cm);aspect-ratio:1/1;border-radius:8px;position:relative;overflow:hidden;margin:1cm;border:1px solid var(--light)}
@@ -189,13 +188,13 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 /* page-header mini animations */
 .section-title-row{display:flex;align-items:center;gap:1rem}
 
-/* dual-circle emerging animation (subject & world page) */
+/* dual-circle merge/separate animation (subject & world page) */
 .klein-anim{position:relative;width:54px;height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .klein-anim svg{width:54px;height:54px;overflow:visible}
-.kc-ring{fill:none;stroke-width:2.2}
-.kc-r1{stroke:#fff;animation:kcEmerge 2.4s ease-out infinite}
-.kc-r2{stroke:var(--gold);animation:kcEmerge 2.4s ease-out infinite;animation-delay:1.2s}
-@keyframes kcEmerge{0%{r:4;opacity:1}80%{r:22;opacity:.15}100%{r:22;opacity:0}}
+.kc-r1{fill:none;stroke:#fff;stroke-width:2;animation:kcLeft 3s ease-in-out infinite}
+.kc-r2{fill:none;stroke:var(--gold);stroke-width:2;animation:kcRight 3s ease-in-out infinite}
+@keyframes kcLeft{0%,100%{transform:translateX(-14px)}40%,60%{transform:translateX(-4px)}}
+@keyframes kcRight{0%,100%{transform:translateX(14px)}40%,60%{transform:translateX(4px)}}
 
 /* open book with flipping pages (books page) */
 .book-anim{position:relative;width:60px;height:42px;flex-shrink:0;perspective:240px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
@@ -727,7 +726,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
     </div>
   </div>
   <section class="articles" style="padding-top:3rem">
-    <div class="section-header"><div class="section-title-row"><div class="klein-anim" aria-hidden="true"><svg viewBox="0 0 54 54"><circle class="kc-ring kc-r1" cx="27" cy="27" r="4"/><circle class="kc-ring kc-r2" cx="27" cy="27" r="4"/></svg></div><h2 class="section-title">سوژه و جهان</h2></div></div>
+    <div class="section-header"><div class="section-title-row"><div class="klein-anim" aria-hidden="true"><svg viewBox="0 0 54 54"><circle class="kc-r1" cx="27" cy="27" r="14"/><circle class="kc-r2" cx="27" cy="27" r="14"/></svg></div><h2 class="section-title">سوژه و جهان</h2></div></div>
     <div class="page-notes-box"><textarea id="notes-history" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.history=this.value" readonly></textarea></div>
     <div class="articles-grid" id="psycho-history-grid"></div>
   </section>
@@ -817,7 +816,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
   </button>
   <div class="nav-links" id="nav-links" style="justify-content:space-between">
     <div class="nav-links-right">
-      <a href="#about" onclick="closeNavMenu()">درباره من</a>
+      <a href="#" onclick="openBio();closeNavMenu();return false;">درباره من</a>
       <a href="#" onclick="openOv('history-page');closeNavMenu();return false;">سوژه و جهان</a>
       <a href="#" onclick="openOv('books-page');closeNavMenu();return false;">سلف سایکولوژی</a>
       <a href="#" onclick="openOv('articles-page');closeNavMenu();return false;">پادکست</a>
@@ -854,10 +853,13 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <div id="hero-photo-ph"><div style="font-size:3rem;color:rgba(100,80,60,.25)">👤</div><p style="font-size:.8rem;color:rgba(80,60,40,.4)">عکس دکتر فتح‌الله‌زاده</p></div>
       <button class="photo-upload-btn" onclick="gi('hero-file').click()">📷 تغییر عکس</button>
     </div>
-    <p style="text-align:center;font-size:.82rem;letter-spacing:.08em;color:var(--mid);margin-top:.85rem;font-weight:400;direction:rtl">روانشناس بالینی &nbsp;·&nbsp; روان‌درمانگر</p>
+    <p class="editable" onclick="inlineEdit('subtitle')" id="hero-subtitle" style="text-align:center;font-size:.82rem;letter-spacing:.08em;color:var(--mid);margin-top:.85rem;font-weight:400;direction:rtl">روانشناس بالینی · روان‌درمانگر</p>
     <input type="file" id="hero-file" accept="image/*" style="display:none" onchange="handleHero(event)"/>
-    <!-- therapy room appears below hero image -->
-    <div class="therapy-room-wrap" id="therapy-room-wrap" style="margin-top:1.5rem;max-width:100%" data-next-step="1">
+  </div>
+</section>
+
+<section class="therapy-room-section reveal" id="next-step">
+  <div class="therapy-room-wrap" id="therapy-room-wrap" data-next-step="1">
     <div class="lamp-glow" id="lamp-glow"></div>
     <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
@@ -980,9 +982,15 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <path d="M70,262 Q68,272 69,282" fill="none" stroke="#d87848" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
     </svg>
 
-    </div><!-- end therapy-room-wrap -->
-  </div><!-- end hero-img-col -->
-</section><!-- end hero -->
+    <button class="book-session-btn" onclick="openOv('telegram-page')"
+            onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
+            onmouseleave="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','.3');document.getElementById('lamp-cone').setAttribute('opacity','0');document.getElementById('floor-glow').setAttribute('opacity','0');document.getElementById('shade-on').setAttribute('opacity','0')"
+            ontouchstart="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('shade-on').setAttribute('opacity','1')"
+            ontouchend="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('shade-on').setAttribute('opacity','0')">
+      رزرو جلسه
+    </button>
+  </div>
+</section>
 
 <section class="about-website reveal">
   <h2 class="editable" onclick="inlineEdit('about-website-h')" id="about-website-h">درباره سایت</h2>
@@ -1006,7 +1014,7 @@ let isAdmin=false, editTarget=null, dpCurrent=null;
 let pageNotes={history:'',books:'',articles:'',workshops:''};
 
 const S={
-  eyebrow:'روان‌درمانگر و روانشناس بالینی',h1:'درمان از آنجا آغاز می‌شود که ',hem:'سکوت',h2:' صدا پیدا می‌کند.',
+  eyebrow:'روان‌درمانگر و روانشناس بالینی',h1:'درمان از آنجا آغاز می‌شود که ',hem:'سکوت',h2:' صدا پیدا می‌کند.',subtitle:'روانشناس بالینی · روان‌درمانگر',
   sub:'با تخصص در غم، تروما، و اختلالات شخصیت — فضایی دلسوزانه برای کشف، درک، و تحول دنیای درونی شما.',
   cta:'رزرو جلسه','about-h':'فضایی برای باری که سال‌هاست با خود حمل می‌کنید.',
   'about-p1':'دکتر ساینا فتح‌اله‌زاده روان‌درمانگر دارای مجوز با بیش از ۱۵ سال تجربه.',
@@ -1493,6 +1501,7 @@ function prevImg(input,prevId,phId,dataId){
 /* ======= INLINE EDIT ======= */
 const EM={
   eyebrow:{lbl:'تخصص',t:'input',g:()=>S.eyebrow,s:v=>{S.eyebrow=v;setText('hero-eyebrow',v)}},
+  subtitle:{lbl:'زیرنویس زیر عکس',t:'input',g:()=>S.subtitle,s:v=>{S.subtitle=v;setText('hero-subtitle',v)}},
   sub:{lbl:'متن زیر تیتر',t:'textarea',g:()=>S.sub,s:v=>{S.sub=v;setText('hero-sub',v)}},
   cta:{lbl:'متن دکمه',t:'input',g:()=>S.cta,s:v=>{S.cta=v;setText('hero-cta-btn',v)}},
   'about-h':{lbl:'عنوان درباره من',t:'input',g:()=>S['about-h'],s:v=>{S['about-h']=v;setText('about-heading',v)}},
