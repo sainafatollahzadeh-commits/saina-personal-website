@@ -930,78 +930,101 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 
 <section class="therapy-room-section reveal" id="next-step">
   <div class="therapy-room-wrap" id="therapy-room-wrap">
-    <!-- lamp glow overlay -->
     <div class="lamp-glow" id="lamp-glow"></div>
-    <!-- scene SVG -->
-    <svg class="therapy-svg" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- floor line -->
-      <line x1="60" y1="295" x2="640" y2="295" stroke="#4a5f70" stroke-width="1.5" opacity=".5"/>
-      <!-- ===== SOFA ===== -->
-      <!-- sofa base/seat -->
-      <rect x="170" y="220" width="300" height="55" rx="6" fill="#33495E" stroke="#3f5870" stroke-width="1.5"/>
-      <!-- seat cushions -->
-      <rect x="178" y="226" width="135" height="43" rx="4" fill="#2e4456"/>
-      <rect x="327" y="226" width="135" height="43" rx="4" fill="#2e4456"/>
-      <!-- sofa back -->
-      <rect x="162" y="165" width="316" height="62" rx="7" fill="#2A3C4F" stroke="#3f5870" stroke-width="1.5"/>
-      <!-- back cushions -->
-      <rect x="170" y="172" width="140" height="48" rx="4" fill="#263B4E"/>
-      <rect x="320" y="172" width="150" height="48" rx="4" fill="#263B4E"/>
-      <!-- sofa left arm -->
-      <rect x="152" y="188" width="28" height="87" rx="6" fill="#2A3C4F" stroke="#3f5870" stroke-width="1.5"/>
-      <!-- sofa right arm -->
-      <rect x="460" y="188" width="28" height="87" rx="6" fill="#2A3C4F" stroke="#3f5870" stroke-width="1.5"/>
-      <!-- sofa legs -->
-      <rect x="182" y="272" width="10" height="22" rx="2" fill="#1E2D3D"/>
-      <rect x="448" y="272" width="10" height="22" rx="2" fill="#1E2D3D"/>
-      <rect x="220" y="272" width="8" height="18" rx="2" fill="#1E2D3D"/>
-      <rect x="412" y="272" width="8" height="18" rx="2" fill="#1E2D3D"/>
-
-      <!-- ===== SIDE TABLE (right of sofa) ===== -->
-      <!-- table top -->
-      <rect x="498" y="218" width="68" height="8" rx="3" fill="#3A5266" stroke="#4a6070" stroke-width="1"/>
-      <!-- table legs -->
-      <rect x="504" y="226" width="6" height="68" rx="2" fill="#2A3C4F"/>
-      <rect x="554" y="226" width="6" height="68" rx="2" fill="#2A3C4F"/>
-      <!-- table stretcher -->
-      <rect x="504" y="272" width="56" height="4" rx="2" fill="#2A3C4F"/>
-
-      <!-- ===== LAMP ===== -->
-      <!-- lamp base -->
-      <ellipse cx="532" cy="220" rx="18" ry="4" fill="#4a6070"/>
-      <!-- lamp pole -->
-      <rect x="530" y="145" width="4" height="75" rx="2" fill="#4a6070"/>
-      <!-- lamp shade -->
-      <polygon points="510,148 554,148 546,112 518,112" fill="#D9C2A0" class="lamp-shade" id="lamp-shade"/>
-      <!-- lamp shade rim -->
-      <line x1="510" y1="148" x2="554" y2="148" stroke="#c4a87a" stroke-width="1.5"/>
-      <line x1="518" y1="112" x2="546" y2="112" stroke="#c4a87a" stroke-width="1.5"/>
-      <!-- lamp bulb (off state) -->
-      <ellipse cx="532" cy="148" rx="6" ry="5" fill="#c9b07a" opacity=".4" id="lamp-bulb"/>
-      <!-- lamp light cone (hidden by default, shown on hover) -->
-      <polygon id="lamp-cone" points="510,150 554,150 590,230 474,230" fill="url(#lampConeGrad)" opacity="0" class="lamp-cone"/>
-
+    <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
-        <radialGradient id="lampConeGrad" cx="50%" cy="0%" r="100%">
-          <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".18"/>
+        <radialGradient id="lampConeGrad" cx="50%" cy="0%" r="100%" gradientUnits="userSpaceOnUse" cx2="532" cy2="155" r2="160">
+          <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".32"/>
           <stop offset="100%" stop-color="#ffe4a0" stop-opacity="0"/>
         </radialGradient>
-        <radialGradient id="glowGrad" cx="50%" cy="40%" r="60%">
-          <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".22"/>
+        <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#ffe4a0" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="coneGrad" x1="532" y1="155" x2="532" y2="305" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".28"/>
           <stop offset="100%" stop-color="#ffe4a0" stop-opacity="0"/>
         </radialGradient>
       </defs>
 
-      <!-- floor glow circle (hidden by default) -->
-      <ellipse id="floor-glow" cx="532" cy="270" rx="90" ry="22" fill="url(#glowGrad)" opacity="0"/>
+      <!-- wall -->
+      <rect x="0" y="0" width="700" height="310" fill="#243344"/>
+      <!-- floor -->
+      <rect x="0" y="310" width="700" height="50" fill="#1a2836"/>
+      <!-- wall/floor divider -->
+      <line x1="0" y1="310" x2="700" y2="310" stroke="#8fa8b8" stroke-width="1" opacity=".3"/>
+
+      <!-- ===== SOFA ===== -->
+      <!-- sofa frame / overall body -->
+      <rect x="155" y="210" width="340" height="90" rx="8" fill="#8b7355"/>
+      <!-- seat platform -->
+      <rect x="163" y="238" width="324" height="58" rx="5" fill="#9c8262"/>
+      <!-- left seat cushion -->
+      <rect x="170" y="242" width="148" height="50" rx="5" fill="#b8956e"/>
+      <!-- right seat cushion -->
+      <rect x="326" y="242" width="148" height="50" rx="5" fill="#b8956e"/>
+      <!-- cushion divider line -->
+      <line x1="322" y1="244" x2="322" y2="290" stroke="#8b7355" stroke-width="2" opacity=".6"/>
+      <!-- sofa backrest -->
+      <rect x="148" y="168" width="354" height="50" rx="8" fill="#7a6448"/>
+      <!-- left back cushion -->
+      <rect x="156" y="174" width="162" height="38" rx="5" fill="#9c8262"/>
+      <!-- right back cushion -->
+      <rect x="326" y="174" width="162" height="38" rx="5" fill="#9c8262"/>
+      <!-- back cushion divider -->
+      <line x1="322" y1="176" x2="322" y2="210" stroke="#7a6448" stroke-width="2" opacity=".6"/>
+      <!-- left armrest -->
+      <rect x="140" y="185" width="26" height="110" rx="8" fill="#7a6448"/>
+      <rect x="140" y="185" width="26" height="14" rx="6" fill="#8b7355"/>
+      <!-- right armrest -->
+      <rect x="484" y="185" width="26" height="110" rx="8" fill="#7a6448"/>
+      <rect x="484" y="185" width="26" height="14" rx="6" fill="#8b7355"/>
+      <!-- sofa legs -->
+      <rect x="168" y="294" width="12" height="18" rx="3" fill="#5a4030"/>
+      <rect x="462" y="294" width="12" height="18" rx="3" fill="#5a4030"/>
+      <rect x="216" y="294" width="10" height="14" rx="3" fill="#5a4030"/>
+      <rect x="414" y="294" width="10" height="14" rx="3" fill="#5a4030"/>
+      <!-- subtle highlight on seat front edge -->
+      <rect x="163" y="238" width="324" height="3" rx="2" fill="#c9a87a" opacity=".25"/>
+
+      <!-- ===== SIDE TABLE ===== -->
+      <!-- table top surface -->
+      <rect x="518" y="220" width="72" height="10" rx="4" fill="#5a4030"/>
+      <rect x="520" y="222" width="68" height="6" rx="3" fill="#6e5040"/>
+      <!-- left leg -->
+      <rect x="524" y="230" width="8" height="80" rx="3" fill="#4a3525"/>
+      <!-- right leg -->
+      <rect x="572" y="230" width="8" height="80" rx="3" fill="#4a3525"/>
+      <!-- stretcher bar -->
+      <rect x="524" y="280" width="56" height="6" rx="3" fill="#4a3525"/>
+
+      <!-- ===== FLOOR LAMP ===== -->
+      <!-- lamp base (heavy disc) -->
+      <ellipse cx="556" cy="309" rx="20" ry="5" fill="#4a3525"/>
+      <rect x="552" y="230" width="8" height="80" rx="4" fill="#6e5040"/>
+      <!-- lamp shade -->
+      <polygon points="526,155 588,155 578,110 536,110" fill="#D9C2A0"/>
+      <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#c4a87a" stroke-width="1.5"/>
+      <!-- shade inner dark (off) -->
+      <polygon points="530,153 584,153 575,114 539,114" fill="#b8956e" opacity=".5"/>
+      <!-- shade inner bright (on) -->
+      <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#fff5cc" opacity="0"/>
+      <!-- bulb -->
+      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#ffe4a0" opacity=".3"/>
+      <!-- pole below shade -->
+      <rect x="553" y="155" width="8" height="75" rx="4" fill="#6e5040"/>
+
+      <!-- light cone (hover only) -->
+      <polygon id="lamp-cone" points="526,157 588,157 640,308 474,308" fill="url(#coneGrad)" opacity="0"/>
+      <!-- floor glow pool -->
+      <ellipse id="floor-glow" cx="557" cy="308" rx="110" ry="16" fill="url(#glowGrad)" opacity="0"/>
     </svg>
 
-    <!-- Book Session button -->
     <button class="book-session-btn" onclick="openOv('telegram-page')"
-            onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1')"
-            onmouseleave="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','.4');document.getElementById('lamp-cone').setAttribute('opacity','0');document.getElementById('floor-glow').setAttribute('opacity','0')"
-            ontouchstart="document.getElementById('lamp-glow').classList.add('lamp-on')"
-            ontouchend="document.getElementById('lamp-glow').classList.remove('lamp-on')">
+            onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
+            onmouseleave="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','.3');document.getElementById('lamp-cone').setAttribute('opacity','0');document.getElementById('floor-glow').setAttribute('opacity','0');document.getElementById('shade-on').setAttribute('opacity','0')"
+            ontouchstart="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('shade-on').setAttribute('opacity','1')"
+            ontouchend="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('shade-on').setAttribute('opacity','0')">
       Book Session
     </button>
   </div>
