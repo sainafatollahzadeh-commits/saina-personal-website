@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--black:#F3EFEA;--white:#1E2D3D;--mid:#9FB7C9;--light:#3A5266;--bg:#263B4E;--gold:#D9C2A0;--blue:#5FA8D3;--surface:#33495E;--surface2:#2A3C4F;--text2:#C7D8E3;--ink:#15212C}
+:root{--black:#C090F0;--white:#2C2C2E;--mid:#B0A0E0;--light:#484848;--bg:#383838;--gold:#8B44CC;--blue:#9B7FD4;--surface:#424242;--surface2:#363638;--text2:#D8CCFC;--ink:#1A1A1C}
 body{font-family:'Vazirmatn',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;direction:rtl}
 a{text-decoration:none;color:inherit}
 .hidden{display:none!important}
@@ -238,13 +238,13 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 @keyframes waPen{0%{left:8px}33%{left:38px}34%{left:8px}67%{left:30px}68%{left:8px}99%{left:34px}100%{left:8px}}
 
 /* FaceTime/iMessage-style chat bubbles exchange (sharing page) */
-.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#7c8a98;border-radius:10px;border:1px solid var(--mid)}
+.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#8878B8;border-radius:10px;border:1px solid var(--mid)}
 .chat-anim .ca-bubble{position:absolute;height:12px;border-radius:9px;opacity:0;box-shadow:0 1px 2px rgba(0,0,0,.18);animation:caPop 3.6s ease-in-out infinite}
 .chat-anim .ca-bubble::after{content:'';position:absolute;bottom:-1px;width:7px;height:7px;border-radius:50%}
 .chat-anim .ca-1{top:6px;left:6px;width:30px;background:#fff;animation-delay:0s}
 .chat-anim .ca-1::after{left:-2px;background:#fff}
-.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#2b9bf4;animation-delay:.9s}
-.chat-anim .ca-2::after{right:-2px;background:#2b9bf4}
+.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#9B7FD4;animation-delay:.9s}
+.chat-anim .ca-2::after{right:-2px;background:#9B7FD4}
 .chat-anim .ca-3{top:34px;left:6px;width:22px;background:#fff;animation-delay:1.8s}
 .chat-anim .ca-3::after{left:-2px;background:#fff}
 @keyframes caPop{0%{opacity:0;transform:translateY(4px) scale(.8)}10%,75%{opacity:1;transform:translateY(0) scale(1)}90%,100%{opacity:0;transform:translateY(0) scale(1)}}
@@ -884,9 +884,9 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       </defs>
 
       <!-- wall (matches --white site background) -->
-      <rect x="0" y="0" width="700" height="310" fill="#1E2D3D"/>
+      <rect x="0" y="0" width="700" height="310" fill="#2C2C2E"/>
       <!-- floor (matches --bg) -->
-      <rect x="0" y="310" width="700" height="50" fill="#263B4E"/>
+      <rect x="0" y="310" width="700" height="50" fill="#383838"/>
       <!-- wall/floor divider -->
       <line x1="0" y1="310" x2="700" y2="310" stroke="#8fa8b8" stroke-width="1" opacity=".15"/>
 
@@ -929,7 +929,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <rect x="218" y="304" width="12" height="8" rx="3" fill="#4a3520"/>
       <rect x="428" y="304" width="12" height="8" rx="3" fill="#4a3520"/>
       <!-- highlight sheen on seat -->
-      <rect x="170" y="248" width="318" height="4" rx="2" fill="#e8c9a0" opacity=".18"/>
+      <rect x="170" y="248" width="318" height="4" rx="2" fill="#8B44CC" opacity=".18"/>
 
       <!-- ===== SIDE TABLE ===== -->
       <!-- table top surface -->
@@ -947,7 +947,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <ellipse cx="556" cy="309" rx="20" ry="5" fill="#4a3525"/>
       <rect x="552" y="230" width="8" height="80" rx="4" fill="#6e5040"/>
       <!-- lamp shade -->
-      <polygon points="526,155 588,155 578,110 536,110" fill="#D9C2A0"/>
+      <polygon points="526,155 588,155 578,110 536,110" fill="#8B44CC"/>
       <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#c4a87a" stroke-width="1.5"/>
       <!-- shade inner dark (off) -->
       <polygon points="530,153 584,153 575,114 539,114" fill="#b8956e" opacity=".5"/>
@@ -970,7 +970,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- pot rim -->
       <rect x="62" y="252" width="36" height="7" rx="3" fill="#c96840"/>
       <!-- soil -->
-      <ellipse cx="80" cy="255" rx="16" ry="4" fill="#3d2a1a"/>
+      <ellipse cx="80" cy="255" rx="16" ry="4" fill="#2a2a2a"/>
       <!-- stem -->
       <line x1="80" y1="255" x2="80" y2="220" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/>
       <!-- branch left -->
@@ -1382,7 +1382,7 @@ function renderWorkshopRegBox(w){
   if(w.offlineEnabled){
     if(purchased){
       html+=`<div style="margin-bottom:1rem"><h4 style="font-size:.92rem;margin-bottom:.6rem">🎬 ویدیوهای دوره</h4>${
-        (w.offlineVideos||[]).length?`<div class="session-thumb-grid" style="display:flex;flex-wrap:wrap;gap:1rem">${w.offlineVideos.map((v,i)=>`<div class="session-thumb" style="width:130px;text-align:center;cursor:pointer" onclick="playSessionVideo(${w.id},${i})"><div style="width:130px;height:90px;border-radius:6px;background:linear-gradient(160deg,#3a3530,#1c1a17);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#e8c98a">▶</div><p style="font-size:.78rem;margin-top:.4rem">جلسه ${i+1}</p></div>`).join('')}</div><div id="session-player" style="margin-top:1rem"></div>`:'<p style="color:var(--mid);font-size:.85rem">هنوز ویدیویی برای این دوره آپلود نشده.</p>'
+        (w.offlineVideos||[]).length?`<div class="session-thumb-grid" style="display:flex;flex-wrap:wrap;gap:1rem">${w.offlineVideos.map((v,i)=>`<div class="session-thumb" style="width:130px;text-align:center;cursor:pointer" onclick="playSessionVideo(${w.id},${i})"><div style="width:130px;height:90px;border-radius:6px;background:linear-gradient(160deg,#2e2e2e,#1c1a17);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#C090F0">▶</div><p style="font-size:.78rem;margin-top:.4rem">جلسه ${i+1}</p></div>`).join('')}</div><div id="session-player" style="margin-top:1rem"></div>`:'<p style="color:var(--mid);font-size:.85rem">هنوز ویدیویی برای این دوره آپلود نشده.</p>'
       }</div>`;
     } else {
       html+=`<button class="dp-register-btn" onclick="buyOfflineCourse(${w.id})">خرید دوره آفلاین</button>
