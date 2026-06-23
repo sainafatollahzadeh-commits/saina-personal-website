@@ -184,23 +184,19 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .intro{padding:6.5rem 3.5rem;display:grid;grid-template-columns:minmax(280px,1.5fr) minmax(220px,1fr) minmax(220px,1fr);align-items:center;gap:2.5rem;background:var(--bg)}
 .intro-label{padding-top:.3rem;display:flex;justify-content:center}
 .intro-text{text-align:right;order:-1}
-.bookshelf-widget{position:relative;width:260px;max-width:100%;height:320px}
-.bookshelf-widget .shelf-board{position:absolute;left:-6px;right:-6px;height:7px;background:#8b6b43;border-radius:2px;box-shadow:0 4px 8px rgba(0,0,0,.16);z-index:2}
-.bookshelf-widget .floor-line{position:absolute;bottom:0;left:-16px;right:-16px;height:3px;background:var(--light);border-radius:2px}
-.bookshelf-widget .book{position:absolute;width:15px;border-radius:2px 2px 1px 1px;transform-origin:bottom center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);transition:transform .65s cubic-bezier(.34,1.56,.64,1) var(--d,0s),left .55s ease .15s;z-index:3}
-.bookshelf-widget .book::after{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:repeating-linear-gradient(90deg,#f7f2e3 0 2px,#e7dcc0 2px 3px);border-radius:2px 2px 0 0}
-.bookshelf-widget.falling .book{transform:translate(var(--fx,0px),var(--fy,150px)) rotate(var(--fr,70deg))}
 
 /* page-header mini animations */
 .section-title-row{display:flex;align-items:center;gap:1rem}
 
-/* Klein bottle twisted structure (subject & world page) */
-.klein-anim{position:relative;width:54px;height:54px;flex-shrink:0}
-.klein-anim svg{width:54px;height:54px;animation:kleinSpin 6s linear infinite}
-@keyframes kleinSpin{0%{transform:rotateY(0deg) rotateX(12deg)}100%{transform:rotateY(360deg) rotateX(12deg)}}
-.klein-anim .kl-body{fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round}
-.klein-anim .kl-inner{fill:none;stroke:var(--gold);stroke-width:1.2;stroke-dasharray:3 2;animation:kleinPulse 3s ease-in-out infinite}
-@keyframes kleinPulse{0%,100%{opacity:.5;stroke-dashoffset:0}50%{opacity:1;stroke-dashoffset:20}}
+/* dual-circle emerging animation (subject & world page) */
+.klein-anim{position:relative;width:54px;height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.klein-anim svg{width:54px;height:54px}
+.kc-outer{fill:none;stroke:#fff;stroke-width:2;animation:kcPulseOut 3.2s ease-in-out infinite}
+.kc-inner{fill:none;stroke:var(--gold);stroke-width:1.8;animation:kcPulseIn 3.2s ease-in-out infinite}
+.kc-dot{fill:var(--gold);animation:kcDot 3.2s ease-in-out infinite}
+@keyframes kcPulseOut{0%,100%{r:18;opacity:.5}50%{r:22;opacity:1}}
+@keyframes kcPulseIn{0%,100%{r:10;opacity:1}50%{r:6;opacity:.4}}
+@keyframes kcDot{0%,100%{r:3;opacity:.6}50%{r:5;opacity:1}}
 
 /* open book with flipping pages (books page) */
 .book-anim{position:relative;width:60px;height:42px;flex-shrink:0;perspective:240px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
@@ -210,18 +206,21 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .book-anim .ba-page{position:absolute;top:0;bottom:0;right:0;width:30px;background:#fff;border:1.5px solid var(--ink);border-radius:1px 3px 3px 1px;transform-origin:left center;animation:baFlip 2.2s ease-in-out infinite}
 @keyframes baFlip{0%,8%{transform:rotateY(0deg)}45%,55%{transform:rotateY(-160deg)}92%,100%{transform:rotateY(0deg)}}
 
-/* speaker emitting sound waves (podcast page) */
-.speaker-anim{position:relative;width:52px;height:48px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-start;gap:4px}
-.speaker-anim .sp-body{position:relative;width:18px;height:22px;flex-shrink:0}
-.speaker-anim .sp-box{position:absolute;right:0;top:50%;transform:translateY(-50%);width:10px;height:14px;background:#fff;border-radius:1px}
-.speaker-anim .sp-cone{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:9px solid #fff}
-.speaker-anim .sp-waves{display:flex;flex-direction:column;gap:3px;justify-content:center;height:100%}
-.speaker-anim .sp-wave{height:2px;background:var(--gold);border-radius:1px;transform-origin:left center;animation:spWave 1.4s ease-in-out infinite}
-.speaker-anim .sp-w1{width:10px;animation-delay:0s}
-.speaker-anim .sp-w2{width:16px;animation-delay:.15s}
-.speaker-anim .sp-w3{width:22px;animation-delay:.3s}
-.speaker-anim .sp-w4{width:16px;animation-delay:.45s}
-@keyframes spWave{0%,100%{transform:scaleX(.4);opacity:.4}50%{transform:scaleX(1);opacity:1}}
+/* waveform recording animation (podcast page) */
+.speaker-anim{position:relative;width:56px;height:48px;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:3px}
+.speaker-anim .wf-bar{width:4px;border-radius:3px;background:var(--gold);animation:wfBar 1.1s ease-in-out infinite}
+.speaker-anim .wf-b1{height:8px;animation-delay:0s}
+.speaker-anim .wf-b2{height:20px;animation-delay:.1s}
+.speaker-anim .wf-b3{height:36px;animation-delay:.2s}
+.speaker-anim .wf-b4{height:28px;animation-delay:.3s;background:#fff}
+.speaker-anim .wf-b5{height:40px;animation-delay:.4s}
+.speaker-anim .wf-b6{height:24px;animation-delay:.5s;background:#fff}
+.speaker-anim .wf-b7{height:36px;animation-delay:.6s}
+.speaker-anim .wf-b8{height:16px;animation-delay:.7s}
+.speaker-anim .wf-b9{height:8px;animation-delay:.8s}
+.speaker-anim .wf-dot{width:8px;height:8px;border-radius:50%;background:#e53e3e;position:absolute;top:6px;right:4px;animation:wfRec .9s ease-in-out infinite}
+@keyframes wfBar{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
+@keyframes wfRec{0%,100%{opacity:1}50%{opacity:.2}}
 
 /* writing pen on paper (workshops page) */
 .write-anim{position:relative;width:54px;height:46px;flex-shrink:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
@@ -346,7 +345,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 #floor-glow{transition:opacity .45s ease}
 .lamp-glow{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:8px;background:radial-gradient(ellipse 60% 55% at 76% 42%,rgba(255,228,130,.18) 0%,rgba(255,228,130,0) 80%);opacity:0;transition:opacity .45s ease;pointer-events:none}
 .lamp-glow.lamp-on{opacity:1}
-.book-session-btn{margin-top:1.6rem;padding:1.1rem 3.4rem;background:var(--ink);color:#fff;border:none;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .25s,box-shadow .25s,transform .15s}
+.book-session-btn{margin-top:1.6rem;padding:1.1rem 3.4rem;background:var(--ink);color:#fff;border:none;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background .25s,box-shadow .25s,transform .15s}
 .book-session-btn:hover{background:#0d1a25;box-shadow:0 6px 28px rgba(0,0,0,.28);transform:translateY(-2px)}
 .book-session-btn:active{transform:translateY(0)}
 /* keep legacy cta classes intact for any remaining references */
@@ -534,7 +533,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
   <div class="aph"><h2>پنل مدیریت محتوا</h2><button onclick="closePanel()">بستن</button></div>
   <div class="apb">
     <div class="ap-tabs">
-      <button class="ap-tab active" onclick="switchTab('books',this)">📚 خود-روانشناسی</button>
+      <button class="ap-tab active" onclick="switchTab('books',this)">📚 سلف سایکولوژی</button>
       <button class="ap-tab" onclick="switchTab('articles',this)">🎙️ پادکست</button>
       <button class="ap-tab" onclick="switchTab('history',this)">🌀 سوژه و جهان</button>
       <button class="ap-tab" onclick="switchTab('workshops',this)">🛠️ کارگاه‌ها</button>
@@ -543,7 +542,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
     </div>
     <!-- BOOKS -->
     <div id="tab-books">
-      <div class="aps"><h3>افزودن مورد جدید به خود-روانشناسی</h3><div class="af">
+      <div class="aps"><h3>افزودن مورد جدید به سلف سایکولوژی</h3><div class="af">
         <label class="req">تصویر جلد</label>
         <div class="iup" onclick="gi('b-img-f').click()"><img id="b-img-prev" src="" style="display:none"/><div id="b-img-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود تصویر جلد</span></div></div>
         <input type="file" id="b-img-f" accept="image/*" style="display:none" onchange="prevImg(this,'b-img-prev','b-img-ph','b-img-d')"/><input type="hidden" id="b-img-d"/>
@@ -553,7 +552,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
         <label class="req">خلاصه (کارت)</label><textarea id="b-desc" placeholder="خلاصه کوتاه..."></textarea>
         <label>متن کامل (صفحه جزئیات)</label><textarea id="b-full" placeholder="متن کامل‌تر..." style="min-height:100px"></textarea>
       </div><button class="abtn" onclick="addBook()">+ افزودن</button></div>
-      <div class="aps"><h3>موارد موجود در خود-روانشناسی</h3><div class="ap-items" id="ap-books-list"></div></div>
+      <div class="aps"><h3>موارد موجود در سلف سایکولوژی</h3><div class="ap-items" id="ap-books-list"></div></div>
     </div>
     <!-- ARTICLES -->
     <div id="tab-articles" class="hidden">
@@ -728,7 +727,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
     </div>
   </div>
   <section class="articles" style="padding-top:3rem">
-    <div class="section-header"><div class="section-title-row"><div class="klein-anim" aria-hidden="true"><svg viewBox="0 0 54 54"><ellipse class="kl-body" cx="27" cy="27" rx="18" ry="10"/><path class="kl-body" d="M9,27 C9,14 18,8 27,8 C36,8 45,14 45,27"/><path class="kl-body" d="M27,8 C27,8 36,20 27,27 C18,34 27,46 27,46"/><path class="kl-inner" d="M15,22 C18,18 27,17 33,22 C39,27 36,36 27,37"/></svg></div><h2 class="section-title">سوژه و جهان</h2></div></div>
+    <div class="section-header"><div class="section-title-row"><div class="klein-anim" aria-hidden="true"><svg viewBox="0 0 54 54"><circle class="kc-outer" cx="27" cy="27" r="18"/><circle class="kc-inner" cx="27" cy="27" r="10"/><circle class="kc-dot" cx="27" cy="27" r="3"/></svg></div><h2 class="section-title">سوژه و جهان</h2></div></div>
     <div class="page-notes-box"><textarea id="notes-history" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.history=this.value" readonly></textarea></div>
     <div class="articles-grid" id="psycho-history-grid"></div>
   </section>
@@ -738,10 +737,10 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 <div id="books-page" class="overlay hidden no-copy">
   <div class="ov-header">
     <div class="ov-back" onclick="closeOv('books-page')">← بازگشت</div>
-    <span style="font-size:.82rem;color:var(--mid)">خود-روانشناسی</span>
+    <span style="font-size:.82rem;color:var(--mid)">سلف سایکولوژی</span>
   </div>
   <section class="books" style="padding-top:3rem">
-    <div class="section-header"><div class="section-title-row"><div class="book-anim" aria-hidden="true"><div class="ba-half ba-left"></div><div class="ba-half ba-right"></div><div class="ba-page"></div></div><h2 class="section-title">خود-روانشناسی</h2></div></div>
+    <div class="section-header"><div class="section-title-row"><div class="book-anim" aria-hidden="true"><div class="ba-half ba-left"></div><div class="ba-half ba-right"></div><div class="ba-page"></div></div><h2 class="section-title">سلف سایکولوژی</h2></div></div>
     <div class="page-notes-box"><textarea id="notes-books" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.books=this.value" readonly></textarea></div>
     <div class="books-grid" id="books-grid"></div>
   </section>
@@ -754,7 +753,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
     <span style="font-size:.82rem;color:var(--mid)">پادکست</span>
   </div>
   <section class="articles" style="padding-top:3rem">
-    <div class="section-header"><div class="section-title-row"><div class="speaker-anim" aria-hidden="true"><div class="sp-body"><div class="sp-cone"></div><div class="sp-box"></div></div><div class="sp-waves"><div class="sp-wave sp-w1"></div><div class="sp-wave sp-w2"></div><div class="sp-wave sp-w3"></div><div class="sp-wave sp-w4"></div></div></div><h2 class="section-title">پادکست</h2></div></div>
+    <div class="section-header"><div class="section-title-row"><div class="speaker-anim" aria-hidden="true"><div class="wf-dot"></div><div class="wf-bar wf-b1"></div><div class="wf-bar wf-b2"></div><div class="wf-bar wf-b3"></div><div class="wf-bar wf-b4"></div><div class="wf-bar wf-b5"></div><div class="wf-bar wf-b6"></div><div class="wf-bar wf-b7"></div><div class="wf-bar wf-b8"></div><div class="wf-bar wf-b9"></div></div><h2 class="section-title">پادکست</h2></div></div>
     <div class="page-notes-box"><textarea id="notes-articles" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.articles=this.value" readonly></textarea></div>
     <div class="articles-grid" id="articles-grid"></div>
   </section>
@@ -820,7 +819,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
     <div class="nav-links-right">
       <a href="#about" onclick="closeNavMenu()">درباره من</a>
       <a href="#" onclick="openOv('history-page');closeNavMenu();return false;">سوژه و جهان</a>
-      <a href="#" onclick="openOv('books-page');closeNavMenu();return false;">خود-روانشناسی</a>
+      <a href="#" onclick="openOv('books-page');closeNavMenu();return false;">سلف سایکولوژی</a>
       <a href="#" onclick="openOv('articles-page');closeNavMenu();return false;">پادکست</a>
       <a href="#" onclick="openOv('workshops-page');closeNavMenu();return false;">کارگاه‌ها</a>
       <a href="#" onclick="openOv('film-page');closeNavMenu();return false;">تحلیل نقاشی و انیمیشن</a>
@@ -835,7 +834,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 <div class="search-bar-wrap">
   <div class="search-bar">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="site-search-input" placeholder="جستجو در خود-روانشناسی، پادکست، کارگاه‌ها، تحلیل نقاشی و سوژه و جهان..." oninput="siteSearch(this.value)" onfocus="if(this.value)siteSearch(this.value)"/>
+    <input type="text" id="site-search-input" placeholder="جستجو در سلف سایکولوژی، پادکست، کارگاه‌ها، تحلیل نقاشی و سوژه و جهان..." oninput="siteSearch(this.value)" onfocus="if(this.value)siteSearch(this.value)"/>
     <button class="search-clear" id="search-clear-btn" onclick="gi('site-search-input').value='';siteSearch('')" style="display:none">✕</button>
   </div>
   <div class="search-results hidden" id="search-results"></div>
@@ -866,65 +865,10 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 
 
 <section class="intro reveal" id="about">
-  <div class="intro-label">
-    <div class="bookshelf-widget" id="shelf-full" aria-hidden="true">
-      <div class="shelf-board" style="bottom:230px"></div>
-      <div class="shelf-board" style="bottom:150px"></div>
-      <div class="shelf-board" style="bottom:70px"></div>
-
-      <span class="book" style="left:6px;bottom:237px;height:68px;background:#2f6b4f;--fx:-18px;--fy:233px;--fr:-72deg;--d:0s"></span>
-      <span class="book" style="left:24px;bottom:237px;height:75px;background:#c0563f;--fx:14px;--fy:233px;--fr:64deg;--d:.03s"></span>
-      <span class="book" style="left:42px;bottom:237px;height:60px;background:#3d5a80;--fx:-10px;--fy:233px;--fr:-80deg;--d:.06s"></span>
-      <span class="book" style="left:60px;bottom:237px;height:70px;background:#e0a23d;--fx:20px;--fy:233px;--fr:75deg;--d:.09s"></span>
-      <span class="book" style="left:78px;bottom:237px;height:64px;background:#6b3f5e;--fx:-16px;--fy:233px;--fr:-66deg;--d:.12s"></span>
-      <span class="book" style="left:96px;bottom:237px;height:72px;background:#7a8c6b;--fx:12px;--fy:233px;--fr:70deg;--d:.15s"></span>
-      <span class="book" style="left:114px;bottom:237px;height:58px;background:#8c8c8c;--fx:-14px;--fy:233px;--fr:-60deg;--d:.18s"></span>
-      <span class="book" style="left:132px;bottom:237px;height:67px;background:#264653;--fx:18px;--fy:233px;--fr:78deg;--d:.21s"></span>
-      <span class="book" style="left:150px;bottom:237px;height:73px;background:#9c6644;--fx:-12px;--fy:233px;--fr:-74deg;--d:.24s"></span>
-      <span class="book" style="left:168px;bottom:237px;height:61px;background:#4a5759;--fx:16px;--fy:233px;--fr:68deg;--d:.27s"></span>
-      <span class="book" style="left:186px;bottom:237px;height:69px;background:#588157;--fx:-20px;--fy:233px;--fr:-82deg;--d:.30s"></span>
-      <span class="book" style="left:204px;bottom:237px;height:63px;background:#a4423c;--fx:10px;--fy:233px;--fr:58deg;--d:.33s"></span>
-      <span class="book" style="left:222px;bottom:237px;height:71px;background:#5b4f6b;--fx:-15px;--fy:233px;--fr:-70deg;--d:.36s"></span>
-
-      <span class="book" style="left:10px;bottom:157px;height:66px;background:#3d5a80;--fx:14px;--fy:153px;--fr:65deg;--d:.05s"></span>
-      <span class="book" style="left:30px;bottom:157px;height:58px;background:#e0a23d;--fx:-18px;--fy:153px;--fr:-76deg;--d:.08s"></span>
-      <span class="book" style="left:50px;bottom:157px;height:72px;background:#2f6b4f;--fx:12px;--fy:153px;--fr:62deg;--d:.11s"></span>
-      <span class="book" style="left:70px;bottom:157px;height:60px;background:#6b3f5e;--fx:-16px;--fy:153px;--fr:-68deg;--d:.14s"></span>
-      <span class="book" style="left:90px;bottom:157px;height:69px;background:#a4423c;--fx:20px;--fy:153px;--fr:80deg;--d:.17s"></span>
-      <span class="book" style="left:110px;bottom:157px;height:64px;background:#264653;--fx:-10px;--fy:153px;--fr:-58deg;--d:.20s"></span>
-      <span class="book" style="left:130px;bottom:157px;height:73px;background:#9c6644;--fx:16px;--fy:153px;--fr:72deg;--d:.23s"></span>
-      <span class="book" style="left:150px;bottom:157px;height:59px;background:#588157;--fx:-14px;--fy:153px;--fr:-64deg;--d:.26s"></span>
-      <span class="book" style="left:170px;bottom:157px;height:67px;background:#8c8c8c;--fx:18px;--fy:153px;--fr:77deg;--d:.29s"></span>
-      <span class="book" style="left:190px;bottom:157px;height:62px;background:#5b4f6b;--fx:-12px;--fy:153px;--fr:-61deg;--d:.32s"></span>
-      <span class="book" style="left:210px;bottom:157px;height:70px;background:#c0563f;--fx:10px;--fy:153px;--fr:55deg;--d:.35s"></span>
-
-      <span class="book" style="left:8px;bottom:77px;height:65px;background:#264653;--fx:-16px;--fy:73px;--fr:-70deg;--d:.07s"></span>
-      <span class="book" style="left:28px;bottom:77px;height:71px;background:#9c6644;--fx:18px;--fy:73px;--fr:74deg;--d:.10s"></span>
-      <span class="book" style="left:48px;bottom:77px;height:58px;background:#588157;--fx:-12px;--fy:73px;--fr:-60deg;--d:.13s"></span>
-      <span class="book" style="left:68px;bottom:77px;height:68px;background:#3d5a80;--fx:14px;--fy:73px;--fr:66deg;--d:.16s"></span>
-      <span class="book" style="left:88px;bottom:77px;height:62px;background:#a4423c;--fx:-18px;--fy:73px;--fr:-78deg;--d:.19s"></span>
-      <span class="book" style="left:108px;bottom:77px;height:73px;background:#6b3f5e;--fx:12px;--fy:73px;--fr:60deg;--d:.22s"></span>
-      <span class="book" style="left:128px;bottom:77px;height:60px;background:#e0a23d;--fx:-20px;--fy:73px;--fr:-82deg;--d:.25s"></span>
-      <span class="book" style="left:148px;bottom:77px;height:69px;background:#2f6b4f;--fx:16px;--fy:73px;--fr:71deg;--d:.28s"></span>
-      <span class="book" style="left:168px;bottom:77px;height:64px;background:#8c8c8c;--fx:-10px;--fy:73px;--fr:-56deg;--d:.31s"></span>
-      <span class="book" style="left:188px;bottom:77px;height:72px;background:#c0563f;--fx:20px;--fy:73px;--fr:79deg;--d:.34s"></span>
-      <span class="book" style="left:208px;bottom:77px;height:59px;background:#5b4f6b;--fx:-14px;--fy:73px;--fr:-63deg;--d:.37s"></span>
-
-      <div class="floor-line"></div>
-    </div>
-  </div>
-  <div class="intro-text">
-    <h2 class="editable" onclick="inlineEdit('about-h')" id="about-heading">فضایی برای باری که سال‌هاست با خود حمل می‌کنید.</h2>
-    <p class="editable" onclick="inlineEdit('about-p2')" id="about-p2">او معتقد است هر انسانی داستانی دارد که ارزش شنیدن دارد — و با حمایت درست، حتی سخت‌ترین فصل‌های زندگی می‌توانند منبع رشد و معنا شوند.</p>
+  <div class="intro-text" style="text-align:center;max-width:600px;margin:0 auto">
+    <h2 class="editable" onclick="inlineEdit('about-h')" id="about-heading">فضایی برای رشد و خودشناسی</h2>
+    <p class="editable" onclick="inlineEdit('about-p2')" id="about-p2">با رویکردی مبتنی بر روان‌شناسی عمق، همراه شما خواهم بود تا لایه‌های پنهان ذهن و احساس را کشف کنیم.</p>
     <button class="btn-ghost" onclick="openBio()" style="margin-top:1rem">بیوگرافی کامل</button>
-  </div>
-  <div class="intro-label shelf-empty-wrap">
-    <div class="bookshelf-widget" id="shelf-empty" aria-hidden="true">
-      <div class="shelf-board" style="bottom:230px"></div>
-      <div class="shelf-board" style="bottom:150px"></div>
-      <div class="shelf-board" style="bottom:70px"></div>
-      <div class="floor-line"></div>
-    </div>
   </div>
 </section>
 
@@ -954,38 +898,46 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- wall/floor divider -->
       <line x1="0" y1="310" x2="700" y2="310" stroke="#8fa8b8" stroke-width="1" opacity=".3"/>
 
-      <!-- ===== SOFA ===== -->
-      <!-- sofa frame / overall body -->
-      <rect x="155" y="210" width="340" height="90" rx="8" fill="#8b7355"/>
-      <!-- seat platform -->
-      <rect x="163" y="238" width="324" height="58" rx="5" fill="#9c8262"/>
-      <!-- left seat cushion -->
-      <rect x="170" y="242" width="148" height="50" rx="5" fill="#b8956e"/>
-      <!-- right seat cushion -->
-      <rect x="326" y="242" width="148" height="50" rx="5" fill="#b8956e"/>
-      <!-- cushion divider line -->
-      <line x1="322" y1="244" x2="322" y2="290" stroke="#8b7355" stroke-width="2" opacity=".6"/>
-      <!-- sofa backrest -->
-      <rect x="148" y="168" width="354" height="50" rx="8" fill="#7a6448"/>
-      <!-- left back cushion -->
-      <rect x="156" y="174" width="162" height="38" rx="5" fill="#9c8262"/>
-      <!-- right back cushion -->
-      <rect x="326" y="174" width="162" height="38" rx="5" fill="#9c8262"/>
-      <!-- back cushion divider -->
-      <line x1="322" y1="176" x2="322" y2="210" stroke="#7a6448" stroke-width="2" opacity=".6"/>
-      <!-- left armrest -->
-      <rect x="140" y="185" width="26" height="110" rx="8" fill="#7a6448"/>
-      <rect x="140" y="185" width="26" height="14" rx="6" fill="#8b7355"/>
-      <!-- right armrest -->
-      <rect x="484" y="185" width="26" height="110" rx="8" fill="#7a6448"/>
-      <rect x="484" y="185" width="26" height="14" rx="6" fill="#8b7355"/>
+      <!-- ===== SOFA (puffy, comfortable) ===== -->
+      <!-- sofa base frame -->
+      <rect x="150" y="232" width="360" height="78" rx="18" fill="#7a6448"/>
+      <!-- seat base platform -->
+      <rect x="158" y="248" width="344" height="58" rx="14" fill="#96795a"/>
+      <!-- left seat cushion (puffy) -->
+      <rect x="166" y="244" width="158" height="58" rx="14" fill="#c4956a"/>
+      <rect x="172" y="248" width="146" height="44" rx="12" fill="#d4a87c"/>
+      <rect x="178" y="252" width="134" height="28" rx="10" fill="#dbb489" opacity=".7"/>
+      <!-- right seat cushion (puffy) -->
+      <rect x="334" y="244" width="158" height="58" rx="14" fill="#c4956a"/>
+      <rect x="340" y="248" width="146" height="44" rx="12" fill="#d4a87c"/>
+      <rect x="346" y="252" width="134" height="28" rx="10" fill="#dbb489" opacity=".7"/>
+      <!-- cushion gap shadow -->
+      <rect x="320" y="248" width="18" height="52" rx="3" fill="#7a6448" opacity=".4"/>
+      <!-- backrest base -->
+      <rect x="142" y="172" width="376" height="68" rx="18" fill="#6e5a40"/>
+      <!-- left back cushion (puffy) -->
+      <rect x="150" y="176" width="174" height="58" rx="14" fill="#96795a"/>
+      <rect x="156" y="180" width="162" height="46" rx="12" fill="#b08c6a"/>
+      <rect x="162" y="184" width="150" height="32" rx="10" fill="#c09878" opacity=".65"/>
+      <!-- right back cushion (puffy) -->
+      <rect x="334" y="176" width="174" height="58" rx="14" fill="#96795a"/>
+      <rect x="340" y="180" width="162" height="46" rx="12" fill="#b08c6a"/>
+      <rect x="346" y="184" width="150" height="32" rx="10" fill="#c09878" opacity=".65"/>
+      <!-- back cushion gap -->
+      <rect x="320" y="178" width="18" height="60" rx="3" fill="#6e5a40" opacity=".4"/>
+      <!-- left armrest (puffy rounded) -->
+      <rect x="130" y="188" width="36" height="118" rx="16" fill="#6e5a40"/>
+      <rect x="133" y="188" width="30" height="24" rx="12" fill="#8a7050"/>
+      <!-- right armrest (puffy rounded) -->
+      <rect x="494" y="188" width="36" height="118" rx="16" fill="#6e5a40"/>
+      <rect x="494" y="188" width="30" height="24" rx="12" fill="#8a7050"/>
       <!-- sofa legs -->
-      <rect x="168" y="294" width="12" height="18" rx="3" fill="#5a4030"/>
-      <rect x="462" y="294" width="12" height="18" rx="3" fill="#5a4030"/>
-      <rect x="216" y="294" width="10" height="14" rx="3" fill="#5a4030"/>
-      <rect x="414" y="294" width="10" height="14" rx="3" fill="#5a4030"/>
-      <!-- subtle highlight on seat front edge -->
-      <rect x="163" y="238" width="324" height="3" rx="2" fill="#c9a87a" opacity=".25"/>
+      <rect x="163" y="304" width="14" height="10" rx="4" fill="#4a3520"/>
+      <rect x="482" y="304" width="14" height="10" rx="4" fill="#4a3520"/>
+      <rect x="218" y="304" width="12" height="8" rx="3" fill="#4a3520"/>
+      <rect x="428" y="304" width="12" height="8" rx="3" fill="#4a3520"/>
+      <!-- highlight sheen on seat -->
+      <rect x="170" y="248" width="318" height="4" rx="2" fill="#e8c9a0" opacity=".18"/>
 
       <!-- ===== SIDE TABLE ===== -->
       <!-- table top surface -->
@@ -1018,6 +970,30 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <polygon id="lamp-cone" points="526,157 588,157 640,308 474,308" fill="url(#coneGrad)" opacity="0"/>
       <!-- floor glow pool -->
       <ellipse id="floor-glow" cx="557" cy="308" rx="110" ry="16" fill="url(#glowGrad)" opacity="0"/>
+
+      <!-- ===== FLOWER POT (left side of sofa) ===== -->
+      <!-- pot body -->
+      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="#b85c38"/>
+      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="none" stroke="#9a4a2c" stroke-width="1.2"/>
+      <!-- pot rim -->
+      <rect x="62" y="252" width="36" height="7" rx="3" fill="#c96840"/>
+      <!-- soil -->
+      <ellipse cx="80" cy="255" rx="16" ry="4" fill="#3d2a1a"/>
+      <!-- stem -->
+      <line x1="80" y1="255" x2="80" y2="220" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/>
+      <!-- branch left -->
+      <path d="M80,238 Q65,230 62,218" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- branch right -->
+      <path d="M80,230 Q95,222 98,210" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- leaves on main stem -->
+      <ellipse cx="80" cy="218" rx="10" ry="6" fill="#5a9e4e" transform="rotate(-15,80,218)"/>
+      <ellipse cx="80" cy="226" rx="9" ry="5" fill="#4a8c3e" transform="rotate(10,80,226)"/>
+      <!-- leaf on left branch -->
+      <ellipse cx="62" cy="218" rx="9" ry="5" fill="#5a9e4e" transform="rotate(-30,62,218)"/>
+      <!-- leaf on right branch -->
+      <ellipse cx="98" cy="210" rx="9" ry="5" fill="#6aae5e" transform="rotate(20,98,210)"/>
+      <!-- small highlight on pot -->
+      <path d="M70,262 Q68,272 69,282" fill="none" stroke="#d87848" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
     </svg>
 
     <button class="book-session-btn" onclick="openOv('telegram-page')"
@@ -1025,7 +1001,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
             onmouseleave="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','.3');document.getElementById('lamp-cone').setAttribute('opacity','0');document.getElementById('floor-glow').setAttribute('opacity','0');document.getElementById('shade-on').setAttribute('opacity','0')"
             ontouchstart="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('shade-on').setAttribute('opacity','1')"
             ontouchend="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('shade-on').setAttribute('opacity','0')">
-      Book Session
+      رزرو جلسه
     </button>
   </div>
 </section>
@@ -1220,100 +1196,6 @@ function hueOf(rgbStr){
   if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;
   h*=60;if(h<0)h+=360;return h;
 }
-(function initBookshelf(){
-  const full=document.getElementById('shelf-full');
-  const empty=document.getElementById('shelf-empty');
-  if(!full||!empty)return;
-  const books=[...full.querySelectorAll('.book')];
-  const slots=books.map(el=>({left:parseFloat(el.style.left),bottom:parseFloat(el.style.bottom),height:parseFloat(el.style.height)}));
-  let arranged=false,animating=false;
-
-  function resetInstant(){
-    books.forEach(el=>{
-      el.style.transition='none';
-      el.style.transform='';
-    });
-    full.classList.remove('falling');
-    void full.offsetHeight;
-    books.forEach(el=>{el.style.transition='';});
-    arranged=false;
-  }
-
-  function isMobileLayout(){
-    return window.matchMedia('(max-width:900px)').matches;
-  }
-
-  function arrangeByColorInPlace(){
-    const rows={};
-    books.forEach((el,i)=>{
-      const key=slots[i].bottom;
-      (rows[key]=rows[key]||[]).push({el,i});
-    });
-    Object.values(rows).forEach(rowBooks=>{
-      const lefts=rowBooks.map(({i})=>slots[i].left).sort((a,b)=>a-b);
-      rowBooks.sort((a,b)=>hueOf(getComputedStyle(a.el).backgroundColor)-hueOf(getComputedStyle(b.el).backgroundColor));
-      rowBooks.forEach(({el},pos)=>{el.style.left=lefts[pos]+'px';});
-    });
-  }
-
-  function playMobileSequence(){
-    if(animating)return;
-    animating=true;
-    full.classList.add('falling');
-    setTimeout(()=>{
-      arrangeByColorInPlace();
-      setTimeout(()=>{
-        full.classList.remove('falling');
-        animating=false;
-        arranged=true;
-      },50);
-    },1050);
-  }
-
-  function playSequence(){
-    if(isMobileLayout()){playMobileSequence();return;}
-    if(animating)return;
-    if(arranged)resetInstant();
-    animating=true;
-    const origRects=books.map(el=>el.getBoundingClientRect());
-    const emptyRect=empty.getBoundingClientRect();
-    full.classList.add('falling');
-
-    setTimeout(()=>{
-      const order=books.map((el,i)=>({el,i})).sort((a,b)=>hueOf(getComputedStyle(a.el).backgroundColor)-hueOf(getComputedStyle(b.el).backgroundColor));
-      order.forEach((entry,slotIndex)=>{
-        const{el,i}=entry;
-        const slot=slots[slotIndex];
-        const origRect=origRects[i];
-        const targetX=emptyRect.left+slot.left;
-        const targetY=emptyRect.bottom-slot.bottom-origRect.height;
-        const dx=targetX-origRect.left;
-        const dy=targetY-origRect.top;
-        const delay=(slotIndex*0.025).toFixed(3)+'s';
-        el.style.transition='transform 1s cubic-bezier(.34,1.1,.64,1) '+delay;
-        el.style.transform='translate('+dx+'px,'+dy+'px) rotate(0deg)';
-      });
-      setTimeout(()=>{animating=false;arranged=true;},1100+order.length*25);
-    },1050);
-  }
-
-  full.addEventListener('mouseenter',playSequence);
-
-  if(window.matchMedia('(hover:none),(pointer:coarse)').matches){
-    let cooldown=false;
-    const playFall=()=>{
-      if(cooldown)return;
-      cooldown=true;
-      playSequence();
-      setTimeout(()=>{cooldown=false},5000);
-    };
-    const io=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{if(e.isIntersecting)playFall();});
-    },{threshold:.5});
-    io.observe(full);
-    full.addEventListener('click',playFall);
-  }
-})();
 
 /* ======= AUTH ======= */
 function showLogin(){gi('login-overlay').classList.remove('hidden');setTimeout(()=>gi('email-input').focus(),80)}
@@ -1378,7 +1260,7 @@ function addTileHtml(type,label,cardClass,minH){
 function openNewItemModal(type){
   if(!isAdmin)return;
   editTarget={t:'new',type};
-  const titles={book:'افزودن مورد جدید به خود-روانشناسی',article:'افزودن پادکست جدید',history:'افزودن مورد جدید به سوژه و جهان',workshop:'افزودن کارگاه جدید',film:'افزودن تحلیل نقاشی / انیمیشن جدید'};
+  const titles={book:'افزودن مورد جدید به سلف سایکولوژی',article:'افزودن پادکست جدید',history:'افزودن مورد جدید به سوژه و جهان',workshop:'افزودن کارگاه جدید',film:'افزودن تحلیل نقاشی / انیمیشن جدید'};
   gi('m-title').textContent=titles[type]||'افزودن مورد جدید';
   gi('m-sub').textContent='';
   let fields=`<label>تصویر</label><div class="iup" style="height:100px" onclick="gi('m-n-f').click()"><img id="m-n-prev" src="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-n-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-n-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-n-prev','m-n-ph','mv-img')"/><input type="hidden" id="mv-img" value=""/>
@@ -1454,7 +1336,7 @@ function getDpItem(type,id){
   if(type==='film')return films.find(x=>x.id===id);
   return null;
 }
-const SEARCH_CATS={book:'خود-روانشناسی',article:'پادکست',workshop:'کارگاه',film:'تحلیل نقاشی و انیمیشن',history:'سوژه و جهان'};
+const SEARCH_CATS={book:'سلف سایکولوژی',article:'پادکست',workshop:'کارگاه',film:'تحلیل نقاشی و انیمیشن',history:'سوژه و جهان'};
 function siteSearch(q){
   const box=gi('search-results'),clearBtn=gi('search-clear-btn');
   clearBtn.style.display=q?'block':'none';
@@ -1483,7 +1365,7 @@ function openDp(type,id){
   const item=getDpItem(type,id);if(!item)return;
   dpCurrent={type,id};
   gi('detail-page').classList.toggle('no-copy',type==='book'||type==='article'||type==='history'||type==='film');
-  const breadcrumbs={book:'خود-روانشناسی',article:'پادکست',history:'سوژه و جهان',workshop:'کارگاه‌ها',film:'تحلیل نقاشی و انیمیشن'};
+  const breadcrumbs={book:'سلف سایکولوژی',article:'پادکست',history:'سوژه و جهان',workshop:'کارگاه‌ها',film:'تحلیل نقاشی و انیمیشن'};
   gi('dp-breadcrumb').textContent=breadcrumbs[type]||'';
   const img=gi('dp-img'),ph=gi('dp-img-ph');
   if(item.img){img.src=item.img;img.style.display='block';ph.style.display='none';}
