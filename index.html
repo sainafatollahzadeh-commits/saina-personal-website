@@ -146,19 +146,20 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .search-result-text span{display:block;font-size:.74rem;color:var(--mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .search-no-results{padding:1.2rem;text-align:center;font-size:.84rem;color:var(--mid)}
 /* hero */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0 3.5rem;padding-top:4rem;gap:3.5rem}
+.hero{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;padding:0;gap:0;min-height:100vh}
+.hero-text-col{display:flex;flex-direction:column;justify-content:flex-start;padding:5rem 3.5rem 3rem 2.5rem;gap:0}
 .hero-eyebrow{font-size:1.15rem;color:var(--gold);margin-bottom:1.4rem;font-weight:600}
 .hero-headline{font-size:clamp(2rem,3.5vw,3.2rem);line-height:1.45;font-weight:700;margin-bottom:1.6rem}
 .hero-headline em{font-style:normal;color:var(--mid);font-weight:300}
-.hero-sub{font-size:.97rem;line-height:2;color:var(--mid);max-width:430px;margin-bottom:2.4rem;font-weight:300}
+.hero-sub{font-size:.97rem;line-height:2;color:var(--mid);margin-bottom:2.8rem;font-weight:300}
 .hero-actions{display:flex;gap:1rem;flex-direction:row-reverse}
 .btn-primary{background:var(--ink);color:#fff;padding:.95rem 2.2rem;font-size:1rem;font-weight:700;border-radius:2px;font-family:'Vazirmatn',sans-serif;cursor:pointer;border:none}
 .btn-ghost{font-size:.84rem;color:var(--black);border-bottom:1px solid var(--black);padding-bottom:2px;cursor:pointer;background:none;border-left:none;border-top:none;border-right:none;font-family:'Vazirmatn',sans-serif}
-.hero-img-col{position:relative;height:78vh;max-height:660px;margin-bottom:4rem}
-.img-frame{width:100%;height:100%;border-radius:4px;position:relative;overflow:hidden}
-#hero-photo{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:none;cursor:grab;user-select:none}
+.hero-img-col{position:relative;overflow:hidden}
+.img-frame{width:100%;height:100%;position:relative;overflow:hidden}
+#hero-photo{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:none;cursor:grab;user-select:none}
 #hero-photo.dragging{cursor:grabbing}
-#hero-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:1rem}
+#hero-photo-ph{width:100%;height:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:1rem}
 .photo-upload-btn{position:absolute;bottom:1rem;left:1rem;background:rgba(255,255,255,.92);border:1px solid var(--light);padding:.45rem .9rem;border-radius:3px;font-size:.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;z-index:5;display:none}
 .admin-mode .photo-upload-btn{display:block}
 .bio-photo-frame{width:calc(100% - 2cm);aspect-ratio:1/1;border-radius:8px;position:relative;overflow:hidden;margin:1cm;border:1px solid var(--light)}
@@ -334,9 +335,10 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .grief-reply-text{font-size:.86rem;line-height:1.9;color:var(--text2);font-weight:300}
 .grief-success{background:#d1fae5;color:#065f46;padding:.75rem 1.1rem;border-radius:3px;font-size:.84rem;margin-top:.5rem}
 /* cta/footer etc */
-/* therapy room canvas */
-.therapy-room-section{padding:4rem 3.5rem;background:var(--white);display:flex;justify-content:center}
-.therapy-room-wrap{position:relative;display:flex;flex-direction:column;align-items:center;width:100%;max-width:720px}
+/* therapy room canvas — embedded in hero text column */
+.therapy-room-section{display:none}/* hidden: sofa now lives inside hero-text-col */
+.hero-sofa-wrap{position:relative;display:flex;flex-direction:column;align-items:center;width:100%;margin-top:auto}
+.therapy-room-wrap{position:relative;display:flex;flex-direction:column;align-items:center;width:100%}
 .therapy-svg{width:100%;height:auto;display:block}
 .lamp-shade{transition:fill .45s ease}
 .lamp-cone{transition:opacity .45s ease}
@@ -464,9 +466,12 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
   .nav-links-right a,.nav-links-left a,.nav-links-left button{width:100%;padding:1rem 1.5rem;border-bottom:1px solid var(--light);border-radius:0;text-align:right;margin:0;font-size:.9rem}
   .nav-cta{background:none;color:var(--black)!important}
 
-  .hero{grid-template-columns:1fr;padding:0 1.2rem;padding-top:2rem;gap:2rem;min-height:auto;padding-bottom:3rem;text-align:center}
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-img-col{min-height:60vw;max-height:70vw}
+  .hero-text-col{padding:2.5rem 1.2rem 2rem;text-align:center}
   .hero-headline,.hero-sub{text-align:center}
   .hero-actions{justify-content:center}
+  .hero-sofa-wrap{margin-top:1.5rem}
   .intro{grid-template-columns:1fr;padding:3rem 1.2rem;gap:2.2rem}
   .intro-label{order:2}
   .intro-text{order:1;text-align:center}
@@ -840,28 +845,28 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 </div>
 
 <section class="hero">
-  <div class="hero-text">
-    <p class="hero-eyebrow editable" onclick="inlineEdit('eyebrow')" id="hero-eyebrow">روان‌درمانگر و روانشناس بالینی</p>
-    <h1 class="hero-headline editable" onclick="inlineEdit('headline')" id="hero-headline">
-      <span id="h-l1">درمان از آنجا آغاز می‌شود که </span><em id="h-em">سکوت</em><span id="h-l2"> صدا پیدا می‌کند.</span>
-    </h1>
-    <p class="hero-sub editable" onclick="inlineEdit('sub')" id="hero-sub">با تخصص در غم، تروما، و اختلالات شخصیت — فضایی دلسوزانه برای کشف، درک، و تحول دنیای درونی شما.</p>
-  </div>
+  <!-- left side: full-height photo -->
   <div class="hero-img-col">
     <div class="img-frame">
       <img id="hero-photo" src="" alt="دکتر ساینا فتح‌اله‌زاده"/>
       <div id="hero-photo-ph"><div style="font-size:3rem;color:rgba(100,80,60,.25)">👤</div><p style="font-size:.8rem;color:rgba(80,60,40,.4)">عکس دکتر فتح‌الله‌زاده</p></div>
       <button class="photo-upload-btn" onclick="gi('hero-file').click()">📷 تغییر عکس</button>
     </div>
-    <p class="editable" onclick="inlineEdit('subtitle')" id="hero-subtitle" style="text-align:center;font-size:.82rem;letter-spacing:.08em;color:var(--mid);margin-top:.85rem;font-weight:400;direction:rtl">روانشناس بالینی · روان‌درمانگر</p>
     <input type="file" id="hero-file" accept="image/*" style="display:none" onchange="handleHero(event)"/>
   </div>
-</section>
-
-<section class="therapy-room-section reveal" id="next-step">
-  <div class="therapy-room-wrap" id="therapy-room-wrap" data-next-step="1">
-    <div class="lamp-glow" id="lamp-glow"></div>
-    <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- right side: text + subtitle + sofa + button -->
+  <div class="hero-text-col">
+    <p class="hero-eyebrow editable" onclick="inlineEdit('eyebrow')" id="hero-eyebrow">روان‌درمانگر و روانشناس بالینی</p>
+    <h1 class="hero-headline editable" onclick="inlineEdit('headline')" id="hero-headline">
+      <span id="h-l1">درمان از آنجا آغاز می‌شود که </span><em id="h-em">سکوت</em><span id="h-l2"> صدا پیدا می‌کند.</span>
+    </h1>
+    <p class="hero-sub editable" onclick="inlineEdit('sub')" id="hero-sub">با تخصص در غم، تروما، و اختلالات شخصیت — فضایی دلسوزانه برای کشف، درک، و تحول دنیای درونی شما.</p>
+    <p class="editable" onclick="inlineEdit('subtitle')" id="hero-subtitle" style="font-size:.82rem;letter-spacing:.06em;color:var(--mid);margin-bottom:2.4rem;font-weight:400;direction:rtl">روانشناس بالینی · روان‌درمانگر</p>
+    <!-- sofa sits below the text, filling the remaining column space -->
+    <div class="hero-sofa-wrap" id="next-step">
+      <div class="therapy-room-wrap" id="therapy-room-wrap" data-next-step="1">
+        <div class="lamp-glow" id="lamp-glow"></div>
+        <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <radialGradient id="lampConeGrad" cx="50%" cy="0%" r="100%" gradientUnits="userSpaceOnUse" cx2="532" cy2="155" r2="160">
           <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".32"/>
@@ -980,17 +985,18 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <ellipse cx="98" cy="210" rx="9" ry="5" fill="#6aae5e" transform="rotate(20,98,210)"/>
       <!-- small highlight on pot -->
       <path d="M70,262 Q68,272 69,282" fill="none" stroke="#d87848" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
-    </svg>
-
-    <button class="book-session-btn" onclick="openOv('telegram-page')"
-            onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
-            onmouseleave="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','.3');document.getElementById('lamp-cone').setAttribute('opacity','0');document.getElementById('floor-glow').setAttribute('opacity','0');document.getElementById('shade-on').setAttribute('opacity','0')"
-            ontouchstart="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('shade-on').setAttribute('opacity','1')"
-            ontouchend="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('shade-on').setAttribute('opacity','0')">
-      رزرو جلسه
-    </button>
-  </div>
-</section>
+        </svg>
+        <button class="book-session-btn" onclick="openOv('telegram-page')"
+                onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
+                onmouseleave="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','.3');document.getElementById('lamp-cone').setAttribute('opacity','0');document.getElementById('floor-glow').setAttribute('opacity','0');document.getElementById('shade-on').setAttribute('opacity','0')"
+                ontouchstart="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('shade-on').setAttribute('opacity','1')"
+                ontouchend="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('shade-on').setAttribute('opacity','0')">
+          رزرو جلسه
+        </button>
+      </div><!-- end therapy-room-wrap -->
+    </div><!-- end hero-sofa-wrap -->
+  </div><!-- end hero-text-col -->
+</section><!-- end hero -->
 
 <section class="about-website reveal">
   <h2 class="editable" onclick="inlineEdit('about-website-h')" id="about-website-h">درباره سایت</h2>
