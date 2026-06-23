@@ -154,11 +154,12 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .hero-actions{display:flex;gap:1rem;flex-direction:row-reverse}
 .btn-primary{background:var(--ink);color:#fff;padding:.95rem 2.2rem;font-size:1rem;font-weight:700;border-radius:2px;font-family:'Vazirmatn',sans-serif;cursor:pointer;border:none}
 .btn-ghost{font-size:.84rem;color:var(--black);border-bottom:1px solid var(--black);padding-bottom:2px;cursor:pointer;background:none;border-left:none;border-top:none;border-right:none;font-family:'Vazirmatn',sans-serif}
-.hero-img-col{position:relative;height:78vh;max-height:660px;margin-bottom:4rem}
-.img-frame{width:100%;height:100%;border-radius:4px;position:relative;overflow:hidden}
-#hero-photo{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:none;cursor:grab;user-select:none}
+.hero-img-col{display:flex;flex-direction:column;margin-bottom:2rem}
+.hero-img-col .img-frame{height:62vh;max-height:520px}
+.img-frame{width:100%;flex:0 0 auto;border-radius:4px;position:relative;overflow:hidden}
+#hero-photo{width:100%;height:62vh;max-height:520px;object-fit:cover;object-position:center 30%;display:none;cursor:grab;user-select:none}
 #hero-photo.dragging{cursor:grabbing}
-#hero-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:1rem}
+#hero-photo-ph{width:100%;height:62vh;max-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:1rem}
 .photo-upload-btn{position:absolute;bottom:1rem;left:1rem;background:rgba(255,255,255,.92);border:1px solid var(--light);padding:.45rem .9rem;border-radius:3px;font-size:.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;z-index:5;display:none}
 .admin-mode .photo-upload-btn{display:block}
 .bio-photo-frame{width:calc(100% - 2cm);aspect-ratio:1/1;border-radius:8px;position:relative;overflow:hidden;margin:1cm;border:1px solid var(--light)}
@@ -190,13 +191,11 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 
 /* dual-circle emerging animation (subject & world page) */
 .klein-anim{position:relative;width:54px;height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.klein-anim svg{width:54px;height:54px}
-.kc-outer{fill:none;stroke:#fff;stroke-width:2;animation:kcPulseOut 3.2s ease-in-out infinite}
-.kc-inner{fill:none;stroke:var(--gold);stroke-width:1.8;animation:kcPulseIn 3.2s ease-in-out infinite}
-.kc-dot{fill:var(--gold);animation:kcDot 3.2s ease-in-out infinite}
-@keyframes kcPulseOut{0%,100%{r:18;opacity:.5}50%{r:22;opacity:1}}
-@keyframes kcPulseIn{0%,100%{r:10;opacity:1}50%{r:6;opacity:.4}}
-@keyframes kcDot{0%,100%{r:3;opacity:.6}50%{r:5;opacity:1}}
+.klein-anim svg{width:54px;height:54px;overflow:visible}
+.kc-ring{fill:none;stroke-width:2.2}
+.kc-r1{stroke:#fff;animation:kcEmerge 2.4s ease-out infinite}
+.kc-r2{stroke:var(--gold);animation:kcEmerge 2.4s ease-out infinite;animation-delay:1.2s}
+@keyframes kcEmerge{0%{r:4;opacity:1}80%{r:22;opacity:.15}100%{r:22;opacity:0}}
 
 /* open book with flipping pages (books page) */
 .book-anim{position:relative;width:60px;height:42px;flex-shrink:0;perspective:240px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
@@ -249,18 +248,19 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .chat-anim .ca-3::after{left:-2px;background:#fff}
 @keyframes caPop{0%{opacity:0;transform:translateY(4px) scale(.8)}10%,75%{opacity:1;transform:translateY(0) scale(1)}90%,100%{opacity:0;transform:translateY(0) scale(1)}}
 
-/* canvas with brush painting (painting & animation analysis page) */
-.canvas-anim{position:relative;width:62px;height:50px;flex-shrink:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
-.canvas-anim .cv-board{position:absolute;inset:0;background:#fff;border:2px solid var(--ink);border-radius:3px}
-.canvas-anim .cv-board::before{content:'';position:absolute;top:2px;left:2px;right:2px;bottom:2px;background:linear-gradient(135deg,#fdf6ee 0%,#f9f0e4 100%)}
-.canvas-anim .cv-stroke{position:absolute;height:3px;border-radius:2px;transform-origin:right center}
-.canvas-anim .cv-s1{top:13px;left:8px;width:28px;background:#c0563f;animation:cvPaint 2.8s ease-in-out infinite}
-.canvas-anim .cv-s2{top:22px;left:14px;width:20px;background:#3d5a80;animation:cvPaint 2.8s ease-in-out infinite;animation-delay:.7s}
-.canvas-anim .cv-s3{top:31px;left:8px;width:24px;background:#588157;animation:cvPaint 2.8s ease-in-out infinite;animation-delay:1.4s}
-.canvas-anim .cv-brush{position:absolute;width:3px;height:16px;background:var(--ink);border-radius:1px;transform-origin:bottom center;transform:rotate(-30deg);animation:cvBrush 2.8s ease-in-out infinite}
-.canvas-anim .cv-brush::after{content:'';position:absolute;bottom:-4px;left:-2px;width:7px;height:5px;background:var(--gold);border-radius:0 0 4px 4px}
-@keyframes cvPaint{0%{transform:scaleX(0);opacity:0}15%,80%{transform:scaleX(1);opacity:1}95%,100%{opacity:.6}}
-@keyframes cvBrush{0%{top:8px;left:10px}33%{top:13px;left:36px}34%{top:17px;left:18px}67%{top:22px;left:34px}68%{top:26px;left:12px}99%{top:31px;left:32px}100%{top:8px;left:10px}}
+/* paintbrush splashing color (drawing analysis page) */
+.canvas-anim{position:relative;width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.canvas-anim svg{width:56px;height:56px;overflow:visible}
+.cv-brush-handle{fill:#8b6340;animation:cvSwing 1.6s ease-in-out infinite;transform-origin:52px 8px}
+.cv-brush-tip{fill:var(--gold);animation:cvSwing 1.6s ease-in-out infinite;transform-origin:52px 8px}
+.cv-drop{animation:cvDrop 1.6s ease-in-out infinite;transform-origin:center}
+.cv-d1{fill:#c0563f;animation-delay:0s}
+.cv-d2{fill:#3d8b6e;animation-delay:.15s}
+.cv-d3{fill:#5b80c4;animation-delay:.3s}
+.cv-d4{fill:#e0a23d;animation-delay:.08s}
+.cv-d5{fill:#c0563f;animation-delay:.22s}
+@keyframes cvSwing{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(12deg)}}
+@keyframes cvDrop{0%{opacity:0;transform:scale(0) translate(0,0)}30%{opacity:1}60%,100%{opacity:0;transform:scale(1.4) translate(var(--dx,0px),var(--dy,6px))}}
 
 .intro-text h2{font-size:clamp(1.7rem,2.4vw,2.2rem);line-height:1.5;font-weight:700;margin-bottom:1.1rem}
 .intro-text p{font-size:1.05rem;line-height:2;color:var(--mid);font-weight:300;margin-bottom:.75rem}
@@ -537,7 +537,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <button class="ap-tab" onclick="switchTab('articles',this)">🎙️ پادکست</button>
       <button class="ap-tab" onclick="switchTab('history',this)">🌀 سوژه و جهان</button>
       <button class="ap-tab" onclick="switchTab('workshops',this)">🛠️ کارگاه‌ها</button>
-      <button class="ap-tab" onclick="switchTab('films',this)">🎨 تحلیل نقاشی و انیمیشن</button>
+      <button class="ap-tab" onclick="switchTab('films',this)">🎨 تحلیل نقاشی</button>
       <button class="ap-tab" onclick="switchTab('site',this)">🌐 تنظیمات</button>
     </div>
     <!-- BOOKS -->
@@ -727,7 +727,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
     </div>
   </div>
   <section class="articles" style="padding-top:3rem">
-    <div class="section-header"><div class="section-title-row"><div class="klein-anim" aria-hidden="true"><svg viewBox="0 0 54 54"><circle class="kc-outer" cx="27" cy="27" r="18"/><circle class="kc-inner" cx="27" cy="27" r="10"/><circle class="kc-dot" cx="27" cy="27" r="3"/></svg></div><h2 class="section-title">سوژه و جهان</h2></div></div>
+    <div class="section-header"><div class="section-title-row"><div class="klein-anim" aria-hidden="true"><svg viewBox="0 0 54 54"><circle class="kc-ring kc-r1" cx="27" cy="27" r="4"/><circle class="kc-ring kc-r2" cx="27" cy="27" r="4"/></svg></div><h2 class="section-title">سوژه و جهان</h2></div></div>
     <div class="page-notes-box"><textarea id="notes-history" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.history=this.value" readonly></textarea></div>
     <div class="articles-grid" id="psycho-history-grid"></div>
   </section>
@@ -776,10 +776,10 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 <div id="film-page" class="overlay hidden no-copy">
   <div class="ov-header">
     <div class="ov-back" onclick="closeOv('film-page')">← بازگشت</div>
-    <span style="font-size:.82rem;color:var(--mid)">تحلیل نقاشی و انیمیشن</span>
+    <span style="font-size:.82rem;color:var(--mid)">تحلیل نقاشی</span>
   </div>
   <section class="books" style="padding-top:3rem">
-    <div class="section-header"><div class="section-title-row"><div class="canvas-anim" aria-hidden="true"><div class="cv-board"></div><div class="cv-stroke cv-s1"></div><div class="cv-stroke cv-s2"></div><div class="cv-stroke cv-s3"></div><div class="cv-brush"></div></div><h2 class="section-title">تحلیل نقاشی و انیمیشن</h2></div></div>
+    <div class="section-header"><div class="section-title-row"><div class="canvas-anim" aria-hidden="true"><svg viewBox="0 0 56 56"><rect class="cv-brush-handle" x="26" y="8" width="6" height="28" rx="3"/><ellipse class="cv-brush-tip" cx="29" cy="38" rx="4" ry="6"/><ellipse class="cv-drop cv-d1" cx="14" cy="42" rx="4" ry="3" style="--dx:-4px;--dy:5px"/><ellipse class="cv-drop cv-d2" cx="42" cy="38" rx="3" ry="4" style="--dx:5px;--dy:3px"/><ellipse class="cv-drop cv-d3" cx="18" cy="30" rx="3" ry="2" style="--dx:-3px;--dy:-4px"/><ellipse class="cv-drop cv-d4" cx="40" cy="46" rx="4" ry="3" style="--dx:4px;--dy:6px"/><ellipse class="cv-drop cv-d5" cx="10" cy="50" rx="3" ry="2" style="--dx:-6px;--dy:4px"/></svg></div><h2 class="section-title">تحلیل نقاشی</h2></div></div>
     <div class="page-notes-box"><textarea id="notes-films" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.films=this.value" readonly></textarea></div>
     <div class="books-grid" id="films-grid"></div>
   </section>
@@ -822,7 +822,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <a href="#" onclick="openOv('books-page');closeNavMenu();return false;">سلف سایکولوژی</a>
       <a href="#" onclick="openOv('articles-page');closeNavMenu();return false;">پادکست</a>
       <a href="#" onclick="openOv('workshops-page');closeNavMenu();return false;">کارگاه‌ها</a>
-      <a href="#" onclick="openOv('film-page');closeNavMenu();return false;">تحلیل نقاشی و انیمیشن</a>
+      <a href="#" onclick="openOv('film-page');closeNavMenu();return false;">تحلیل نقاشی</a>
     </div>
     <div class="nav-links-left">
       <button class="nav-cta" onclick="scrollToNextStep();closeNavMenu()">رزرو جلسه</button>
@@ -847,10 +847,6 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <span id="h-l1">درمان از آنجا آغاز می‌شود که </span><em id="h-em">سکوت</em><span id="h-l2"> صدا پیدا می‌کند.</span>
     </h1>
     <p class="hero-sub editable" onclick="inlineEdit('sub')" id="hero-sub">با تخصص در غم، تروما، و اختلالات شخصیت — فضایی دلسوزانه برای کشف، درک، و تحول دنیای درونی شما.</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="scrollToNextStep()" id="hero-cta-btn">رزرو جلسه</button>
-      <button class="btn-ghost" onclick="openBio()">بیوگرافی کامل</button>
-    </div>
   </div>
   <div class="hero-img-col">
     <div class="img-frame">
@@ -858,22 +854,10 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <div id="hero-photo-ph"><div style="font-size:3rem;color:rgba(100,80,60,.25)">👤</div><p style="font-size:.8rem;color:rgba(80,60,40,.4)">عکس دکتر فتح‌الله‌زاده</p></div>
       <button class="photo-upload-btn" onclick="gi('hero-file').click()">📷 تغییر عکس</button>
     </div>
-    <p style="text-align:center;font-size:.82rem;letter-spacing:.12em;color:var(--mid);margin-top:.85rem;font-weight:400;text-transform:uppercase;direction:ltr">Clinical Psychologist &nbsp;·&nbsp; Psychotherapist</p>
+    <p style="text-align:center;font-size:.82rem;letter-spacing:.08em;color:var(--mid);margin-top:.85rem;font-weight:400;direction:rtl">روانشناس بالینی &nbsp;·&nbsp; روان‌درمانگر</p>
     <input type="file" id="hero-file" accept="image/*" style="display:none" onchange="handleHero(event)"/>
-  </div>
-</section>
-
-
-<section class="intro reveal" id="about">
-  <div class="intro-text" style="text-align:center;max-width:600px;margin:0 auto">
-    <h2 class="editable" onclick="inlineEdit('about-h')" id="about-heading">فضایی برای رشد و خودشناسی</h2>
-    <p class="editable" onclick="inlineEdit('about-p2')" id="about-p2">با رویکردی مبتنی بر روان‌شناسی عمق، همراه شما خواهم بود تا لایه‌های پنهان ذهن و احساس را کشف کنیم.</p>
-    <button class="btn-ghost" onclick="openBio()" style="margin-top:1rem">بیوگرافی کامل</button>
-  </div>
-</section>
-
-<section class="therapy-room-section reveal" id="next-step">
-  <div class="therapy-room-wrap" id="therapy-room-wrap">
+    <!-- therapy room appears below hero image -->
+    <div class="therapy-room-wrap" id="therapy-room-wrap" style="margin-top:1.5rem;max-width:100%" data-next-step="1">
     <div class="lamp-glow" id="lamp-glow"></div>
     <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
@@ -891,12 +875,12 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
         </radialGradient>
       </defs>
 
-      <!-- wall -->
-      <rect x="0" y="0" width="700" height="310" fill="#243344"/>
-      <!-- floor -->
-      <rect x="0" y="310" width="700" height="50" fill="#1a2836"/>
+      <!-- wall (matches --white site background) -->
+      <rect x="0" y="0" width="700" height="310" fill="#1E2D3D"/>
+      <!-- floor (matches --bg) -->
+      <rect x="0" y="310" width="700" height="50" fill="#263B4E"/>
       <!-- wall/floor divider -->
-      <line x1="0" y1="310" x2="700" y2="310" stroke="#8fa8b8" stroke-width="1" opacity=".3"/>
+      <line x1="0" y1="310" x2="700" y2="310" stroke="#8fa8b8" stroke-width="1" opacity=".15"/>
 
       <!-- ===== SOFA (puffy, comfortable) ===== -->
       <!-- sofa base frame -->
@@ -996,15 +980,9 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <path d="M70,262 Q68,272 69,282" fill="none" stroke="#d87848" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
     </svg>
 
-    <button class="book-session-btn" onclick="openOv('telegram-page')"
-            onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
-            onmouseleave="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','.3');document.getElementById('lamp-cone').setAttribute('opacity','0');document.getElementById('floor-glow').setAttribute('opacity','0');document.getElementById('shade-on').setAttribute('opacity','0')"
-            ontouchstart="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('shade-on').setAttribute('opacity','1')"
-            ontouchend="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('shade-on').setAttribute('opacity','0')">
-      رزرو جلسه
-    </button>
-  </div>
-</section>
+    </div><!-- end therapy-room-wrap -->
+  </div><!-- end hero-img-col -->
+</section><!-- end hero -->
 
 <section class="about-website reveal">
   <h2 class="editable" onclick="inlineEdit('about-website-h')" id="about-website-h">درباره سایت</h2>
@@ -1247,7 +1225,7 @@ function closeNavMenu(){gi('nav-links').classList.remove('open');document.queryS
 
 /* ======= BOOK A SESSION TRIGGER ======= */
 function scrollToNextStep(){
-  const el=gi('next-step');
+  const el=gi('next-step')||document.querySelector('[data-next-step]');
   if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -1336,7 +1314,7 @@ function getDpItem(type,id){
   if(type==='film')return films.find(x=>x.id===id);
   return null;
 }
-const SEARCH_CATS={book:'سلف سایکولوژی',article:'پادکست',workshop:'کارگاه',film:'تحلیل نقاشی و انیمیشن',history:'سوژه و جهان'};
+const SEARCH_CATS={book:'سلف سایکولوژی',article:'پادکست',workshop:'کارگاه',film:'تحلیل نقاشی',history:'سوژه و جهان'};
 function siteSearch(q){
   const box=gi('search-results'),clearBtn=gi('search-clear-btn');
   clearBtn.style.display=q?'block':'none';
@@ -1365,7 +1343,7 @@ function openDp(type,id){
   const item=getDpItem(type,id);if(!item)return;
   dpCurrent={type,id};
   gi('detail-page').classList.toggle('no-copy',type==='book'||type==='article'||type==='history'||type==='film');
-  const breadcrumbs={book:'سلف سایکولوژی',article:'پادکست',history:'سوژه و جهان',workshop:'کارگاه‌ها',film:'تحلیل نقاشی و انیمیشن'};
+  const breadcrumbs={book:'سلف سایکولوژی',article:'پادکست',history:'سوژه و جهان',workshop:'کارگاه‌ها',film:'تحلیل نقاشی'};
   gi('dp-breadcrumb').textContent=breadcrumbs[type]||'';
   const img=gi('dp-img'),ph=gi('dp-img-ph');
   if(item.img){img.src=item.img;img.style.display='block';ph.style.display='none';}
