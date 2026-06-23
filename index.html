@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--black:#DEDEEA;--white:#565471;--mid:#8488B5;--light:#61678B;--bg:#4e4c68;--gold:#BCB9D8;--blue:#8488B5;--surface:#61678B;--surface2:#504e6a;--text2:#BCB9D8;--ink:#403e56}
+:root{--black:#F3EFEA;--white:#1E2D3D;--mid:#9FB7C9;--light:#3A5266;--bg:#263B4E;--gold:#D9C2A0;--blue:#5FA8D3;--surface:#33495E;--surface2:#2A3C4F;--text2:#C7D8E3;--ink:#15212C}
 body{font-family:'Vazirmatn',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;direction:rtl}
 a{text-decoration:none;color:inherit}
 .hidden{display:none!important}
@@ -53,7 +53,7 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .ov-back{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--mid);cursor:pointer;transition:color .2s}
 .ov-back:hover{color:var(--black)}
 /* admin bar */
-#admin-bar{background:#403e56;color:#fff;padding:.5rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;position:sticky;top:0;z-index:200}
+#admin-bar{background:#1a1a2e;color:#fff;padding:.5rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;position:sticky;top:0;z-index:200}
 #admin-bar em{color:var(--gold);font-style:normal;font-weight:500}
 #admin-bar button{background:var(--gold);color:#fff;border:none;padding:.28rem .9rem;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.75rem;margin-right:.4rem}
 #admin-bar .btn-out{background:#555;color:#fff}
@@ -68,7 +68,7 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .lerr{color:#e53e3e;font-size:.8rem;margin-top:.4rem}
 /* admin panel */
 #admin-panel{position:fixed;inset:0;background:var(--surface2);z-index:400;overflow-y:auto;direction:rtl}
-.aph{background:#403e56;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.aph{background:#1a1a2e;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
 .aph h2{font-size:.95rem;font-weight:500}
 .aph button{background:var(--gold);color:#fff;border:none;padding:.38rem 1.1rem;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.78rem}
 .apb{max-width:960px;margin:2rem auto;padding:0 1.5rem}
@@ -160,14 +160,14 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .img-frame{width:100%;height:100%;position:relative;overflow:hidden}
 #hero-photo{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:none;cursor:grab;user-select:none}
 #hero-photo.dragging{cursor:grabbing}
-#hero-photo-ph{width:100%;height:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#61678B,#565471);gap:1rem}
+#hero-photo-ph{width:100%;height:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:1rem}
 .photo-upload-btn{position:absolute;bottom:1rem;left:1rem;background:rgba(255,255,255,.92);border:1px solid var(--light);padding:.45rem .9rem;border-radius:3px;font-size:.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;z-index:5;display:none}
 .admin-mode .photo-upload-btn{display:block}
 .bio-photo-frame{width:calc(100% - 2cm);aspect-ratio:1/1;border-radius:8px;position:relative;overflow:hidden;margin:1cm;border:1px solid var(--light)}
 .bio-photo-frame .photo-upload-btn{bottom:.4rem;left:.4rem;padding:.3rem .55rem;font-size:.65rem}
 #bio-photo{width:100%;height:100%;object-fit:cover;display:none;cursor:grab;-webkit-user-drag:none}
 #bio-photo:active{cursor:grabbing}
-#bio-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#61678B,#565471);gap:.4rem}
+#bio-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:.4rem}
 .paper-plane-anim{display:inline-block;color:var(--gold);margin-bottom:1.2rem;animation:planeFlutter 3.2s ease-in-out infinite}
 @keyframes planeFlutter{
   0%{transform:translateY(0) rotate(-6deg)}
@@ -293,7 +293,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .book-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.09)}
 .book-cover{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .book-cover img{width:100%;height:100%;object-fit:cover}
-.book-cover-ph{font-size:2.5rem;color:rgba(188,185,216,.35)}
+.book-cover-ph{font-size:2.5rem;color:rgba(100,80,60,.3)}
 .book-body{padding:1.4rem}
 .book-tag{font-size:.67rem;color:var(--gold);font-weight:500;margin-bottom:.45rem}
 .book-title{font-size:.97rem;font-weight:600;margin-bottom:.35rem;line-height:1.4}
@@ -304,9 +304,9 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.8rem}
 .article-card{overflow:hidden;border-radius:4px;border:1px solid var(--light);transition:box-shadow .2s;cursor:pointer;position:relative}
 .article-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.art-img{height:148px;background:#61678B;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.art-img{height:148px;background:#e8e4dc;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .art-img img{width:100%;height:100%;object-fit:cover}
-.art-img-ph{font-size:2rem;color:rgba(188,185,216,.35)}
+.art-img-ph{font-size:2rem;color:rgba(100,80,60,.3)}
 .art-body{padding:1.2rem}
 .art-date{font-size:.7rem;color:var(--mid);margin-bottom:.45rem}
 .art-title{font-size:.93rem;font-weight:600;margin-bottom:.55rem;line-height:1.5}
@@ -345,10 +345,10 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .lamp-cone{transition:opacity .45s ease}
 #lamp-bulb{transition:opacity .45s ease}
 #floor-glow{transition:opacity .45s ease}
-.lamp-glow{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:8px;background:radial-gradient(ellipse 60% 55% at 76% 42%,rgba(188,185,216,.18) 0%,rgba(188,185,216,0) 80%);opacity:0;transition:opacity .45s ease;pointer-events:none}
+.lamp-glow{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:8px;background:radial-gradient(ellipse 60% 55% at 76% 42%,rgba(255,228,130,.18) 0%,rgba(255,228,130,0) 80%);opacity:0;transition:opacity .45s ease;pointer-events:none}
 .lamp-glow.lamp-on{opacity:1}
 .book-session-btn{margin-top:1.6rem;padding:1.1rem 3.4rem;background:var(--ink);color:#fff;border:none;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background .25s,box-shadow .25s,transform .15s}
-.book-session-btn:hover{background:#2e2c42;box-shadow:0 6px 28px rgba(0,0,0,.28);transform:translateY(-2px)}
+.book-session-btn:hover{background:#0d1a25;box-shadow:0 6px 28px rgba(0,0,0,.28);transform:translateY(-2px)}
 .book-session-btn:active{transform:translateY(0)}
 /* keep legacy cta classes intact for any remaining references */
 .cta-strip{padding:5.5rem 3.5rem;background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
@@ -386,7 +386,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 .dp-body{display:grid;grid-template-columns:2fr 3fr;min-height:calc(100vh - 62px)}
 .dp-img-side{background:var(--bg);display:flex;align-items:center;justify-content:center;padding:19px;position:relative;min-height:400px}
 .dp-img-side img{width:100%;height:100%;object-fit:cover;border-radius:6px;box-shadow:0 16px 48px rgba(0,0,0,.12)}
-.dp-img-ph{width:100%;height:100%;background:linear-gradient(160deg,#61678B,#565471);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(188,185,216,.35)}
+.dp-img-ph{width:100%;height:100%;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(100,80,60,.3)}
 .dp-text-side{padding:4rem 3.5rem;overflow-y:auto}
 .dp-tag{font-size:.72rem;color:var(--gold);font-weight:600;margin-bottom:1rem}
 .dp-title{font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;line-height:1.4;margin-bottom:.6rem}
@@ -699,7 +699,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <h2>درباره من</h2>
       <div class="bio-photo-frame">
         <img id="bio-photo" src="" alt="دکتر ساینا فتح‌اله‌زاده" draggable="false"/>
-        <div id="bio-photo-ph"><div style="font-size:2.2rem;color:rgba(188,185,216,.3)">👤</div><p style="font-size:.78rem;color:rgba(188,185,216,.5)">عکس پروفایل</p></div>
+        <div id="bio-photo-ph"><div style="font-size:2.2rem;color:rgba(100,80,60,.25)">👤</div><p style="font-size:.78rem;color:rgba(80,60,40,.4)">عکس پروفایل</p></div>
         <button class="photo-upload-btn" onclick="gi('bio-file').click()">📷 تغییر عکس</button>
       </div>
       <input type="file" id="bio-file" accept="image/*" style="display:none" onchange="handleBioPhoto(event)"/>
@@ -850,7 +850,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
   <div class="hero-img-col">
     <div class="img-frame">
       <img id="hero-photo" src="" alt="دکتر ساینا فتح‌اله‌زاده"/>
-      <div id="hero-photo-ph"><div style="font-size:3rem;color:rgba(188,185,216,.3)">👤</div><p style="font-size:.8rem;color:rgba(188,185,216,.5)">عکس دکتر فتح‌الله‌زاده</p></div>
+      <div id="hero-photo-ph"><div style="font-size:3rem;color:rgba(100,80,60,.25)">👤</div><p style="font-size:.8rem;color:rgba(80,60,40,.4)">عکس دکتر فتح‌الله‌زاده</p></div>
       <button class="photo-upload-btn" onclick="gi('hero-file').click()">📷 تغییر عکس</button>
     </div>
     <input type="file" id="hero-file" accept="image/*" style="display:none" onchange="handleHero(event)"/>
@@ -870,25 +870,25 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
         <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <radialGradient id="lampConeGrad" cx="50%" cy="0%" r="100%" gradientUnits="userSpaceOnUse" cx2="532" cy2="155" r2="160">
-          <stop offset="0%" stop-color="#BCB9D8" stop-opacity=".32"/>
-          <stop offset="100%" stop-color="#BCB9D8" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".32"/>
+          <stop offset="100%" stop-color="#ffe4a0" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#BCB9D8" stop-opacity=".35"/>
-          <stop offset="100%" stop-color="#BCB9D8" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#ffe4a0" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="coneGrad" x1="532" y1="155" x2="532" y2="305" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#BCB9D8" stop-opacity=".28"/>
-          <stop offset="100%" stop-color="#BCB9D8" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#ffe4a0" stop-opacity=".28"/>
+          <stop offset="100%" stop-color="#ffe4a0" stop-opacity="0"/>
         </radialGradient>
       </defs>
 
       <!-- wall (matches --white site background) -->
-      <rect x="0" y="0" width="700" height="310" fill="#565471"/>
+      <rect x="0" y="0" width="700" height="310" fill="#1E2D3D"/>
       <!-- floor (matches --bg) -->
-      <rect x="0" y="310" width="700" height="50" fill="#4e4c68"/>
+      <rect x="0" y="310" width="700" height="50" fill="#263B4E"/>
       <!-- wall/floor divider -->
-      <line x1="0" y1="310" x2="700" y2="310" stroke="#8488B5" stroke-width="1" opacity=".15"/>
+      <line x1="0" y1="310" x2="700" y2="310" stroke="#8fa8b8" stroke-width="1" opacity=".15"/>
 
       <!-- ===== SOFA (puffy, comfortable) ===== -->
       <!-- sofa base frame -->
@@ -947,14 +947,14 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <ellipse cx="556" cy="309" rx="20" ry="5" fill="#4a3525"/>
       <rect x="552" y="230" width="8" height="80" rx="4" fill="#6e5040"/>
       <!-- lamp shade -->
-      <polygon points="526,155 588,155 578,110 536,110" fill="#8488B5"/>
+      <polygon points="526,155 588,155 578,110 536,110" fill="#D9C2A0"/>
       <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#c4a87a" stroke-width="1.5"/>
       <!-- shade inner dark (off) -->
       <polygon points="530,153 584,153 575,114 539,114" fill="#b8956e" opacity=".5"/>
       <!-- shade inner bright (on) -->
       <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#fff5cc" opacity="0"/>
       <!-- bulb -->
-      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#BCB9D8" opacity=".3"/>
+      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#ffe4a0" opacity=".3"/>
       <!-- pole below shade -->
       <rect x="553" y="155" width="8" height="75" rx="4" fill="#6e5040"/>
 
@@ -1639,7 +1639,7 @@ function saveEdit(){
 function closeModal(){gi('edit-modal').classList.add('hidden');editTarget=null}
 
 /* ======= BOOKS ======= */
-const bkBg=id=>['#61678B','#565471','#504e6a','#61678B'][(id-1)%4];
+const bkBg=id=>['#e8e4dc','#dce8e4','#dcdce8','#e8dce4'][(id-1)%4];
 function renderBooks(){
   const g=gi('books-grid');
   let html=books.map(b=>`<div class="book-card reveal" onclick="${isAdmin?`editBook(${b.id})`:`openDp('book',${b.id})`}">
