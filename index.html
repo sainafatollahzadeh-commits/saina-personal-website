@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#F3EFEA;--white:#1E2D3D;--mid:#9FB7C9;--light:#3A5266;--bg:#263B4E;--gold:#D9C2A0;--blue:#5FA8D3;--surface:#33495E;--surface2:#2A3C4F;--text2:#C7D8E3;--ink:#15212C}
+body{font-family:'Vazirmatn',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;direction:rtl}
+a{text-decoration:none;color:inherit}
+.hidden{display:none!important}
+body:not(.admin-mode) .no-copy,body:not(.admin-mode) .no-copy *{user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
+body:not(.admin-mode) .no-copy img{-webkit-user-drag:none;pointer-events:none}
+body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-badge,body:not(.admin-mode) .no-copy .photo-upload-btn,body:not(.admin-mode) .no-copy button,body:not(.admin-mode) .no-copy input,body:not(.admin-mode) .no-copy textarea,body:not(.admin-mode) .no-copy a{pointer-events:auto}
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:none}
+/* editable */
+.admin-mode .editable{outline:2px dashed transparent;border-radius:3px;cursor:pointer;transition:outline .2s,background .2s;position:relative}
+.admin-mode .editable:hover{outline:2px dashed var(--blue);background:rgba(59,130,246,.06)}
+.admin-mode .editable:hover::after{content:'✏️';position:absolute;top:-18px;right:0;background:var(--blue);color:#fff;font-size:11px;padding:1px 6px;border-radius:3px;z-index:20;white-space:nowrap}
+.eimg{position:relative}
+.admin-mode .eimg:hover .eimg-badge{display:flex}
+.eimg-badge{display:none;position:absolute;inset:0;background:rgba(59,130,246,.5);align-items:center;justify-content:center;flex-direction:column;gap:4px;z-index:5;cursor:pointer;border-radius:inherit}
+.eimg-badge span{color:#fff;font-size:.8rem}
+/* quick add/remove controls on cards */
+.card-del-btn{display:none;position:absolute;top:.5rem;left:.5rem;width:28px;height:28px;border-radius:50%;background:rgba(229,62,62,.92);color:#fff;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer;z-index:6;border:none;line-height:1}
+.card-del-btn:hover{background:#c53030}
+.admin-mode .card-del-btn{display:flex}
+.card-view-btn{display:none;position:absolute;top:.5rem;left:2.6rem;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer;z-index:6;border:none;line-height:1}
+.card-view-btn:hover{background:rgba(0,0,0,.8)}
+.admin-mode .card-view-btn{display:flex}
+.add-tile{display:flex;align-items:center;justify-content:center;border:2px dashed var(--light);cursor:pointer;background:var(--surface2);transition:border-color .2s,background .2s}
+.add-tile:hover{border-color:var(--gold);background:var(--surface)}
+.add-tile-inner{text-align:center;color:var(--mid)}
+.add-tile-inner .ico{font-size:2rem;margin-bottom:.5rem;display:block}
+.add-tile-inner span{font-size:.85rem}
+/* page notes box */
+.page-notes-box{margin-bottom:2.4rem}
+.page-notes-box textarea{width:100%;min-height:90px;padding:.9rem 1.1rem;border:none;border-radius:6px;font-family:'Vazirmatn',sans-serif;font-size:.88rem;line-height:1.9;direction:rtl;text-align:right;resize:vertical;background:var(--surface);color:var(--text2)}
+.page-notes-box textarea::placeholder{color:var(--mid)}
+.page-notes-box textarea:focus{outline:none}
+.page-notes-box textarea[readonly]{background:var(--surface2);cursor:default}
+.comment-del{border:none;background:none;color:#e53e3e;cursor:pointer;font-size:.78rem;flex-shrink:0;display:none}
+.admin-mode .comment-del{display:block}
+/* overlays */
+.overlay{position:fixed;inset:0;background:var(--surface);z-index:300;overflow-y:auto;direction:rtl}
+.ov-header{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 3rem;border-bottom:1px solid var(--light);position:sticky;top:0;background:var(--surface);z-index:10}
+.ov-back{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--mid);cursor:pointer;transition:color .2s}
+.ov-back:hover{color:var(--black)}
+/* admin bar */
+#admin-bar{background:#1a1a2e;color:#fff;padding:.5rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;position:sticky;top:0;z-index:200}
+#admin-bar em{color:var(--gold);font-style:normal;font-weight:500}
+#admin-bar button{background:var(--gold);color:#fff;border:none;padding:.28rem .9rem;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.75rem;margin-right:.4rem}
+#admin-bar .btn-out{background:#555;color:#fff}
+/* login */
+#login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:600;display:flex;align-items:center;justify-content:center}
+.lbox{background:var(--surface);padding:2.5rem;border-radius:6px;width:310px;max-width:100%;text-align:center}
+.lbox h3{font-size:1.05rem;margin-bottom:1.4rem;font-weight:600}
+.lbox input{width:100%;padding:.72rem 1rem;border:1px solid var(--light);border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:.9rem;margin-bottom:.9rem;text-align:right;direction:rtl}
+.lbox button{width:100%;background:var(--ink);color:#fff;border:none;padding:.78rem;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:.9rem;cursor:pointer}
+.lbox-cancel{background:transparent !important;color:var(--mid) !important;margin-top:.6rem;border:1px solid var(--light) !important}
+.lbox-cancel:hover{color:var(--black) !important;border-color:var(--ink) !important}
+.lerr{color:#e53e3e;font-size:.8rem;margin-top:.4rem}
+/* admin panel */
+#admin-panel{position:fixed;inset:0;background:var(--surface2);z-index:400;overflow-y:auto;direction:rtl}
+.aph{background:#1a1a2e;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.aph h2{font-size:.95rem;font-weight:500}
+.aph button{background:var(--gold);color:#fff;border:none;padding:.38rem 1.1rem;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.78rem}
+.apb{max-width:960px;margin:2rem auto;padding:0 1.5rem}
+.ap-tabs{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.ap-tab{padding:.48rem 1.1rem;border:1px solid #ccc;border-radius:3px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.82rem;background:var(--surface)}
+.ap-tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.aps{background:var(--surface);border-radius:6px;padding:1.4rem;margin-bottom:1.4rem}
+.aps h3{font-size:.92rem;font-weight:600;margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--light)}
+.af label{font-size:.78rem;color:var(--mid);display:block;margin:.8rem 0 .28rem;font-weight:500}
+.af label.req::after{content:' *';color:#e53e3e}
+.af input,.af textarea,.af select{width:100%;padding:.62rem .88rem;border:1px solid var(--light);border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:.87rem;direction:rtl;text-align:right}
+.af input[type="checkbox"]{width:auto;flex:0 0 auto;padding:0}
+.af input:focus,.af textarea:focus{outline:none;border-color:var(--blue)}
+.af textarea{min-height:85px;resize:vertical}
+.abtn{background:var(--ink);color:#fff;border:none;padding:.62rem 1.7rem;border-radius:3px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.84rem;margin-top:.9rem}
+.abtn.gold{background:var(--gold);color:#fff}
+.abtn.red{background:#e53e3e;color:#fff}
+.abtn.green{background:var(--gold);color:var(--ink)}
+.abtn.blue{background:var(--blue);color:#fff}
+.ap-items{margin-top:1rem;display:flex;flex-direction:column;gap:.7rem}
+.ap-item{border:1px solid var(--light);border-radius:4px;padding:.9rem;font-size:.84rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.ap-thumb{width:52px;height:52px;border-radius:3px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;overflow:hidden}
+.ap-thumb img{width:100%;height:100%;object-fit:cover}
+.ap-it{flex:1}.ap-it strong{display:block;margin-bottom:.25rem}.ap-it span{color:var(--mid);font-size:.76rem}
+.ap-ia{display:flex;gap:.4rem;flex-shrink:0;flex-wrap:wrap}
+.ap-ia button{padding:.28rem .75rem;border:1px solid #ccc;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.73rem;background:var(--surface)}
+.ap-ia button.del{border-color:#e53e3e;color:#e53e3e}
+.ap-ia button.edit-b{border-color:var(--blue);color:var(--blue)}
+.ap-ia button.ok{border-color:var(--gold);color:var(--gold)}
+.ap-ia button.rej{border-color:#e53e3e;color:#e53e3e}
+.badge{display:inline-block;padding:.12rem .55rem;border-radius:10px;font-size:.67rem;font-weight:500}
+.badge.new{background:#fef3c7;color:#92400e}
+.badge.replied{background:#d1fae5;color:#065f46}
+.badge.pending{background:#fef9c3;color:#854d0e}
+.badge.confirmed{background:#dcfce7;color:#166534}
+.badge.rejected{background:#fee2e2;color:#991b1b}
+.badge.paid{background:#dbeafe;color:#1e40af}
+.badge.finalized{background:#ede9fe;color:#5b21b6}
+.iup{width:100%;height:130px;border:2px dashed var(--light);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;background:var(--surface2);margin-top:.4rem}
+.iup:hover{border-color:var(--blue)}
+.iup img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.iup-lbl{display:flex;flex-direction:column;align-items:center;gap:.35rem;pointer-events:none}
+.iup-lbl span{font-size:.76rem;color:var(--mid)}.iup-lbl .ico{font-size:1.7rem}
+/* modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem}
+.mbox{background:var(--surface);border-radius:6px;padding:2rem;width:100%;max-width:560px;max-height:88vh;overflow-y:auto}
+.mbox h3{font-size:.98rem;font-weight:600;margin-bottom:.35rem}
+.msub{font-size:.76rem;color:var(--mid);margin-bottom:1.1rem;padding-bottom:.75rem;border-bottom:1px solid var(--light)}
+.mac{display:flex;gap:.7rem;margin-top:1.1rem;flex-direction:row-reverse}
+.mac button{padding:.62rem 1.3rem;border:none;border-radius:3px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.84rem}
+.mac .save{background:var(--ink);color:#fff}.mac .cancel{background:#f0f0f0;color:var(--ink)}
+/* nav */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.05rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08);background:rgba(30,45,61,.92);backdrop-filter:blur(8px)}
+.nav-logo{font-size:1.32rem;font-weight:800;white-space:nowrap;flex-shrink:0;margin-inline-end:2.2rem;letter-spacing:.2px}
+.nav-links{display:flex;gap:1.8rem;align-items:center;flex:1;min-width:0}
+.nav-links-right{display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap}
+.nav-links-right a{font-size:.84rem;color:var(--mid);transition:color .2s}
+.nav-links-right a:hover{color:var(--black)}
+.nav-links-left{display:flex;gap:1rem;align-items:center}
+.nav-cta{background:var(--ink);color:#fff!important;padding:.48rem 1.2rem;border-radius:2px;font-size:.84rem;cursor:pointer;border:none;font-family:'Vazirmatn',sans-serif}
+.nav-login{font-size:.78rem;color:var(--gold)!important;cursor:pointer}
+.search-bar-wrap{position:relative;padding:.85rem 3.5rem;background:var(--bg);border-bottom:1px solid rgba(0,0,0,.06)}
+.search-bar{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:.6rem;background:var(--surface);border:1px solid var(--light);border-radius:24px;padding:.65rem 1.2rem;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .2s,border-color .2s}
+.search-bar:focus-within{border-color:var(--gold);box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.search-bar svg{color:var(--mid);flex-shrink:0}
+.search-bar input{flex:1;border:none;outline:none;font-size:.88rem;font-family:'Vazirmatn',sans-serif;background:none;text-align:right}
+.search-clear{border:none;background:none;color:var(--mid);cursor:pointer;font-size:.85rem;flex-shrink:0;padding:0 .2rem}
+.search-results{position:absolute;top:calc(100% - 1px);left:50%;transform:translateX(-50%);width:100%;max-width:560px;background:var(--surface);border:1px solid var(--light);border-radius:8px;box-shadow:0 12px 32px rgba(0,0,0,.14);max-height:60vh;overflow-y:auto;z-index:60}
+.search-result-item{display:flex;align-items:center;gap:.8rem;padding:.85rem 1.1rem;cursor:pointer;border-bottom:1px solid var(--light)}
+.search-result-item:last-child{border-bottom:none}
+.search-result-item:hover{background:var(--bg)}
+.search-result-cat{flex-shrink:0;font-size:.68rem;color:#fff;background:var(--gold);padding:.2rem .55rem;border-radius:10px}
+.search-result-text{flex:1;min-width:0}
+.search-result-text strong{display:block;font-size:.86rem;margin-bottom:.15rem}
+.search-result-text span{display:block;font-size:.74rem;color:var(--mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search-no-results{padding:1.2rem;text-align:center;font-size:.84rem;color:var(--mid)}
+/* hero */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0 3.5rem;padding-top:4rem;gap:3.5rem}
+.hero-eyebrow{font-size:1.15rem;color:var(--gold);margin-bottom:1.4rem;font-weight:600}
+.hero-headline{font-size:clamp(2rem,3.5vw,3.2rem);line-height:1.45;font-weight:700;margin-bottom:1.6rem}
+.hero-headline em{font-style:normal;color:var(--mid);font-weight:300}
+.hero-sub{font-size:.97rem;line-height:2;color:var(--mid);max-width:430px;margin-bottom:2.4rem;font-weight:300}
+.hero-actions{display:flex;gap:1rem;flex-direction:row-reverse}
+.btn-primary{background:var(--ink);color:#fff;padding:.95rem 2.2rem;font-size:1rem;font-weight:700;border-radius:2px;font-family:'Vazirmatn',sans-serif;cursor:pointer;border:none}
+.btn-ghost{font-size:.84rem;color:var(--black);border-bottom:1px solid var(--black);padding-bottom:2px;cursor:pointer;background:none;border-left:none;border-top:none;border-right:none;font-family:'Vazirmatn',sans-serif}
+.hero-img-col{position:relative;height:78vh;max-height:660px;margin-bottom:4rem}
+.img-frame{width:100%;height:100%;border-radius:4px;position:relative;overflow:hidden}
+#hero-photo{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:none;cursor:grab;user-select:none}
+#hero-photo.dragging{cursor:grabbing}
+#hero-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:1rem}
+.photo-upload-btn{position:absolute;bottom:1rem;left:1rem;background:rgba(255,255,255,.92);border:1px solid var(--light);padding:.45rem .9rem;border-radius:3px;font-size:.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;z-index:5;display:none}
+.admin-mode .photo-upload-btn{display:block}
+.bio-photo-frame{width:calc(100% - 2cm);aspect-ratio:1/1;border-radius:8px;position:relative;overflow:hidden;margin:1cm;border:1px solid var(--light)}
+.bio-photo-frame .photo-upload-btn{bottom:.4rem;left:.4rem;padding:.3rem .55rem;font-size:.65rem}
+#bio-photo{width:100%;height:100%;object-fit:cover;display:none;cursor:grab;-webkit-user-drag:none}
+#bio-photo:active{cursor:grabbing}
+#bio-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);gap:.4rem}
+.paper-plane-anim{display:inline-block;color:var(--gold);margin-bottom:1.2rem;animation:planeFlutter 3.2s ease-in-out infinite}
+@keyframes planeFlutter{
+  0%{transform:translateY(0) rotate(-6deg)}
+  25%{transform:translateY(-8px) rotate(8deg)}
+  50%{transform:translateY(2px) rotate(-10deg)}
+  75%{transform:translateY(-5px) rotate(6deg)}
+  100%{transform:translateY(0) rotate(-6deg)}
+}
+/* marquee */
+.marquee-bar{background:var(--ink);color:#fff;padding:1rem 0;overflow:hidden;white-space:nowrap;direction:ltr}
+.marquee-track{display:inline-flex;animation:marquee 25s linear infinite}
+.marquee-track span{font-size:.77rem;padding:0 2.2rem;opacity:.7;font-family:'Vazirmatn',sans-serif}
+.marquee-track .dot{color:var(--gold);opacity:1;padding:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* intro */
+.intro{padding:6.5rem 3.5rem;display:grid;grid-template-columns:minmax(280px,1.5fr) minmax(220px,1fr) minmax(220px,1fr);align-items:center;gap:2.5rem;background:var(--bg)}
+.intro-label{padding-top:.3rem;display:flex;justify-content:center}
+.intro-text{text-align:right;order:-1}
+.bookshelf-widget{position:relative;width:260px;max-width:100%;height:320px}
+.bookshelf-widget .shelf-board{position:absolute;left:-6px;right:-6px;height:7px;background:#8b6b43;border-radius:2px;box-shadow:0 4px 8px rgba(0,0,0,.16);z-index:2}
+.bookshelf-widget .floor-line{position:absolute;bottom:0;left:-16px;right:-16px;height:3px;background:var(--light);border-radius:2px}
+.bookshelf-widget .book{position:absolute;width:15px;border-radius:2px 2px 1px 1px;transform-origin:bottom center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);transition:transform .65s cubic-bezier(.34,1.56,.64,1) var(--d,0s),left .55s ease .15s;z-index:3}
+.bookshelf-widget .book::after{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:repeating-linear-gradient(90deg,#f7f2e3 0 2px,#e7dcc0 2px 3px);border-radius:2px 2px 0 0}
+.bookshelf-widget.falling .book{transform:translate(var(--fx,0px),var(--fy,150px)) rotate(var(--fr,70deg))}
+
+/* page-header mini animations */
+.section-title-row{display:flex;align-items:center;gap:1rem}
+
+/* Klein bottle twisted structure (subject & world page) */
+.klein-anim{position:relative;width:54px;height:54px;flex-shrink:0}
+.klein-anim svg{width:54px;height:54px;animation:kleinSpin 6s linear infinite}
+@keyframes kleinSpin{0%{transform:rotateY(0deg) rotateX(12deg)}100%{transform:rotateY(360deg) rotateX(12deg)}}
+.klein-anim .kl-body{fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round}
+.klein-anim .kl-inner{fill:none;stroke:var(--gold);stroke-width:1.2;stroke-dasharray:3 2;animation:kleinPulse 3s ease-in-out infinite}
+@keyframes kleinPulse{0%,100%{opacity:.5;stroke-dashoffset:0}50%{opacity:1;stroke-dashoffset:20}}
+
+/* open book with flipping pages (books page) */
+.book-anim{position:relative;width:60px;height:42px;flex-shrink:0;perspective:240px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
+.book-anim .ba-half{position:absolute;top:0;bottom:0;width:30px;background:#fff;border:1.5px solid var(--ink);border-radius:1px}
+.book-anim .ba-left{left:0;border-radius:3px 1px 1px 3px;border-left-width:2.5px}
+.book-anim .ba-right{right:0;border-radius:1px 3px 3px 1px;border-right-width:2.5px}
+.book-anim .ba-page{position:absolute;top:0;bottom:0;right:0;width:30px;background:#fff;border:1.5px solid var(--ink);border-radius:1px 3px 3px 1px;transform-origin:left center;animation:baFlip 2.2s ease-in-out infinite}
+@keyframes baFlip{0%,8%{transform:rotateY(0deg)}45%,55%{transform:rotateY(-160deg)}92%,100%{transform:rotateY(0deg)}}
+
+/* speaker emitting sound waves (podcast page) */
+.speaker-anim{position:relative;width:52px;height:48px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-start;gap:4px}
+.speaker-anim .sp-body{position:relative;width:18px;height:22px;flex-shrink:0}
+.speaker-anim .sp-box{position:absolute;right:0;top:50%;transform:translateY(-50%);width:10px;height:14px;background:#fff;border-radius:1px}
+.speaker-anim .sp-cone{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:9px solid #fff}
+.speaker-anim .sp-waves{display:flex;flex-direction:column;gap:3px;justify-content:center;height:100%}
+.speaker-anim .sp-wave{height:2px;background:var(--gold);border-radius:1px;transform-origin:left center;animation:spWave 1.4s ease-in-out infinite}
+.speaker-anim .sp-w1{width:10px;animation-delay:0s}
+.speaker-anim .sp-w2{width:16px;animation-delay:.15s}
+.speaker-anim .sp-w3{width:22px;animation-delay:.3s}
+.speaker-anim .sp-w4{width:16px;animation-delay:.45s}
+@keyframes spWave{0%,100%{transform:scaleX(.4);opacity:.4}50%{transform:scaleX(1);opacity:1}}
+
+/* writing pen on paper (workshops page) */
+.write-anim{position:relative;width:54px;height:46px;flex-shrink:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
+.write-anim .wa-paper{position:absolute;inset:0;background:#fff;border:1.5px solid var(--ink);border-radius:2px}
+.write-anim .wa-line{position:absolute;left:8px;height:2px;background:var(--mid);border-radius:1px;overflow:hidden}
+.write-anim .wa-line span{position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:right center;animation:waFill 2.4s ease-in-out infinite}
+.write-anim .wa-l1{top:13px;width:30px}
+.write-anim .wa-l2{top:21px;width:22px}
+.write-anim .wa-l3{top:29px;width:26px}
+.write-anim .wa-l1 span{animation-delay:0s}
+.write-anim .wa-l2 span{animation-delay:.8s}
+.write-anim .wa-l3 span{animation-delay:1.6s}
+.write-anim .wa-pen{position:absolute;top:9px;width:3px;height:13px;background:var(--ink);border-radius:1px;transform-origin:bottom center;transform:rotate(35deg);animation:waPen 2.4s ease-in-out infinite}
+@keyframes waFill{0%,5%{transform:scaleX(0)}30%,75%{transform:scaleX(1)}80%,100%{transform:scaleX(1)}}
+@keyframes waPen{0%{left:8px}33%{left:38px}34%{left:8px}67%{left:30px}68%{left:8px}99%{left:34px}100%{left:8px}}
+
+/* FaceTime/iMessage-style chat bubbles exchange (sharing page) */
+.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#7c8a98;border-radius:10px;border:1px solid var(--mid)}
+.chat-anim .ca-bubble{position:absolute;height:12px;border-radius:9px;opacity:0;box-shadow:0 1px 2px rgba(0,0,0,.18);animation:caPop 3.6s ease-in-out infinite}
+.chat-anim .ca-bubble::after{content:'';position:absolute;bottom:-1px;width:7px;height:7px;border-radius:50%}
+.chat-anim .ca-1{top:6px;left:6px;width:30px;background:#fff;animation-delay:0s}
+.chat-anim .ca-1::after{left:-2px;background:#fff}
+.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#2b9bf4;animation-delay:.9s}
+.chat-anim .ca-2::after{right:-2px;background:#2b9bf4}
+.chat-anim .ca-3{top:34px;left:6px;width:22px;background:#fff;animation-delay:1.8s}
+.chat-anim .ca-3::after{left:-2px;background:#fff}
+@keyframes caPop{0%{opacity:0;transform:translateY(4px) scale(.8)}10%,75%{opacity:1;transform:translateY(0) scale(1)}90%,100%{opacity:0;transform:translateY(0) scale(1)}}
+
+/* canvas with brush painting (painting & animation analysis page) */
+.canvas-anim{position:relative;width:62px;height:50px;flex-shrink:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
+.canvas-anim .cv-board{position:absolute;inset:0;background:#fff;border:2px solid var(--ink);border-radius:3px}
+.canvas-anim .cv-board::before{content:'';position:absolute;top:2px;left:2px;right:2px;bottom:2px;background:linear-gradient(135deg,#fdf6ee 0%,#f9f0e4 100%)}
+.canvas-anim .cv-stroke{position:absolute;height:3px;border-radius:2px;transform-origin:right center}
+.canvas-anim .cv-s1{top:13px;left:8px;width:28px;background:#c0563f;animation:cvPaint 2.8s ease-in-out infinite}
+.canvas-anim .cv-s2{top:22px;left:14px;width:20px;background:#3d5a80;animation:cvPaint 2.8s ease-in-out infinite;animation-delay:.7s}
+.canvas-anim .cv-s3{top:31px;left:8px;width:24px;background:#588157;animation:cvPaint 2.8s ease-in-out infinite;animation-delay:1.4s}
+.canvas-anim .cv-brush{position:absolute;width:3px;height:16px;background:var(--ink);border-radius:1px;transform-origin:bottom center;transform:rotate(-30deg);animation:cvBrush 2.8s ease-in-out infinite}
+.canvas-anim .cv-brush::after{content:'';position:absolute;bottom:-4px;left:-2px;width:7px;height:5px;background:var(--gold);border-radius:0 0 4px 4px}
+@keyframes cvPaint{0%{transform:scaleX(0);opacity:0}15%,80%{transform:scaleX(1);opacity:1}95%,100%{opacity:.6}}
+@keyframes cvBrush{0%{top:8px;left:10px}33%{top:13px;left:36px}34%{top:17px;left:18px}67%{top:22px;left:34px}68%{top:26px;left:12px}99%{top:31px;left:32px}100%{top:8px;left:10px}}
+
+.intro-text h2{font-size:clamp(1.7rem,2.4vw,2.2rem);line-height:1.5;font-weight:700;margin-bottom:1.1rem}
+.intro-text p{font-size:1.05rem;line-height:2;color:var(--mid);font-weight:300;margin-bottom:.75rem}
+/* topics (legacy, unused styles kept harmlessly) */
+.topics{padding:5.5rem 3.5rem;background:var(--white)}
+.section-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2.8rem}
+.section-title{font-size:clamp(1.45rem,2.1vw,1.9rem);font-weight:700}
+.topics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.topic-card{border:1px solid var(--light);padding:1.8rem;border-radius:4px;transition:all .25s;position:relative;overflow:hidden}
+.topic-card::after{content:'';position:absolute;bottom:0;right:0;width:0;height:2px;background:var(--gold);transition:width .3s}
+.topic-card:hover::after{width:100%}
+.topic-num{font-size:.7rem;color:var(--gold);margin-bottom:.9rem;font-weight:500}
+.topic-name{font-size:1.05rem;font-weight:500;margin-bottom:.45rem}
+.topic-desc{font-size:.81rem;line-height:1.9;color:var(--mid);font-weight:300}
+/* sessions (legacy, unused styles kept harmlessly) */
+.sessions{padding:5.5rem 3.5rem;background:var(--ink);color:#fff}
+.sessions .section-title{color:#fff}
+.sessions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.1);margin-top:2.8rem}
+.session-item{background:var(--ink);padding:2.3rem 1.8rem;transition:background .2s}
+.session-item:hover{background:#111}
+.session-type{font-size:.7rem;color:var(--gold);margin-bottom:.9rem;font-weight:500}
+.session-name{font-size:1.1rem;font-weight:500;margin-bottom:.7rem;line-height:1.5}
+.session-desc{font-size:.81rem;line-height:2;color:rgba(255,255,255,.5);font-weight:300;margin-bottom:1.3rem}
+.session-link{font-size:.76rem;color:var(--gold);border-bottom:1px solid rgba(201,169,110,.4);padding-bottom:2px}
+/* books (also used for "کارگاه‌ها") */
+.books{padding:5.5rem 3.5rem;background:var(--bg)}
+.books-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.8rem}
+.book-card{background:var(--surface);border-radius:4px;overflow:hidden;border:1px solid var(--light);transition:transform .2s,box-shadow .2s;cursor:pointer;position:relative}
+.book-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.09)}
+.book-cover{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.book-cover img{width:100%;height:100%;object-fit:cover}
+.book-cover-ph{font-size:2.5rem;color:rgba(100,80,60,.3)}
+.book-body{padding:1.4rem}
+.book-tag{font-size:.67rem;color:var(--gold);font-weight:500;margin-bottom:.45rem}
+.book-title{font-size:.97rem;font-weight:600;margin-bottom:.35rem;line-height:1.4}
+.book-author{font-size:.73rem;color:var(--gold);margin-bottom:.55rem}
+.book-desc{font-size:.8rem;line-height:1.9;color:var(--mid);font-weight:300}
+/* articles (also used for "تاریخ روانکاوی") */
+.articles{padding:5.5rem 3.5rem;background:var(--white)}
+.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.8rem}
+.article-card{overflow:hidden;border-radius:4px;border:1px solid var(--light);transition:box-shadow .2s;cursor:pointer;position:relative}
+.article-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.art-img{height:148px;background:#e8e4dc;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.art-img img{width:100%;height:100%;object-fit:cover}
+.art-img-ph{font-size:2rem;color:rgba(100,80,60,.3)}
+.art-body{padding:1.2rem}
+.art-date{font-size:.7rem;color:var(--mid);margin-bottom:.45rem}
+.art-title{font-size:.93rem;font-weight:600;margin-bottom:.55rem;line-height:1.5}
+.art-summary{font-size:.8rem;line-height:1.9;color:var(--mid);font-weight:300}
+/* grief */
+.grief-section{padding:5.5rem 3.5rem;background:var(--bg)}
+.grief-intro p{font-size:.93rem;line-height:2;color:var(--mid);font-weight:300;margin-top:.7rem;max-width:580px}
+.grief-form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin:1.8rem 0;align-items:start}
+.grief-form-box{background:var(--surface);border-radius:6px;padding:1.8rem;border:1px solid var(--light)}
+.grief-form-box h3{font-size:.92rem;font-weight:600;margin-bottom:1.1rem}
+.grief-form-box input,.grief-form-box textarea{width:100%;padding:.72rem 1rem;border:1px solid var(--light);border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:.87rem;margin-bottom:.7rem;direction:rtl;text-align:right}
+.grief-form-box textarea{min-height:95px;resize:vertical}
+.grief-form-box button{background:var(--ink);color:#fff;border:none;padding:.72rem 1.8rem;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:.84rem;cursor:pointer}
+.grief-image-box{background:var(--surface);border-radius:6px;padding:1.8rem;border:1px solid var(--light)}
+.grief-image-box h3{font-size:.92rem;font-weight:600;margin-bottom:1.1rem}
+.grief-image-upload{width:100%;max-width:220px;aspect-ratio:2/3;height:auto;margin:0 auto;border-radius:4px;overflow:hidden;position:relative;background:var(--surface2)}
+.grief-image-upload img{width:100%;height:100%;object-fit:cover;display:none}
+.grief-image-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mid);gap:.4rem}
+.grief-image-caption{margin-top:1rem;font-size:.87rem;line-height:1.9;color:var(--text2);font-weight:300}
+@media (max-width:760px){.grief-form-row{grid-template-columns:1fr}}
+.grief-posts{display:flex;flex-direction:column;gap:1.3rem}
+.grief-post{background:var(--surface);border-radius:6px;padding:1.6rem;border:1px solid var(--light)}
+.grief-post-name{font-weight:600;font-size:.92rem;margin-bottom:.7rem}
+.grief-post-text{font-size:.88rem;line-height:2;color:var(--text2);font-weight:300}
+.grief-reply{background:var(--surface2);border-right:3px solid var(--gold);padding:.9rem 1.1rem;margin-top:1.1rem;border-radius:0 4px 4px 0}
+.grief-reply-label{font-size:.7rem;color:var(--gold);font-weight:600;margin-bottom:.45rem}
+.grief-reply-text{font-size:.86rem;line-height:1.9;color:var(--text2);font-weight:300}
+.grief-success{background:#d1fae5;color:#065f46;padding:.75rem 1.1rem;border-radius:3px;font-size:.84rem;margin-top:.5rem}
+/* cta/footer etc */
+.cta-strip{padding:5.5rem 3.5rem;background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
+.cta-left h2{font-size:clamp(1.7rem,2.3vw,2.2rem);font-weight:700;line-height:1.5;margin-bottom:.9rem}
+.cta-left p{font-size:.93rem;line-height:2;color:var(--mid);font-weight:300}
+.cta-right{display:flex;flex-direction:column;gap:.9rem}
+.cta-item{display:flex;align-items:center;gap:1.1rem;padding:1.3rem;border:none;border-radius:4px;cursor:pointer}
+.cta-icon{width:48px;height:48px;background:var(--gold);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cta-item-text strong{font-size:1.05rem;font-weight:500;transition:font-weight .15s}
+.cta-item.clicked .cta-item-text strong{font-weight:800}
+.press{padding:2.8rem 3.5rem;border-top:1px solid var(--light);border-bottom:1px solid var(--light);display:flex;align-items:center;gap:3.5rem}
+.press-label{font-size:.7rem;color:var(--mid);white-space:nowrap;flex-shrink:0;font-weight:500}
+.press-logos{display:flex;gap:2.5rem;flex-wrap:wrap}
+.press-logo{font-size:.78rem;color:var(--light);font-weight:500}
+.newsletter{padding:4.5rem 3.5rem;background:var(--ink);color:#fff;text-align:center}
+.newsletter h3{font-size:clamp(1.45rem,2.3vw,1.95rem);font-weight:700;margin-bottom:.7rem}
+.newsletter p{font-size:.88rem;color:rgba(255,255,255,.5);margin-bottom:1.8rem;font-weight:300}
+.nl-form{display:flex;max-width:400px;margin:0 auto;flex-direction:row-reverse}
+.nl-form input{flex:1;padding:.82rem 1.1rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-left:none;color:#fff;font-size:.84rem;border-radius:0 2px 2px 0;outline:none;font-family:'Vazirmatn',sans-serif;text-align:right}
+.nl-form input::placeholder{color:rgba(255,255,255,.3)}
+.nl-form button{background:var(--gold);color:#fff;border:none;padding:0 1.3rem;cursor:pointer;border-radius:2px 0 0 2px;font-family:'Vazirmatn',sans-serif;font-weight:500}
+footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
+.about-website{padding:5rem 3.5rem;text-align:right}
+.about-website h2{font-size:1.6rem;font-weight:600;margin-bottom:1.3rem}
+.about-website p{font-size:.95rem;line-height:2;color:var(--text2);font-weight:300;max-width:780px;margin-right:0;margin-left:auto}
+.footer-col h4{font-size:.7rem;color:var(--black);margin-bottom:1.1rem;font-weight:600}
+.footer-col a{display:block;font-size:.8rem;color:var(--mid);margin-bottom:.55rem}
+.footer-bottom{border-top:1px solid var(--light);padding-top:1.4rem;display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:.7rem;color:var(--mid)}
+.social-links{display:flex;gap:1.1rem;flex-direction:row-reverse;align-items:center}
+.social-links a{color:var(--mid);display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--light);transition:color .2s,border-color .2s}
+.social-links a:hover{color:var(--gold);border-color:var(--gold)}
+
+/* DETAIL PAGE */
+.dp-body{display:grid;grid-template-columns:2fr 3fr;min-height:calc(100vh - 62px)}
+.dp-img-side{background:var(--bg);display:flex;align-items:center;justify-content:center;padding:19px;position:relative;min-height:400px}
+.dp-img-side img{width:100%;height:100%;object-fit:cover;border-radius:6px;box-shadow:0 16px 48px rgba(0,0,0,.12)}
+.dp-img-ph{width:100%;height:100%;background:linear-gradient(160deg,#e8e4dc,#d4c9b8);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(100,80,60,.3)}
+.dp-text-side{padding:4rem 3.5rem;overflow-y:auto}
+.dp-tag{font-size:.72rem;color:var(--gold);font-weight:600;margin-bottom:1rem}
+.dp-title{font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;line-height:1.4;margin-bottom:.6rem}
+.dp-author,.dp-date{font-size:.85rem;color:var(--mid);margin-bottom:.5rem}
+.dp-divider{width:40px;height:2px;background:var(--gold);margin:1.5rem 0}
+.dp-desc{font-size:.95rem;line-height:2.1;color:var(--text2);font-weight:300}
+#detail-page{z-index:310}
+.dp-register-box{margin-top:2.2rem;padding-top:2rem;border-top:1px solid var(--light)}
+.dp-register-btn{background:var(--gold);color:#fff;border:none;padding:.9rem 2.1rem;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer}
+.dp-register-btn:hover{filter:brightness(.95)}
+
+/* BIO PAGE */
+.bio-body{display:grid;grid-template-columns:1.4fr 2fr;min-height:calc(100vh - 62px)}
+.bio-label-side{background:var(--bg);padding:3rem 1rem;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:1rem}
+.bio-label-side h2{font-size:1.8rem;font-weight:700;color:var(--black);line-height:1.4;align-self:center;width:calc(100% - 2cm);text-align:center}
+.bio-label-side p{font-size:.82rem;color:var(--mid);line-height:1.9;font-weight:300}
+.bio-text-side{padding:4rem 3.5rem;overflow-y:auto}
+.bio-section{margin-bottom:2rem}
+.bio-section-title{font-size:1rem;font-weight:600;color:var(--gold);margin-bottom:.8rem}
+.bio-section-text{font-size:.93rem;line-height:2;color:var(--text2);font-weight:300}
+
+/* REGISTRATION FORM */
+.reg-form-wrap{max-width:560px;margin:0 auto;padding:3rem 1.5rem}
+.reg-form-wrap h2{font-size:1.25rem;font-weight:700;margin-bottom:.4rem}
+.reg-form-wrap .reg-sub{font-size:.85rem;color:var(--mid);margin-bottom:2rem}
+.reg-field{margin-bottom:1.3rem}
+.reg-field label{display:block;font-size:.84rem;font-weight:500;margin-bottom:.5rem}
+.reg-field label.req::after{content:' *';color:#e53e3e}
+.reg-field input,.reg-field textarea{width:100%;padding:.78rem 1rem;border:1px solid var(--light);border-radius:4px;font-family:'Vazirmatn',sans-serif;font-size:.88rem;direction:rtl;text-align:right}
+.reg-field textarea{min-height:90px;resize:vertical}
+.reg-field input:focus,.reg-field textarea:focus{outline:none;border-color:var(--blue)}
+.reg-options{display:flex;flex-direction:column;gap:.6rem}
+.reg-option{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;border:1px solid var(--light);border-radius:4px;cursor:pointer;font-size:.86rem}
+.reg-option:hover{border-color:var(--gold)}
+.reg-option input{width:auto;margin:0}
+.reg-submit-btn{width:100%;background:var(--ink);color:#fff;border:none;padding:.95rem;border-radius:4px;font-family:'Vazirmatn',sans-serif;font-size:.92rem;cursor:pointer;margin-top:.5rem}
+.reg-success{text-align:center;padding:4rem 1.5rem;max-width:480px;margin:0 auto}
+.reg-success .ico{font-size:3rem;margin-bottom:1.2rem}
+.reg-success h2{font-size:1.2rem;font-weight:700;margin-bottom:.9rem}
+.reg-success p{font-size:.9rem;line-height:2;color:var(--mid)}
+
+/* STATUS LOOKUP PAGE */
+.status-wrap{max-width:560px;margin:0 auto;padding:3rem 1.5rem}
+.status-wrap h2{font-size:1.25rem;font-weight:700;margin-bottom:.4rem}
+.status-wrap .reg-sub{font-size:.85rem;color:var(--mid);margin-bottom:2rem}
+.status-result{margin-top:2rem;display:flex;flex-direction:column;gap:1.1rem}
+.status-card{border:1px solid var(--light);border-radius:6px;padding:1.4rem}
+.status-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.status-card-top strong{font-size:.95rem}
+.status-pay-box{margin-top:1rem;padding:1.1rem;background:var(--bg);border-radius:4px;border:1px dashed var(--gold)}
+.status-pay-box h4{font-size:.82rem;color:var(--gold);margin-bottom:.6rem;font-weight:600}
+.status-pay-box p{font-size:.85rem;line-height:2;color:var(--text2);white-space:pre-wrap}
+.reg-q-builder{border:1px solid var(--light);border-radius:5px;padding:1rem;margin-top:.7rem}
+.reg-q-builder-item{border:1px solid var(--light);border-radius:4px;padding:.8rem;margin-bottom:.7rem;background:var(--surface2)}
+.reg-q-builder-item .qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.reg-q-builder-item .qhead strong{font-size:.8rem}
+.opt-row{display:flex;gap:.4rem;margin-bottom:.4rem}
+.opt-row input{flex:1}
+.opt-row button{flex-shrink:0;background:var(--surface);border:1px solid #e53e3e;color:#e53e3e;border-radius:3px;cursor:pointer;font-size:.75rem;padding:0 .6rem}
+.answers-view{font-size:.82rem;line-height:1.9;color:var(--text2);background:var(--bg);padding:.8rem;border-radius:4px;margin-top:.5rem}
+.answers-view b{color:var(--black)}
+
+/* ======= MOBILE NAV TOGGLE ======= */
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;border:none;background:none;cursor:pointer;flex-shrink:0;padding:0}
+.nav-toggle span{display:block;width:24px;height:2px;background:var(--black);margin:0 auto;transition:transform .25s,opacity .25s}
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ======= RESPONSIVE BREAKPOINTS ======= */
+@media (max-width:900px){
+  nav{padding:.9rem 1.2rem}
+  .nav-toggle{display:flex}
+  .search-bar-wrap{padding:.7rem 1.2rem}
+  .nav-links{position:fixed;top:62px;right:0;left:0;background:var(--surface);flex-direction:column;align-items:stretch;gap:0;max-height:calc(100vh - 62px);overflow-y:auto;transform:translateY(-12px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;box-shadow:0 12px 24px rgba(0,0,0,.1);padding:0;border-bottom:1px solid var(--light)}
+  .nav-links.open{opacity:1;transform:translateY(0);pointer-events:auto}
+  .nav-links-right,.nav-links-left{flex-direction:column;align-items:stretch;gap:0;width:100%}
+  .nav-links-right a,.nav-links-left a,.nav-links-left button{width:100%;padding:1rem 1.5rem;border-bottom:1px solid var(--light);border-radius:0;text-align:right;margin:0;font-size:.9rem}
+  .nav-cta{background:none;color:var(--black)!important}
+
+  .hero{grid-template-columns:1fr;padding:0 1.2rem;padding-top:2rem;gap:2rem;min-height:auto;padding-bottom:3rem;text-align:center}
+  .hero-headline,.hero-sub{text-align:center}
+  .hero-actions{justify-content:center}
+  .intro{grid-template-columns:1fr;padding:3rem 1.2rem;gap:2.2rem}
+  .intro-label{order:2}
+  .intro-text{order:1;text-align:center}
+  .intro-text h2{text-align:center}
+  .shelf-empty-wrap{display:none}
+  .topics-grid{grid-template-columns:repeat(2,1fr)}
+  .sessions-grid{grid-template-columns:1fr}
+  .books-grid{grid-template-columns:repeat(2,1fr)}
+  .articles-grid{grid-template-columns:repeat(2,1fr)}
+  .cta-strip{grid-template-columns:1fr;padding:3rem 1.2rem;gap:2rem;text-align:center;justify-items:center}
+  .cta-item{flex-direction:column;text-align:center}
+  .dp-body{grid-template-columns:1fr;min-height:auto}
+  .dp-img-side{min-height:280px;padding:1.5rem}
+  .dp-text-side{padding:2rem 1.2rem}
+  .bio-body{grid-template-columns:1fr;min-height:auto}
+  .bio-label-side{padding:2rem 1rem}
+  .ov-header{padding:.9rem 1.2rem}
+  .apb{padding:0 1rem}
+  .section-header{flex-direction:column;align-items:center;text-align:center;justify-content:center}
+  .section-title-row{flex-direction:column;gap:.6rem}
+  #grief-title{white-space:nowrap;font-size:clamp(1.05rem,4.2vw,1.5rem)}
+  .aph{padding:.9rem 1.2rem}
+  .ap-tabs{gap:.4rem}
+  .ap-tab{flex:1;text-align:center;font-size:.78rem;padding:.5rem .6rem}
+  .ap-item{flex-direction:column;align-items:stretch}
+  .ap-ia{width:100%}
+  .ap-ia button{flex:1}
+}
+
+@media (max-width:600px){
+  .topics-grid{grid-template-columns:1fr}
+  .books-grid{grid-template-columns:1fr}
+  .articles-grid{grid-template-columns:1fr}
+  .hero{padding:0 1rem;padding-top:1.5rem}
+  .nav-logo{font-size:1.1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-overlay" class="hidden" onclick="if(event.target===this)cancelLogin()">
+  <div class="lbox">
+    <h3>ورود به پنل مدیریت</h3>
+    <input type="email" id="email-input" placeholder="ایمیل" autocomplete="username" onkeydown="if(event.key==='Enter')gi('pw-input').focus();if(event.key==='Escape')cancelLogin()"/>
+    <input type="password" id="pw-input" placeholder="رمز عبور" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin();if(event.key==='Escape')cancelLogin()"/>
+    <button onclick="doLogin()">ورود</button>
+    <button class="lbox-cancel" onclick="cancelLogin()">انصراف</button>
+    <p class="lerr hidden" id="login-err">رمز عبور اشتباه است</p>
+  </div>
+</div>
+
+<!-- ADMIN BAR -->
+<div id="admin-bar" class="hidden">
+  <em>🔧 حالت ویرایش فعال</em>
+  <div><button onclick="openPanel()">پنل محتوا</button><button class="btn-out" onclick="doLogout()">خروج</button></div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel" class="hidden">
+  <div class="aph"><h2>پنل مدیریت محتوا</h2><button onclick="closePanel()">بستن</button></div>
+  <div class="apb">
+    <div class="ap-tabs">
+      <button class="ap-tab active" onclick="switchTab('books',this)">📚 خود-روانشناسی</button>
+      <button class="ap-tab" onclick="switchTab('articles',this)">🎙️ پادکست</button>
+      <button class="ap-tab" onclick="switchTab('history',this)">🌀 سوژه و جهان</button>
+      <button class="ap-tab" onclick="switchTab('workshops',this)">🛠️ کارگاه‌ها</button>
+      <button class="ap-tab" onclick="switchTab('films',this)">🎨 تحلیل نقاشی و انیمیشن</button>
+      <button class="ap-tab" onclick="switchTab('site',this)">🌐 تنظیمات</button>
+    </div>
+    <!-- BOOKS -->
+    <div id="tab-books">
+      <div class="aps"><h3>افزودن مورد جدید به خود-روانشناسی</h3><div class="af">
+        <label class="req">تصویر جلد</label>
+        <div class="iup" onclick="gi('b-img-f').click()"><img id="b-img-prev" src="" style="display:none"/><div id="b-img-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود تصویر جلد</span></div></div>
+        <input type="file" id="b-img-f" accept="image/*" style="display:none" onchange="prevImg(this,'b-img-prev','b-img-ph','b-img-d')"/><input type="hidden" id="b-img-d"/>
+        <label class="req">عنوان</label><input id="b-title" placeholder="نام کتاب"/>
+        <label>نویسنده</label><input id="b-author" placeholder="نام نویسنده"/>
+        <label>دسته‌بندی</label><input id="b-cat" placeholder="سوگ، تروما ..."/>
+        <label class="req">خلاصه (کارت)</label><textarea id="b-desc" placeholder="خلاصه کوتاه..."></textarea>
+        <label>متن کامل (صفحه جزئیات)</label><textarea id="b-full" placeholder="متن کامل‌تر..." style="min-height:100px"></textarea>
+      </div><button class="abtn" onclick="addBook()">+ افزودن</button></div>
+      <div class="aps"><h3>موارد موجود در خود-روانشناسی</h3><div class="ap-items" id="ap-books-list"></div></div>
+    </div>
+    <!-- ARTICLES -->
+    <div id="tab-articles" class="hidden">
+      <div class="aps"><h3>افزودن پادکست جدید</h3><div class="af">
+        <label>تصویر</label>
+        <div class="iup" onclick="gi('a-img-f').click()"><img id="a-img-prev" src="" style="display:none"/><div id="a-img-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود تصویر</span></div></div>
+        <input type="file" id="a-img-f" accept="image/*" style="display:none" onchange="prevImg(this,'a-img-prev','a-img-ph','a-img-d')"/><input type="hidden" id="a-img-d"/>
+        <label class="req">عنوان</label><input id="a-title" placeholder="عنوان مقاله"/>
+        <label>تاریخ</label><input id="a-date" placeholder="۱۴۰۵/۰۳/۱۷"/>
+        <label class="req">خلاصه (کارت)</label><textarea id="a-summary" placeholder="خلاصه..."></textarea>
+        <label>متن کامل (صفحه جزئیات)</label><textarea id="a-full" placeholder="متن کامل مقاله..." style="min-height:100px"></textarea>
+        <label>لینک خارجی</label><input id="a-link" placeholder="https://..."/>
+      </div><button class="abtn" onclick="addArticle()">+ افزودن</button></div>
+      <div class="aps"><h3>پادکست‌های موجود</h3><div class="ap-items" id="ap-articles-list"></div></div>
+    </div>
+    <!-- PSYCHO HISTORY -->
+    <div id="tab-history" class="hidden">
+      <div class="aps"><h3>افزودن مورد جدید به سوژه و جهان</h3><div class="af">
+        <label>تصویر</label>
+        <div class="iup" onclick="gi('h-img-f').click()"><img id="h-img-prev" src="" style="display:none"/><div id="h-img-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود تصویر</span></div></div>
+        <input type="file" id="h-img-f" accept="image/*" style="display:none" onchange="prevImg(this,'h-img-prev','h-img-ph','h-img-d')"/><input type="hidden" id="h-img-d"/>
+        <label class="req">عنوان</label><input id="h-title" placeholder="عنوان رویداد"/>
+        <label>تاریخ</label><input id="h-date" placeholder="۱۸۹۶"/>
+        <label class="req">خلاصه (کارت)</label><textarea id="h-summary" placeholder="خلاصه..."></textarea>
+        <label>متن کامل (صفحه جزئیات)</label><textarea id="h-full" placeholder="متن کامل..." style="min-height:100px"></textarea>
+        <label>لینک خارجی</label><input id="h-link" placeholder="https://..."/>
+      </div><button class="abtn" onclick="addPsychoHistory()">+ افزودن</button></div>
+      <div class="aps"><h3>موارد موجود در سوژه و جهان</h3><div class="ap-items" id="ap-history-list"></div></div>
+    </div>
+    <!-- WORKSHOPS -->
+    <div id="tab-workshops" class="hidden">
+      <div class="aps"><h3>افزودن کارگاه جدید</h3><div class="af">
+        <label class="req">تصویر کارگاه</label>
+        <div class="iup" onclick="gi('w-img-f').click()"><img id="w-img-prev" src="" style="display:none"/><div id="w-img-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود تصویر کارگاه</span></div></div>
+        <input type="file" id="w-img-f" accept="image/*" style="display:none" onchange="prevImg(this,'w-img-prev','w-img-ph','w-img-d')"/><input type="hidden" id="w-img-d"/>
+        <label class="req">عنوان</label><input id="w-title" placeholder="نام کارگاه"/>
+        <label>مدرس</label><input id="w-author" placeholder="نام مدرس"/>
+        <label>دسته‌بندی</label><input id="w-cat" placeholder="سوگ، تروما ..."/>
+        <label class="req">خلاصه (کارت)</label><textarea id="w-desc" placeholder="خلاصه کوتاه..."></textarea>
+        <label>متن کامل (صفحه جزئیات)</label><textarea id="w-full" placeholder="متن کامل‌تر..." style="min-height:100px"></textarea>
+      </div><button class="abtn" onclick="addWorkshop()">+ افزودن</button></div>
+      <div class="aps"><h3>کارگاه‌های موجود و ثبت‌نام‌ها</h3><div class="ap-items" id="ap-workshops-list"></div></div>
+    </div>
+    <!-- FILMS -->
+    <div id="tab-films" class="hidden">
+      <div class="aps"><h3>افزودن تحلیل نقاشی / انیمیشن جدید</h3><div class="af">
+        <label class="req">تصویر</label>
+        <div class="iup" onclick="gi('f-img-f').click()"><img id="f-img-prev" src="" style="display:none"/><div id="f-img-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود تصویر</span></div></div>
+        <input type="file" id="f-img-f" accept="image/*" style="display:none" onchange="prevImg(this,'f-img-prev','f-img-ph','f-img-d')"/><input type="hidden" id="f-img-d"/>
+        <label class="req">عنوان اثر</label><input id="f-title" placeholder="نام اثر"/>
+        <label>کارگردان</label><input id="f-author" placeholder="نام کارگردان"/>
+        <label>دسته‌بندی</label><input id="f-cat" placeholder="سوگ، تروما ..."/>
+        <label class="req">خلاصه (کارت)</label><textarea id="f-desc" placeholder="خلاصه کوتاه..."></textarea>
+        <label>متن کامل (صفحه جزئیات)</label><textarea id="f-full" placeholder="تحلیل کامل..." style="min-height:100px"></textarea>
+      </div><button class="abtn" onclick="addFilm()">+ افزودن</button></div>
+      <div class="aps"><h3>تحلیل‌های نقاشی و انیمیشن موجود</h3><div class="ap-items" id="ap-films-list"></div></div>
+    </div>
+    <!-- SITE -->
+    <div id="tab-site" class="hidden">
+      <div class="aps"><h3>🖼️ عکس پروفایل</h3><div class="af">
+        <div class="iup" style="height:160px" onclick="gi('hero-f-ap').click()"><img id="hero-prev-ap" src="" style="display:none"/><div id="hero-ph-ap" class="iup-lbl"><span class="ico">👤</span><span>آپلود عکس</span></div></div>
+        <input type="file" id="hero-f-ap" accept="image/*" style="display:none" onchange="handleHeroPanel(event)"/>
+      </div></div>
+      <div class="aps"><h3>📝 بخش هرو</h3><div class="af">
+        <label>تخصص</label><input id="s-eyebrow"/>
+        <label>تیتر خط اول</label><input id="s-h1"/>
+        <label>کلمه برجسته</label><input id="s-hem"/>
+        <label>ادامه تیتر</label><input id="s-h2"/>
+        <label>متن زیر تیتر</label><textarea id="s-sub"></textarea>
+        <label>متن دکمه رزرو</label><input id="s-cta"/>
+      </div><button class="abtn" onclick="saveHero()">ذخیره</button></div>
+      <div class="aps"><h3>👤 درباره من</h3><div class="af">
+        <label>عنوان</label><input id="s-about-h"/>
+        <label>پاراگراف اول</label><textarea id="s-about-p1"></textarea>
+        <label>پاراگراف دوم</label><textarea id="s-about-p2"></textarea>
+      </div><button class="abtn" onclick="saveAbout()">ذخیره</button></div>
+      <div class="aps"><h3>📄 صفحه بیوگرافی کامل</h3><p style="font-size:.78rem;color:var(--mid);margin-bottom:.8rem">بخش‌های بیوگرافی را می‌توانید مستقیماً از صفحه «بیوگرافی کامل» ویرایش کنید (روی عنوان یا متن کلیک کنید) یا بخش جدید اضافه/حذف کنید.</p><button class="abtn" onclick="openBio()">باز کردن صفحه بیوگرافی</button></div>
+      <div class="aps"><h3>💳 متن دستورالعمل پرداخت</h3><div class="af">
+        <label>متن راهنمای پرداخت</label><textarea id="s-payinfo" style="min-height:110px" placeholder="مثلاً: لطفاً مبلغ ۲,۰۰۰,۰۰۰ تومان را به شماره کارت ۱۲۳۴-۵۶۷۸-۹۰۱۲-۳۴۵۶ واریز کرده و رسید را به آیدی تلگرام @shahab_yousefii ارسال کنید."></textarea>
+        <p style="font-size:.74rem;color:var(--mid);margin-top:.4rem">این متن پس از تایید درخواست متقاضی، عیناً در صفحه «پیگیری ثبت‌نام» نمایش داده می‌شود. مبلغ، شماره حساب و آیدی تلگرام را خودتان در همین متن وارد کنید.</p>
+      </div><button class="abtn" onclick="savePayInfo()">ذخیره</button></div>
+      <div class="aps"><h3>📬 فوتر</h3><div class="af">
+        <label>توضیح</label><textarea id="s-fdesc"></textarea>
+        <label>تلگرام</label><input id="s-tg"/>
+        <label>لینکدین</label><input id="s-li"/>
+        <label>اینستاگرام</label><input id="s-ig"/>
+      </div><button class="abtn" onclick="saveFooter()">ذخیره</button></div>
+      <div class="aps"><h3>📞 صفحه رزرو جلسه (تلگرام)</h3><div class="af">
+        <label>آدرس مقصد هنگام کلیک روی آیدی</label><input id="s-tgurl" placeholder="https://t.me/shahab_yousefii"/>
+      </div><button class="abtn" onclick="saveTgUrl()">ذخیره</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="edit-modal" class="modal-overlay hidden">
+  <div class="mbox">
+    <h3 id="m-title">ویرایش</h3><p class="msub" id="m-sub"></p>
+    <div class="af" id="m-body"></div>
+    <div class="mac"><button class="save" onclick="saveEdit()">💾 ذخیره</button><button class="cancel" onclick="closeModal()">انصراف</button></div>
+  </div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div id="detail-page" class="overlay hidden">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('detail-page')">← بازگشت</div>
+    <span id="dp-breadcrumb" style="font-size:.82rem;color:var(--mid)"></span>
+  </div>
+  <div class="dp-body">
+    <div class="dp-img-side eimg" id="dp-img-wrap">
+      <img id="dp-img" src="" style="display:none"/>
+      <div id="dp-img-ph" class="dp-img-ph">📚</div>
+      <div class="eimg-badge" onclick="gi('dp-img-file').click()"><span style="font-size:1.5rem">📷</span><span>تغییر تصویر</span></div>
+    </div>
+    <div class="dp-text-side">
+      <p class="dp-tag editable" id="dp-tag" onclick="dpInlineEdit('tag')"></p>
+      <h1 class="dp-title editable" id="dp-title" onclick="dpInlineEdit('title')"></h1>
+      <p class="dp-author editable" id="dp-author" onclick="dpInlineEdit('author')"></p>
+      <p class="dp-date editable" id="dp-date" onclick="dpInlineEdit('date')"></p>
+      <div class="dp-divider"></div>
+      <p class="dp-desc editable" id="dp-desc" onclick="dpInlineEdit('desc')"></p>
+      <div class="dp-register-box hidden" id="dp-register-box">
+        <button class="dp-register-btn" onclick="openRegisterForm()">ثبت‌نام در کارگاه</button>
+      </div>
+    </div>
+  </div>
+  <input type="file" id="dp-img-file" accept="image/*" style="display:none" onchange="dpImgUpload(event)"/>
+</div>
+
+<!-- BIO PAGE -->
+<div id="bio-page" class="overlay hidden">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('bio-page')">← بازگشت</div>
+    <span style="font-size:.82rem;color:var(--mid)">بیوگرافی کامل</span>
+  </div>
+  <div class="bio-body">
+    <div class="bio-label-side">
+      <h2>درباره من</h2>
+      <div class="bio-photo-frame">
+        <img id="bio-photo" src="" alt="دکتر سینا فتح‌الله‌زاده" draggable="false"/>
+        <div id="bio-photo-ph"><div style="font-size:2.2rem;color:rgba(100,80,60,.25)">👤</div><p style="font-size:.78rem;color:rgba(80,60,40,.4)">عکس پروفایل</p></div>
+        <button class="photo-upload-btn" onclick="gi('bio-file').click()">📷 تغییر عکس</button>
+      </div>
+      <input type="file" id="bio-file" accept="image/*" style="display:none" onchange="handleBioPhoto(event)"/>
+    </div>
+    <div class="bio-text-side" id="bio-content"></div>
+  </div>
+</div>
+
+<!-- BOOK A SESSION PAGE (points to Telegram contact) -->
+<div id="telegram-page" class="overlay hidden">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('telegram-page')">← بازگشت</div>
+    <span style="font-size:.82rem;color:var(--mid)">رزرو جلسه</span>
+  </div>
+  <div style="max-width:520px;margin:4rem auto;padding:0 1.5rem;text-align:center">
+    <div class="paper-plane-anim" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="46" height="46"><path d="M22.05 2.4 1.96 10.3c-1.37.55-1.36 1.32-.25 1.66l5.15 1.6 11.93-7.5c.56-.34 1.07-.16.65.21l-9.68 8.74h-.01l.01.01-.37 5.45c.54 0 .78-.25 1.08-.55l2.6-2.52 5.4 3.98c.99.55 1.7.27 1.95-.92l3.53-16.6c.36-1.45-.55-2.1-1.9-1.46z"/></svg></div>
+    <h2 class="editable" onclick="inlineEdit('tg-h')" id="tg-h" style="font-size:1.25rem;font-weight:700;margin-bottom:1rem">رزرو جلسه از طریق تلگرام</h2>
+    <p class="editable" onclick="inlineEdit('tg-text')" id="tg-text" style="font-size:.92rem;line-height:2.1;color:var(--mid);margin-bottom:1.8rem">لطفاً اطلاعات خود — شامل نام، نوع جلسه (داخل یا خارج از کشور) و زمان پیشنهادی — را به آیدی تلگرام زیر ارسال کنید. دکتر فتح‌الله‌زاده پس از بررسی با شما هماهنگ خواهد کرد.</p>
+    <div class="editable" onclick="handleTgIdClick()" id="tg-id-box" style="background:var(--bg);border:2px dashed var(--gold);border-radius:6px;padding:1.3rem;font-size:1.15rem;font-weight:700;color:var(--black);direction:ltr;cursor:pointer">@shahab_yousefii</div>
+  </div>
+</div>
+
+<!-- HISTORY PAGE -->
+<div id="history-page" class="overlay hidden no-copy">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('history-page')">← بازگشت</div>
+    <div style="display:flex;align-items:center;gap:1.2rem">
+      <span id="ov-auth-history"></span>
+      <span style="font-size:.82rem;color:var(--mid)">سوژه و جهان</span>
+    </div>
+  </div>
+  <section class="articles" style="padding-top:3rem">
+    <div class="section-header"><div class="section-title-row"><div class="klein-anim" aria-hidden="true"><svg viewBox="0 0 54 54"><ellipse class="kl-body" cx="27" cy="27" rx="18" ry="10"/><path class="kl-body" d="M9,27 C9,14 18,8 27,8 C36,8 45,14 45,27"/><path class="kl-body" d="M27,8 C27,8 36,20 27,27 C18,34 27,46 27,46"/><path class="kl-inner" d="M15,22 C18,18 27,17 33,22 C39,27 36,36 27,37"/></svg></div><h2 class="section-title">سوژه و جهان</h2></div></div>
+    <div class="page-notes-box"><textarea id="notes-history" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.history=this.value" readonly></textarea></div>
+    <div class="articles-grid" id="psycho-history-grid"></div>
+  </section>
+</div>
+
+<!-- BOOKS PAGE -->
+<div id="books-page" class="overlay hidden no-copy">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('books-page')">← بازگشت</div>
+    <span style="font-size:.82rem;color:var(--mid)">خود-روانشناسی</span>
+  </div>
+  <section class="books" style="padding-top:3rem">
+    <div class="section-header"><div class="section-title-row"><div class="book-anim" aria-hidden="true"><div class="ba-half ba-left"></div><div class="ba-half ba-right"></div><div class="ba-page"></div></div><h2 class="section-title">خود-روانشناسی</h2></div></div>
+    <div class="page-notes-box"><textarea id="notes-books" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.books=this.value" readonly></textarea></div>
+    <div class="books-grid" id="books-grid"></div>
+  </section>
+</div>
+
+<!-- ARTICLES PAGE -->
+<div id="articles-page" class="overlay hidden no-copy">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('articles-page')">← بازگشت</div>
+    <span style="font-size:.82rem;color:var(--mid)">پادکست</span>
+  </div>
+  <section class="articles" style="padding-top:3rem">
+    <div class="section-header"><div class="section-title-row"><div class="speaker-anim" aria-hidden="true"><div class="sp-body"><div class="sp-cone"></div><div class="sp-box"></div></div><div class="sp-waves"><div class="sp-wave sp-w1"></div><div class="sp-wave sp-w2"></div><div class="sp-wave sp-w3"></div><div class="sp-wave sp-w4"></div></div></div><h2 class="section-title">پادکست</h2></div></div>
+    <div class="page-notes-box"><textarea id="notes-articles" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.articles=this.value" readonly></textarea></div>
+    <div class="articles-grid" id="articles-grid"></div>
+  </section>
+</div>
+
+<!-- WORKSHOPS PAGE -->
+<div id="workshops-page" class="overlay hidden">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('workshops-page')">← بازگشت</div>
+    <span style="font-size:.82rem;color:var(--mid)">کارگاه‌ها</span>
+  </div>
+  <section class="books" style="padding-top:3rem">
+    <div class="section-header"><div class="section-title-row"><div class="write-anim" aria-hidden="true"><div class="wa-paper"></div><div class="wa-line wa-l1"><span></span></div><div class="wa-line wa-l2"><span></span></div><div class="wa-line wa-l3"><span></span></div><div class="wa-pen"></div></div><h2 class="section-title">کارگاه‌ها</h2></div></div>
+    <div class="page-notes-box"><textarea id="notes-workshops" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.workshops=this.value" readonly></textarea></div>
+    <div class="books-grid" id="workshops-grid"></div>
+  </section>
+</div>
+
+<!-- FILM ANALYSIS PAGE -->
+<div id="film-page" class="overlay hidden no-copy">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('film-page')">← بازگشت</div>
+    <span style="font-size:.82rem;color:var(--mid)">تحلیل نقاشی و انیمیشن</span>
+  </div>
+  <section class="books" style="padding-top:3rem">
+    <div class="section-header"><div class="section-title-row"><div class="canvas-anim" aria-hidden="true"><div class="cv-board"></div><div class="cv-stroke cv-s1"></div><div class="cv-stroke cv-s2"></div><div class="cv-stroke cv-s3"></div><div class="cv-brush"></div></div><h2 class="section-title">تحلیل نقاشی و انیمیشن</h2></div></div>
+    <div class="page-notes-box"><textarea id="notes-films" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.films=this.value" readonly></textarea></div>
+    <div class="books-grid" id="films-grid"></div>
+  </section>
+</div>
+
+
+<!-- WORKSHOP REGISTRATION FORM PAGE -->
+<div id="register-page" class="overlay hidden">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('register-page');openDp('workshop',registerCurrentWorkshopId)">← بازگشت</div>
+    <span style="font-size:.82rem;color:var(--mid)">ثبت‌نام در کارگاه</span>
+  </div>
+  <div id="register-page-body"></div>
+</div>
+
+<!-- PAYMENT SUCCESS PAGE -->
+<div id="payment-success-page" class="overlay hidden">
+  <div class="ov-header">
+    <div class="ov-back" onclick="closeOv('payment-success-page')">← بازگشت</div>
+    <span style="font-size:.82rem;color:var(--mid)">پرداخت موفق</span>
+  </div>
+  <div class="reg-form-wrap" style="text-align:center;padding-top:3rem">
+    <div class="ico" style="font-size:2.5rem;margin-bottom:1rem">✓</div>
+    <h2>ثبت‌نام شما تکمیل شد</h2>
+    <p style="margin-top:1rem;color:var(--mid)">برای دسترسی به ویدیوهای دوره، به صفحه دوره خود بازگردید.</p>
+    <button class="dp-register-btn" style="margin-top:1.6rem" onclick="goToPurchasedCourse()">بازگشت به صفحه دوره</button>
+  </div>
+</div>
+
+<!-- ===== SITE ===== -->
+<nav>
+  <div class="nav-logo">دکتر سینا فتح‌الله‌زاده</div>
+  <button class="nav-toggle" onclick="toggleNavMenu()" aria-label="منو">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="nav-links" style="justify-content:space-between">
+    <div class="nav-links-right">
+      <a href="#about" onclick="closeNavMenu()">درباره من</a>
+      <a href="#" onclick="openOv('history-page');closeNavMenu();return false;">سوژه و جهان</a>
+      <a href="#" onclick="openOv('books-page');closeNavMenu();return false;">خود-روانشناسی</a>
+      <a href="#" onclick="openOv('articles-page');closeNavMenu();return false;">پادکست</a>
+      <a href="#" onclick="openOv('workshops-page');closeNavMenu();return false;">کارگاه‌ها</a>
+      <a href="#" onclick="openOv('film-page');closeNavMenu();return false;">تحلیل نقاشی و انیمیشن</a>
+    </div>
+    <div class="nav-links-left">
+      <button class="nav-cta" onclick="scrollToNextStep();closeNavMenu()">رزرو جلسه</button>
+      <a href="#" onclick="showLogin();closeNavMenu()" class="nav-login">ورود</a>
+    </div>
+  </div>
+</nav>
+
+<div class="search-bar-wrap">
+  <div class="search-bar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="site-search-input" placeholder="جستجو در خود-روانشناسی، پادکست، کارگاه‌ها، تحلیل نقاشی و سوژه و جهان..." oninput="siteSearch(this.value)" onfocus="if(this.value)siteSearch(this.value)"/>
+    <button class="search-clear" id="search-clear-btn" onclick="gi('site-search-input').value='';siteSearch('')" style="display:none">✕</button>
+  </div>
+  <div class="search-results hidden" id="search-results"></div>
+</div>
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow editable" onclick="inlineEdit('eyebrow')" id="hero-eyebrow">روان‌درمانگر و روانشناس بالینی</p>
+    <h1 class="hero-headline editable" onclick="inlineEdit('headline')" id="hero-headline">
+      <span id="h-l1">درمان از آنجا آغاز می‌شود که </span><em id="h-em">سکوت</em><span id="h-l2"> صدا پیدا می‌کند.</span>
+    </h1>
+    <p class="hero-sub editable" onclick="inlineEdit('sub')" id="hero-sub">با تخصص در غم، تروما، و اختلالات شخصیت — فضایی دلسوزانه برای کشف، درک، و تحول دنیای درونی شما.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollToNextStep()" id="hero-cta-btn">رزرو جلسه</button>
+      <button class="btn-ghost" onclick="openBio()">بیوگرافی کامل</button>
+    </div>
+  </div>
+  <div class="hero-img-col">
+    <div class="img-frame">
+      <img id="hero-photo" src="" alt="دکتر سینا فتح‌الله‌زاده"/>
+      <div id="hero-photo-ph"><div style="font-size:3rem;color:rgba(100,80,60,.25)">👤</div><p style="font-size:.8rem;color:rgba(80,60,40,.4)">عکس دکتر فتح‌الله‌زاده</p></div>
+      <button class="photo-upload-btn" onclick="gi('hero-file').click()">📷 تغییر عکس</button>
+    </div>
+    <input type="file" id="hero-file" accept="image/*" style="display:none" onchange="handleHero(event)"/>
+  </div>
+</section>
+
+
+<section class="intro reveal" id="about">
+  <div class="intro-label">
+    <div class="bookshelf-widget" id="shelf-full" aria-hidden="true">
+      <div class="shelf-board" style="bottom:230px"></div>
+      <div class="shelf-board" style="bottom:150px"></div>
+      <div class="shelf-board" style="bottom:70px"></div>
+
+      <span class="book" style="left:6px;bottom:237px;height:68px;background:#2f6b4f;--fx:-18px;--fy:233px;--fr:-72deg;--d:0s"></span>
+      <span class="book" style="left:24px;bottom:237px;height:75px;background:#c0563f;--fx:14px;--fy:233px;--fr:64deg;--d:.03s"></span>
+      <span class="book" style="left:42px;bottom:237px;height:60px;background:#3d5a80;--fx:-10px;--fy:233px;--fr:-80deg;--d:.06s"></span>
+      <span class="book" style="left:60px;bottom:237px;height:70px;background:#e0a23d;--fx:20px;--fy:233px;--fr:75deg;--d:.09s"></span>
+      <span class="book" style="left:78px;bottom:237px;height:64px;background:#6b3f5e;--fx:-16px;--fy:233px;--fr:-66deg;--d:.12s"></span>
+      <span class="book" style="left:96px;bottom:237px;height:72px;background:#7a8c6b;--fx:12px;--fy:233px;--fr:70deg;--d:.15s"></span>
+      <span class="book" style="left:114px;bottom:237px;height:58px;background:#8c8c8c;--fx:-14px;--fy:233px;--fr:-60deg;--d:.18s"></span>
+      <span class="book" style="left:132px;bottom:237px;height:67px;background:#264653;--fx:18px;--fy:233px;--fr:78deg;--d:.21s"></span>
+      <span class="book" style="left:150px;bottom:237px;height:73px;background:#9c6644;--fx:-12px;--fy:233px;--fr:-74deg;--d:.24s"></span>
+      <span class="book" style="left:168px;bottom:237px;height:61px;background:#4a5759;--fx:16px;--fy:233px;--fr:68deg;--d:.27s"></span>
+      <span class="book" style="left:186px;bottom:237px;height:69px;background:#588157;--fx:-20px;--fy:233px;--fr:-82deg;--d:.30s"></span>
+      <span class="book" style="left:204px;bottom:237px;height:63px;background:#a4423c;--fx:10px;--fy:233px;--fr:58deg;--d:.33s"></span>
+      <span class="book" style="left:222px;bottom:237px;height:71px;background:#5b4f6b;--fx:-15px;--fy:233px;--fr:-70deg;--d:.36s"></span>
+
+      <span class="book" style="left:10px;bottom:157px;height:66px;background:#3d5a80;--fx:14px;--fy:153px;--fr:65deg;--d:.05s"></span>
+      <span class="book" style="left:30px;bottom:157px;height:58px;background:#e0a23d;--fx:-18px;--fy:153px;--fr:-76deg;--d:.08s"></span>
+      <span class="book" style="left:50px;bottom:157px;height:72px;background:#2f6b4f;--fx:12px;--fy:153px;--fr:62deg;--d:.11s"></span>
+      <span class="book" style="left:70px;bottom:157px;height:60px;background:#6b3f5e;--fx:-16px;--fy:153px;--fr:-68deg;--d:.14s"></span>
+      <span class="book" style="left:90px;bottom:157px;height:69px;background:#a4423c;--fx:20px;--fy:153px;--fr:80deg;--d:.17s"></span>
+      <span class="book" style="left:110px;bottom:157px;height:64px;background:#264653;--fx:-10px;--fy:153px;--fr:-58deg;--d:.20s"></span>
+      <span class="book" style="left:130px;bottom:157px;height:73px;background:#9c6644;--fx:16px;--fy:153px;--fr:72deg;--d:.23s"></span>
+      <span class="book" style="left:150px;bottom:157px;height:59px;background:#588157;--fx:-14px;--fy:153px;--fr:-64deg;--d:.26s"></span>
+      <span class="book" style="left:170px;bottom:157px;height:67px;background:#8c8c8c;--fx:18px;--fy:153px;--fr:77deg;--d:.29s"></span>
+      <span class="book" style="left:190px;bottom:157px;height:62px;background:#5b4f6b;--fx:-12px;--fy:153px;--fr:-61deg;--d:.32s"></span>
+      <span class="book" style="left:210px;bottom:157px;height:70px;background:#c0563f;--fx:10px;--fy:153px;--fr:55deg;--d:.35s"></span>
+
+      <span class="book" style="left:8px;bottom:77px;height:65px;background:#264653;--fx:-16px;--fy:73px;--fr:-70deg;--d:.07s"></span>
+      <span class="book" style="left:28px;bottom:77px;height:71px;background:#9c6644;--fx:18px;--fy:73px;--fr:74deg;--d:.10s"></span>
+      <span class="book" style="left:48px;bottom:77px;height:58px;background:#588157;--fx:-12px;--fy:73px;--fr:-60deg;--d:.13s"></span>
+      <span class="book" style="left:68px;bottom:77px;height:68px;background:#3d5a80;--fx:14px;--fy:73px;--fr:66deg;--d:.16s"></span>
+      <span class="book" style="left:88px;bottom:77px;height:62px;background:#a4423c;--fx:-18px;--fy:73px;--fr:-78deg;--d:.19s"></span>
+      <span class="book" style="left:108px;bottom:77px;height:73px;background:#6b3f5e;--fx:12px;--fy:73px;--fr:60deg;--d:.22s"></span>
+      <span class="book" style="left:128px;bottom:77px;height:60px;background:#e0a23d;--fx:-20px;--fy:73px;--fr:-82deg;--d:.25s"></span>
+      <span class="book" style="left:148px;bottom:77px;height:69px;background:#2f6b4f;--fx:16px;--fy:73px;--fr:71deg;--d:.28s"></span>
+      <span class="book" style="left:168px;bottom:77px;height:64px;background:#8c8c8c;--fx:-10px;--fy:73px;--fr:-56deg;--d:.31s"></span>
+      <span class="book" style="left:188px;bottom:77px;height:72px;background:#c0563f;--fx:20px;--fy:73px;--fr:79deg;--d:.34s"></span>
+      <span class="book" style="left:208px;bottom:77px;height:59px;background:#5b4f6b;--fx:-14px;--fy:73px;--fr:-63deg;--d:.37s"></span>
+
+      <div class="floor-line"></div>
+    </div>
+  </div>
+  <div class="intro-text">
+    <h2 class="editable" onclick="inlineEdit('about-h')" id="about-heading">فضایی برای باری که سال‌هاست با خود حمل می‌کنید.</h2>
+    <p class="editable" onclick="inlineEdit('about-p2')" id="about-p2">او معتقد است هر انسانی داستانی دارد که ارزش شنیدن دارد — و با حمایت درست، حتی سخت‌ترین فصل‌های زندگی می‌توانند منبع رشد و معنا شوند.</p>
+    <button class="btn-ghost" onclick="openBio()" style="margin-top:1rem">بیوگرافی کامل</button>
+  </div>
+  <div class="intro-label shelf-empty-wrap">
+    <div class="bookshelf-widget" id="shelf-empty" aria-hidden="true">
+      <div class="shelf-board" style="bottom:230px"></div>
+      <div class="shelf-board" style="bottom:150px"></div>
+      <div class="shelf-board" style="bottom:70px"></div>
+      <div class="floor-line"></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip reveal" id="next-step">
+  <div class="cta-left"><h2 class="editable" onclick="inlineEdit('cta-h')" id="cta-h">قدم بعدی شما با یک مکالمه آغاز می‌شود.</h2><p class="editable" onclick="inlineEdit('cta-p')" id="cta-p">چه در آغاز مسیر درمان باشید چه پس از یک دوره سخت بازگشته باشید، در دکتر فتح‌الله‌زاده باز است.</p></div>
+  <div class="cta-right">
+    <div class="cta-item" onclick="this.classList.add('clicked');openOv('telegram-page')"><div class="cta-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="cta-item-text"><strong>رزرو جلسه</strong></div></div>
+  </div>
+</section>
+
+<section class="about-website reveal">
+  <h2 class="editable" onclick="inlineEdit('about-website-h')" id="about-website-h">درباره سایت</h2>
+  <p class="editable" onclick="inlineEdit('about-website-text')" id="about-website-text">این وب‌سایت فضایی برای آشنایی با دکتر سینا فتح‌الله‌زاده، خدمات درمانی ایشان، و منابعی در زمینه سوگ، تروما و سلامت روان است.</p>
+</section>
+
+<footer class="reveal">
+  <div class="footer-bottom">
+    <p>© ۱۴۰۵ دکتر سینا فتح‌الله‌زاده.</p>
+    <div class="social-links">
+      <a href="#" id="lnk2-li" target="_blank" rel="noopener" title="لینکدین" aria-label="لینکدین"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+      <a href="#" id="lnk2-tg" target="_blank" rel="noopener" title="تلگرام" aria-label="تلگرام"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.05 2.4 1.96 10.3c-1.37.55-1.36 1.32-.25 1.66l5.15 1.6 11.93-7.5c.56-.34 1.07-.16.65.21l-9.68 8.74h-.01l.01.01-.37 5.45c.54 0 .78-.25 1.08-.55l2.6-2.52 5.4 3.98c.99.55 1.7.27 1.95-.92l3.53-16.6c.36-1.45-.55-2.1-1.9-1.46z"/></svg></a>
+      <a href="#" id="lnk2-ig" target="_blank" rel="noopener" title="اینستاگرام" aria-label="اینستاگرام"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.24 2.22.41.56.21.96.47 1.38.89.42.42.68.82.89 1.38.17.42.36 1.05.41 2.22.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.8-.41 2.22-.21.56-.47.96-.89 1.38-.42.42-.82.68-1.38.89-.42.17-1.05.36-2.22.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.24-2.22-.41-.56-.21-.96-.47-1.38-.89-.42-.42-.68-.82-.89-1.38-.17-.42-.36-1.05-.41-2.22-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.24-1.8.41-2.22.21-.56.47-.96.89-1.38.42-.42.82-.68 1.38-.89.42-.17 1.05-.36 2.22-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56a5.88 5.88 0 0 0-2.13 1.39A5.88 5.88 0 0 0 .62 4.14c-.3.76-.5 1.63-.56 2.91C0 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.39 2.13.67.67 1.34 1.08 2.13 1.39.76.3 1.63.5 2.91.56C8.33 24 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.88 5.88 0 0 0 2.13-1.39 5.88 5.88 0 0 0 1.39-2.13c.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.88 5.88 0 0 0-1.39-2.13A5.88 5.88 0 0 0 19.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm6.41-11.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ======= DATA ======= */
+let isAdmin=false, editTarget=null, dpCurrent=null;
+let pageNotes={history:'',books:'',articles:'',workshops:''};
+
+const S={
+  eyebrow:'روان‌درمانگر و روانشناس بالینی',h1:'درمان از آنجا آغاز می‌شود که ',hem:'سکوت',h2:' صدا پیدا می‌کند.',
+  sub:'با تخصص در غم، تروما، و اختلالات شخصیت — فضایی دلسوزانه برای کشف، درک، و تحول دنیای درونی شما.',
+  cta:'رزرو جلسه','about-h':'فضایی برای باری که سال‌هاست با خود حمل می‌کنید.',
+  'about-p1':'دکتر سینا فتح‌الله‌زاده روان‌درمانگر دارای مجوز با بیش از ۱۵ سال تجربه.',
+  'about-p2':'او معتقد است هر انسانی داستانی دارد که ارزش شنیدن دارد.',
+  'cta-h':'قدم بعدی شما با یک مکالمه آغاز می‌شود.','cta-p':'چه در آغاز مسیر درمان باشید، در دکتر فتح‌الله‌زاده باز است.',
+  'nl-h':'بینش‌هایی درباره درمان، مستقیم برای شما.','nl-p':'تأملاتی درباره غم، تروما، و معنای زندگی.',
+  tg:'https://t.me/Shahab_yousefii',li:'https://www.linkedin.com/in/shahab-yousefi-58508b126?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
+  ig:'https://www.instagram.com/',
+  'tg-id-url':'https://t.me/shahab_yousefii',
+  paymentInstructions:'لطفاً مبلغ ۲,۰۰۰,۰۰۰ تومان را به شماره کارت ۱۲۳۴-۵۶۷۸-۹۰۱۲-۳۴۵۶ (بانک ملت، به نام سینا فتح‌الله‌زاده) واریز کرده و تصویر رسید پرداخت را به آیدی تلگرام @shahab_yousefii ارسال کنید.',
+  bioIntro:'',
+  'tg-text':'لطفاً اطلاعات خود — شامل نام، نوع جلسه (داخل یا خارج از کشور) و زمان پیشنهادی — را به آیدی تلگرام زیر ارسال کنید. دکتر فتح‌الله‌زاده پس از بررسی با شما هماهنگ خواهد کرد.',
+  'tg-id':'@shahab_yousefii',
+  'tg-h':'رزرو جلسه از طریق تلگرام',
+  'grief-intro':'اگر تجربه‌ای از دست دادن داشته‌اید، این فضا برای شماست. دکتر فتح‌الله‌زاده شخصاً هر پیام را می‌خواند و پاسخ می‌دهد.',
+  'grief-img':'','grief-img-caption':'توضیحی برای این تصویر بنویسید.',
+  'about-website-h':'درباره سایت','about-website-text':'این وب‌سایت فضایی برای آشنایی با دکتر سینا فتح‌الله‌زاده، خدمات درمانی ایشان، و منابعی در زمینه سوگ، تروما و سلامت روان است.'
+};
+let bioSections=[
+  {t:'تحصیلات',p:'دکترای روان‌شناسی بالینی از دانشگاه تهران. کارشناسی ارشد روان‌پزشکی از دانشگاه علوم پزشکی ایران.'},
+  {t:'تجربه بالینی',p:'بیش از ۱۵ سال تجربه در حوزه سوگ، تروما، و اختلالات شخصیت. همکاری با مراکز مشاوره معتبر تهران.'},
+  {t:'رویکرد درمانی',p:'رویکرد دکتر فتح‌الله‌زاده ترکیبی از روان‌شناسی عمق، CBT، و DBT است. هر درمان بر اساس نیازهای منحصربه‌فرد مراجع طراحی می‌شود.'}
+];
+let books=[
+  {id:1,title:'سوگ بدون ترس',author:'دیوید کسلر',cat:'سوگ',desc:'راهنمایی عمیق برای درک مراحل سوگواری.',full:'این کتاب راهنمایی عمیق برای مراحل سوگواری و یافتن معنا در پس از فقدان است.',img:''},
+  {id:2,title:'بدن حساب می‌کند',author:'بسل ون در کولک',cat:'تروما',desc:'پژوهشی درباره تروما در بدن.',full:'چگونه تروما در بدن ذخیره می‌شود و چطور می‌توان به بهبودی رسید.',img:''},
+  {id:3,title:'مرز بین من و تو',author:'نجمه دهقانی',cat:'اختلالات شخصیت',desc:'راهنمای اختلال شخصیت مرزی.',full:'راهنمای عملی برای اختلال شخصیت مرزی و ایجاد ثبات عاطفی.',img:''}
+];
+let films=[
+  {id:1,title:'افسانه‌های خشم',author:'کارگردان نمونه',cat:'سوگ',desc:'تحلیلی روان‌شناختی از مراحل سوگواری در این فیلم.',full:'تحلیل کامل فیلم از منظر روان‌درمانی و مراحل پردازش فقدان.',img:''}
+];
+let articles=[
+  {id:1,title:'وقتی غم نمی‌رود',date:'۱۴۰۵/۰۲/۱۰',summary:'سوگ پیچیده زمانی رخ می‌دهد که فرآیند طبیعی اندوه متوقف می‌شود.',full:'سوگ پیچیده وضعیتی جدی است که نیاز به درمان تخصصی دارد.',img:'',link:''},
+  {id:2,title:'تروما و حافظه',date:'۱۴۰۵/۰۱/۲۵',summary:'تروما در سیستم عصبی و بدن ذخیره می‌شود.',full:'تحقیقات نوروبیولوژی اثرات عمیق تروما بر مغز را نشان می‌دهند.',img:'',link:''},
+  {id:3,title:'BPD و روابط',date:'۱۴۰۵/۰۱/۰۵',summary:'چرخه‌های آسیب‌زا در روابط افراد مبتلا به BPD.',full:'DBT موثرترین روش درمان BPD است.',img:'',link:''}
+];
+let psychoHistory=[
+  {id:1,title:'آغاز روانکاوی به دست فروید',date:'۱۸۹۶',summary:'زیگموند فروید اصطلاح «روانکاوی» را برای روش جدید خود در درمان ذهن معرفی کرد.',full:'در سال ۱۸۹۶ زیگموند فروید برای نخستین بار اصطلاح روانکاوی را به کار برد و بنیان نظریه ضمیر ناخودآگاه را گذاشت.',img:'',link:''},
+  {id:2,title:'یونگ و روانشناسی تحلیلی',date:'۱۹۱۳',summary:'کارل گوستاو یونگ از فروید جدا شد و مسیر مستقل روانشناسی تحلیلی را بنا نهاد.',full:'اختلاف نظر یونگ و فروید درباره ماهیت ناخودآگاه به شکل‌گیری مکتب روانشناسی تحلیلی یونگ منجر شد.',img:'',link:''},
+  {id:3,title:'ورود روانکاوی به ایران',date:'۱۳۴۰',summary:'آشنایی نخستین نسل روان‌پزشکان ایرانی با مفاهیم روانکاوی و تأثیر آن بر طب روانی نوین کشور.',full:'از دهه ۱۳۴۰ به بعد، مفاهیم روانکاوی به‌تدریج وارد آموزش روان‌پزشکی در ایران شد.',img:'',link:''}
+];
+/* workshops now carry: regQuestions (array of {id,label,type:'text'|'choice',options:[]}), registrations (array) */
+let workshops=[
+  {id:1,title:'کارگاه مواجهه با سوگ',author:'دکتر سینا فتح‌الله‌زاده',cat:'سوگ',desc:'کارگاهی نیم‌روزه برای آشنایی با مراحل سوگواری و مهارت‌های مقابله.',full:'این کارگاه به‌صورت گروهی برگزار می‌شود و شرکت‌کنندگان با تمرین‌های عملی برای عبور از سوگ آشنا می‌شوند.',img:'',regQuestions:[],registrations:[],regOpen:true,offlineEnabled:false,offlinePrice:'',offlineVideos:[]},
+  {id:2,title:'کارگاه تنظیم هیجان در تروما',author:'دکتر سینا فتح‌الله‌زاده',cat:'تروما',desc:'آموزش تکنیک‌های تنظیم هیجان برای بازماندگان تروما.',full:'در این کارگاه، تکنیک‌های عملی تنظیم هیجان و آرام‌سازی سیستم عصبی آموزش داده می‌شود.',img:'',regQuestions:[],registrations:[],regOpen:true,offlineEnabled:false,offlinePrice:'',offlineVideos:[]},
+  {id:3,title:'کارگاه مرزهای سالم در روابط',author:'دکتر سینا فتح‌الله‌زاده',cat:'روابط',desc:'یادگیری نحوه تعیین مرز در روابط صمیمی و خانوادگی.',full:'شرکت‌کنندگان می‌آموزند چگونه بدون احساس گناه، مرزهای سالم در روابط خود برقرار کنند.',img:'',regQuestions:[],registrations:[],regOpen:true,offlineEnabled:false,offlinePrice:'',offlineVideos:[]}
+];
+let purchasedOffline=JSON.parse(localStorage.getItem('purchasedOffline')||'[]');
+function savePurchasedOffline(){localStorage.setItem('purchasedOffline',JSON.stringify(purchasedOffline));}
+let pendingPurchaseWid=null;
+let grief=[
+  {id:1,name:'ناشناس',text:'سه سال از رفتن مادرم می‌گذره.',reply:'سوگ زمان‌بند نیست.',replied:true,showPending:false},
+  {id:2,name:'سارا',text:'پدرم رو تازه از دست دادم.',reply:'',replied:false,showPending:false}
+];
+let registerCurrentWorkshopId=null;
+let qBuilderDraft=[]; // working copy while editing questions in admin modal
+
+/* ======= FIREBASE ======= */
+const firebaseConfig={
+  apiKey:"AIzaSyAgd9i97UqiW-Gk_S5uwam3YuWRi_wy31Q",
+  authDomain:"shahab-yousefi-website.firebaseapp.com",
+  projectId:"shahab-yousefi-website",
+  storageBucket:"shahab-yousefi-website.firebasestorage.app",
+  messagingSenderId:"260026508132",
+  appId:"1:260026508132:web:b1b775ee8bc56da1edd071"
+};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+const db=firebase.firestore();
+
+function fbSet(colName,item){
+  return db.collection(colName).doc(String(item.id)).set(item).catch(e=>console.error('fbSet',colName,e));
+}
+function fbDelete(colName,id){
+  return db.collection(colName).doc(String(id)).delete().catch(e=>console.error('fbDelete',colName,e));
+}
+function fbDocToItem(doc){
+  const data=doc.data();
+  const numId=Number(doc.id);
+  return {...data,id:Number.isNaN(numId)?doc.id:numId};
+}
+async function fbSeedIfEmpty(colName,seedArr,strip){
+  const snap=await db.collection(colName).limit(1).get();
+  if(!snap.empty)return;
+  const batch=db.batch();
+  seedArr.forEach(item=>{
+    const data=strip?strip(item):item;
+    batch.set(db.collection(colName).doc(String(item.id)),data);
+  });
+  await batch.commit();
+}
+async function fbLoadCollection(colName){
+  const snap=await db.collection(colName).get();
+  return snap.docs.map(fbDocToItem);
+}
+async function loadWorkshopRegistrations(w){
+  try{
+    const snap=await db.collection('workshops').doc(String(w.id)).collection('registrations').get();
+    w.registrations=snap.docs.map(fbDocToItem);
+  }catch(e){
+    console.error('loadWorkshopRegistrations',e);
+    w.registrations=w.registrations||[];
+  }
+}
+async function loadAllFromFirestore(){
+  try{
+    await fbSeedIfEmpty('books',books);
+    await fbSeedIfEmpty('films',films);
+    await fbSeedIfEmpty('articles',articles);
+    await fbSeedIfEmpty('psychoHistory',psychoHistory);
+    await fbSeedIfEmpty('workshops',workshops,w=>{const{registrations,...rest}=w;return rest;});
+    books=await fbLoadCollection('books');
+    films=await fbLoadCollection('films');
+    articles=await fbLoadCollection('articles');
+    psychoHistory=await fbLoadCollection('psychoHistory');
+    workshops=await fbLoadCollection('workshops');
+    if(isAdmin)for(const w of workshops)await loadWorkshopRegistrations(w);
+    renderAll();renderAPBooks();renderAPArticles();renderAPPsychoHistory();renderAPWorkshops();renderAPFilms();
+  }catch(e){
+    console.error('Firestore load failed, keeping local defaults',e);
+  }
+}
+async function loadGrief(){
+  try{
+    let q=db.collection('grief');
+    if(!isAdmin)q=q.where('replied','==',true);
+    const snap=await q.get();
+    grief=snap.docs.map(fbDocToItem);
+  }catch(e){console.error('loadGrief',e);}
+  renderGrief();
+  if(isAdmin)renderAPGrief();
+}
+/* ======= CONTENT PROTECTION (books/articles/history/film-analysis) ======= */
+document.addEventListener('contextmenu',e=>{
+  if(!isAdmin&&e.target.closest('.no-copy'))e.preventDefault();
+});
+document.addEventListener('copy',e=>{
+  if(!isAdmin&&e.target.closest&&e.target.closest('.no-copy'))e.preventDefault();
+});
+document.addEventListener('cut',e=>{
+  if(!isAdmin&&e.target.closest&&e.target.closest('.no-copy'))e.preventDefault();
+});
+document.addEventListener('dragstart',e=>{
+  if(!isAdmin&&e.target.closest('.no-copy'))e.preventDefault();
+});
+document.addEventListener('keydown',e=>{
+  if(isAdmin)return;
+  const inNoCopy=document.querySelector('.overlay.no-copy:not(.hidden)');
+  if(!inNoCopy)return;
+  const k=e.key.toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&(k==='c'||k==='x'||k==='s'||k==='p'||k==='u'))e.preventDefault();
+});
+
+/* ======= SCROLL REVEAL ======= */
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ======= BOOKSHELF: fall then return sorted by color ======= */
+function hueOf(rgbStr){
+  const m=(rgbStr||'').match(/\d+/g);if(!m)return 0;
+  const [r,g,b]=m.slice(0,3).map(Number);
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+  if(mx===mn)return 0;
+  const d=mx-mn;let h;
+  if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;
+  h*=60;if(h<0)h+=360;return h;
+}
+(function initBookshelf(){
+  const full=document.getElementById('shelf-full');
+  const empty=document.getElementById('shelf-empty');
+  if(!full||!empty)return;
+  const books=[...full.querySelectorAll('.book')];
+  const slots=books.map(el=>({left:parseFloat(el.style.left),bottom:parseFloat(el.style.bottom),height:parseFloat(el.style.height)}));
+  let arranged=false,animating=false;
+
+  function resetInstant(){
+    books.forEach(el=>{
+      el.style.transition='none';
+      el.style.transform='';
+    });
+    full.classList.remove('falling');
+    void full.offsetHeight;
+    books.forEach(el=>{el.style.transition='';});
+    arranged=false;
+  }
+
+  function isMobileLayout(){
+    return window.matchMedia('(max-width:900px)').matches;
+  }
+
+  function arrangeByColorInPlace(){
+    const rows={};
+    books.forEach((el,i)=>{
+      const key=slots[i].bottom;
+      (rows[key]=rows[key]||[]).push({el,i});
+    });
+    Object.values(rows).forEach(rowBooks=>{
+      const lefts=rowBooks.map(({i})=>slots[i].left).sort((a,b)=>a-b);
+      rowBooks.sort((a,b)=>hueOf(getComputedStyle(a.el).backgroundColor)-hueOf(getComputedStyle(b.el).backgroundColor));
+      rowBooks.forEach(({el},pos)=>{el.style.left=lefts[pos]+'px';});
+    });
+  }
+
+  function playMobileSequence(){
+    if(animating)return;
+    animating=true;
+    full.classList.add('falling');
+    setTimeout(()=>{
+      arrangeByColorInPlace();
+      setTimeout(()=>{
+        full.classList.remove('falling');
+        animating=false;
+        arranged=true;
+      },50);
+    },1050);
+  }
+
+  function playSequence(){
+    if(isMobileLayout()){playMobileSequence();return;}
+    if(animating)return;
+    if(arranged)resetInstant();
+    animating=true;
+    const origRects=books.map(el=>el.getBoundingClientRect());
+    const emptyRect=empty.getBoundingClientRect();
+    full.classList.add('falling');
+
+    setTimeout(()=>{
+      const order=books.map((el,i)=>({el,i})).sort((a,b)=>hueOf(getComputedStyle(a.el).backgroundColor)-hueOf(getComputedStyle(b.el).backgroundColor));
+      order.forEach((entry,slotIndex)=>{
+        const{el,i}=entry;
+        const slot=slots[slotIndex];
+        const origRect=origRects[i];
+        const targetX=emptyRect.left+slot.left;
+        const targetY=emptyRect.bottom-slot.bottom-origRect.height;
+        const dx=targetX-origRect.left;
+        const dy=targetY-origRect.top;
+        const delay=(slotIndex*0.025).toFixed(3)+'s';
+        el.style.transition='transform 1s cubic-bezier(.34,1.1,.64,1) '+delay;
+        el.style.transform='translate('+dx+'px,'+dy+'px) rotate(0deg)';
+      });
+      setTimeout(()=>{animating=false;arranged=true;},1100+order.length*25);
+    },1050);
+  }
+
+  full.addEventListener('mouseenter',playSequence);
+
+  if(window.matchMedia('(hover:none),(pointer:coarse)').matches){
+    let cooldown=false;
+    const playFall=()=>{
+      if(cooldown)return;
+      cooldown=true;
+      playSequence();
+      setTimeout(()=>{cooldown=false},5000);
+    };
+    const io=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting)playFall();});
+    },{threshold:.5});
+    io.observe(full);
+    full.addEventListener('click',playFall);
+  }
+})();
+
+/* ======= AUTH ======= */
+function showLogin(){gi('login-overlay').classList.remove('hidden');setTimeout(()=>gi('email-input').focus(),80)}
+function cancelLogin(){gi('login-overlay').classList.add('hidden');gi('email-input').value='';gi('pw-input').value='';gi('login-err').classList.add('hidden');}
+function doLogin(){
+  const email=gv('email-input'),pw=gi('pw-input').value;
+  const errEl=gi('login-err');
+  if(!email||!pw){errEl.textContent='ایمیل و رمز عبور را وارد کنید';errEl.classList.remove('hidden');return;}
+  auth.signInWithEmailAndPassword(email,pw).then(()=>{
+    cancelLogin();
+  }).catch(()=>{
+    errEl.textContent='ایمیل یا رمز عبور اشتباه است';
+    errEl.classList.remove('hidden');
+  });
+}
+function doLogout(){auth.signOut();}
+auth.onAuthStateChanged(user=>{
+  isAdmin=!!user;
+  gi('admin-bar').classList.toggle('hidden',!isAdmin);
+  if(!isAdmin)gi('admin-panel').classList.add('hidden');
+  document.body.classList.toggle('admin-mode',isAdmin);
+  setNotesReadonly();
+  if(isAdmin)workshops.forEach(w=>loadWorkshopRegistrations(w).then(()=>renderAPWorkshops()));
+  renderAll();
+});
+function setNotesReadonly(){
+  ['history','books','articles','workshops','films'].forEach(n=>{
+    const el=gi('notes-'+n);if(!el)return;
+    if(isAdmin)el.removeAttribute('readonly');else el.setAttribute('readonly','readonly');
+  });
+}
+function openPanel(){
+  gi('admin-panel').classList.remove('hidden');
+  renderAPBooks();renderAPArticles();renderAPPsychoHistory();renderAPWorkshops();renderAPFilms();
+  loadSiteForm();
+}
+function closePanel(){gi('admin-panel').classList.add('hidden')}
+function switchTab(n,el){
+  ['books','articles','history','workshops','films','site'].forEach(t=>gi('tab-'+t).classList.add('hidden'));
+  document.querySelectorAll('.ap-tab').forEach(b=>b.classList.remove('active'));
+  gi('tab-'+n).classList.remove('hidden');el.classList.add('active');
+}
+
+/* ======= OVERLAYS ======= */
+function openOv(id){gi(id).classList.remove('hidden');document.body.style.overflow='hidden'}
+function closeOv(id){gi(id).classList.add('hidden');document.body.style.overflow=''}
+function toggleNavMenu(){gi('nav-links').classList.toggle('open');document.querySelector('.nav-toggle').classList.toggle('open')}
+function closeNavMenu(){gi('nav-links').classList.remove('open');document.querySelector('.nav-toggle').classList.remove('open')}
+
+/* ======= BOOK A SESSION TRIGGER ======= */
+function scrollToNextStep(){
+  const el=gi('next-step');
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ======= QUICK ADD TILE (used in Books/Articles/History/Workshops grids) ======= */
+function addTileHtml(type,label,cardClass,minH){
+  return `<div class="${cardClass} reveal add-tile" onclick="openNewItemModal('${type}')" style="min-height:${minH}px">
+    <div class="add-tile-inner"><span class="ico">➕</span><span>${label}</span></div>
+  </div>`;
+}
+function openNewItemModal(type){
+  if(!isAdmin)return;
+  editTarget={t:'new',type};
+  const titles={book:'افزودن مورد جدید به خود-روانشناسی',article:'افزودن پادکست جدید',history:'افزودن مورد جدید به سوژه و جهان',workshop:'افزودن کارگاه جدید',film:'افزودن تحلیل نقاشی / انیمیشن جدید'};
+  gi('m-title').textContent=titles[type]||'افزودن مورد جدید';
+  gi('m-sub').textContent='';
+  let fields=`<label>تصویر</label><div class="iup" style="height:100px" onclick="gi('m-n-f').click()"><img id="m-n-prev" src="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-n-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-n-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-n-prev','m-n-ph','mv-img')"/><input type="hidden" id="mv-img" value=""/>
+  <label class="req">عنوان</label><input id="mv-title" placeholder="عنوان"/>`;
+  if(type==='book'||type==='workshop'||type==='film'){
+    fields+=`<label>${type==='book'?'نویسنده':type==='film'?'کارگردان':'مدرس'}</label><input id="mv-author" placeholder="${type==='book'?'نام نویسنده':type==='film'?'نام کارگردان':'نام مدرس'}"/>
+    <label>دسته‌بندی</label><input id="mv-cat" placeholder="دسته‌بندی"/>`;
+  } else {
+    fields+=`<label>تاریخ</label><input id="mv-date" placeholder="تاریخ"/>`;
+  }
+  fields+=`<label class="req">خلاصه (کارت)</label><textarea id="mv-desc" placeholder="خلاصه کوتاه..."></textarea>
+  <label>متن کامل (صفحه جزئیات)</label><textarea id="mv-full" style="min-height:100px" placeholder="متن کامل..."></textarea>`;
+  if(type==='article'||type==='history'){
+    fields+=`<label>لینک خارجی</label><input id="mv-link" placeholder="https://..."/>`;
+  }
+  gi('m-body').innerHTML=fields;
+  gi('edit-modal').classList.remove('hidden');
+  setTimeout(()=>{const el=gi('mv-title');if(el)el.focus();},80);
+}
+
+/* ======= BIO ======= */
+function openBio(){
+  renderBioContent();openOv('bio-page');
+}
+function renderBioContent(){
+  const introHtml=`<div class="bio-section bio-intro-box">
+    <textarea id="bio-intro-input" placeholder="یادداشت یا توضیح آزاد..." oninput="S.bioIntro=this.value" ${isAdmin?'':'readonly'} style="width:100%;min-height:70px;padding:.8rem 1rem;border:none;border-radius:6px;font-family:'Vazirmatn',sans-serif;font-size:.88rem;line-height:1.9;direction:rtl;text-align:right;resize:vertical;background:${isAdmin?'var(--surface)':'var(--surface2)'}">${esc(S.bioIntro)}</textarea>
+  </div>`;
+  const sectionsHtml=bioSections.map((s,i)=>`
+    <div class="bio-section">
+      <div style="display:flex;align-items:center;gap:.6rem">
+        <h3 class="bio-section-title editable" onclick="if(isAdmin)editBioSection(${i},'title')" style="flex:1">${s.t}</h3>
+        ${isAdmin?`<button class="comment-del" style="display:block" onclick="delBioSection(${i})">حذف بخش</button>`:''}
+      </div>
+      <p class="bio-section-text editable" onclick="if(isAdmin)editBioSection(${i},'text')">${s.p}</p>
+    </div>`).join('');
+  const addHtml=isAdmin?`<button class="abtn blue" style="margin-top:1rem" onclick="addBioSection()">+ افزودن بخش جدید</button>`:'';
+  gi('bio-content').innerHTML=introHtml+sectionsHtml+addHtml;
+}
+function addBioSection(){
+  bioSections.push({t:'بخش جدید',p:''});
+  renderBioContent();
+}
+function delBioSection(i){
+  if(!confirm('این بخش حذف شود؟'))return;
+  bioSections.splice(i,1);
+  renderBioContent();
+}
+function editBioSection(i,field){
+  if(!isAdmin)return;
+  editTarget={t:'bio',i,field};
+  gi('m-title').textContent='ویرایش بیوگرافی';
+  gi('m-sub').textContent=field==='title'?'عنوان بخش':'متن بخش';
+  const val=field==='title'?bioSections[i].t:bioSections[i].p;
+  gi('m-body').innerHTML=`<label>${field==='title'?'عنوان':'متن'}</label>${field==='title'?`<input id="mv" value="${esc(val)}">`:`<textarea id="mv" style="min-height:100px">${esc(val)}</textarea>`}`;
+  gi('edit-modal').classList.remove('hidden');
+}
+function saveBio(){
+  for(let i=0;i<3;i++){
+    const t=gi('bio-t'+(i+1)),p=gi('bio-p'+(i+1));
+    if(t&&t.value.trim())bioSections[i].t=t.value.trim();
+    if(p&&p.value.trim())bioSections[i].p=p.value.trim();
+  }
+  alert('بیوگرافی ذخیره شد!');
+}
+
+/* ======= DETAIL PAGE ======= */
+function getDpItem(type,id){
+  if(type==='book')return books.find(x=>x.id===id);
+  if(type==='article')return articles.find(x=>x.id===id);
+  if(type==='history')return psychoHistory.find(x=>x.id===id);
+  if(type==='workshop')return workshops.find(x=>x.id===id);
+  if(type==='film')return films.find(x=>x.id===id);
+  return null;
+}
+const SEARCH_CATS={book:'خود-روانشناسی',article:'پادکست',workshop:'کارگاه',film:'تحلیل نقاشی و انیمیشن',history:'سوژه و جهان'};
+function siteSearch(q){
+  const box=gi('search-results'),clearBtn=gi('search-clear-btn');
+  clearBtn.style.display=q?'block':'none';
+  const term=q.trim().toLowerCase();
+  if(!term){box.classList.add('hidden');box.innerHTML='';return;}
+  const pools=[
+    ...books.map(x=>({type:'book',id:x.id,title:x.title,sub:x.author||x.desc||''})),
+    ...articles.map(x=>({type:'article',id:x.id,title:x.title,sub:x.summary||''})),
+    ...workshops.map(x=>({type:'workshop',id:x.id,title:x.title,sub:x.author||x.desc||''})),
+    ...films.map(x=>({type:'film',id:x.id,title:x.title,sub:x.desc||''})),
+    ...psychoHistory.map(x=>({type:'history',id:x.id,title:x.title,sub:x.summary||''}))
+  ];
+  const results=pools.filter(r=>r.title.toLowerCase().includes(term));
+  if(!results.length){
+    box.innerHTML='<div class="search-no-results">نتیجه‌ای یافت نشد.</div>';
+  }else{
+    box.innerHTML=results.map(r=>`<div class="search-result-item" onclick="gi('site-search-input').value='';siteSearch('');openDp('${r.type}',${r.id})"><span class="search-result-cat">${SEARCH_CATS[r.type]}</span><div class="search-result-text"><strong>${esc(r.title)}</strong><span>${esc(r.sub)}</span></div></div>`).join('');
+  }
+  box.classList.remove('hidden');
+}
+document.addEventListener('click',e=>{
+  const wrap=document.querySelector('.search-bar-wrap');
+  if(wrap&&!wrap.contains(e.target))gi('search-results').classList.add('hidden');
+});
+function openDp(type,id){
+  const item=getDpItem(type,id);if(!item)return;
+  dpCurrent={type,id};
+  gi('detail-page').classList.toggle('no-copy',type==='book'||type==='article'||type==='history'||type==='film');
+  const breadcrumbs={book:'خود-روانشناسی',article:'پادکست',history:'سوژه و جهان',workshop:'کارگاه‌ها',film:'تحلیل نقاشی و انیمیشن'};
+  gi('dp-breadcrumb').textContent=breadcrumbs[type]||'';
+  const img=gi('dp-img'),ph=gi('dp-img-ph');
+  if(item.img){img.src=item.img;img.style.display='block';ph.style.display='none';}
+  else{img.style.display='none';ph.style.display='flex';const icons={book:'📚',article:'📝',history:'📜',workshop:'🛠️',film:'🎬'};ph.textContent=icons[type]||'📄';}
+  setText('dp-tag',(type==='book'||type==='workshop'||type==='film')?item.cat:item.date);
+  setText('dp-title',item.title);
+  setText('dp-author',item.author||'');gi('dp-author').style.display=item.author?'block':'none';
+  setText('dp-date',item.date||'');gi('dp-date').style.display='none';
+  setText('dp-desc',item.full||item.desc||item.summary||'');
+  const regBox=gi('dp-register-box');
+  if(type==='workshop'){
+    regBox.classList.remove('hidden');
+    renderWorkshopRegBox(item);
+  }else{regBox.classList.add('hidden');}
+  openOv('detail-page');
+}
+function renderWorkshopRegBox(w){
+  const box=gi('dp-register-box');
+  const purchased=purchasedOffline.includes(w.id);
+  let html='';
+  if(w.offlineEnabled){
+    if(purchased){
+      html+=`<div style="margin-bottom:1rem"><h4 style="font-size:.92rem;margin-bottom:.6rem">🎬 ویدیوهای دوره</h4>${
+        (w.offlineVideos||[]).length?`<div class="session-thumb-grid" style="display:flex;flex-wrap:wrap;gap:1rem">${w.offlineVideos.map((v,i)=>`<div class="session-thumb" style="width:130px;text-align:center;cursor:pointer" onclick="playSessionVideo(${w.id},${i})"><div style="width:130px;height:90px;border-radius:6px;background:linear-gradient(160deg,#3a3530,#1c1a17);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#e8c98a">▶</div><p style="font-size:.78rem;margin-top:.4rem">جلسه ${i+1}</p></div>`).join('')}</div><div id="session-player" style="margin-top:1rem"></div>`:'<p style="color:var(--mid);font-size:.85rem">هنوز ویدیویی برای این دوره آپلود نشده.</p>'
+      }</div>`;
+    } else {
+      html+=`<button class="dp-register-btn" onclick="buyOfflineCourse(${w.id})">خرید دوره آفلاین</button>
+      ${w.offlinePrice?`<p style="margin-top:.6rem;font-size:.88rem;color:var(--mid)">قیمت: ${esc(w.offlinePrice)}</p>`:''}`;
+    }
+  } else if(w.regOpen!==false){
+    html+=`<button class="dp-register-btn" onclick="openRegisterForm()">ثبت‌نام در کارگاه</button>`;
+  } else {
+    html+=`<p style="color:var(--mid);font-size:.88rem">ثبت‌نام عمومی برای این کارگاه بسته شده است.</p>`;
+  }
+  box.innerHTML=html;
+}
+function playSessionVideo(wid,idx){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  const v=(w.offlineVideos||[])[idx];if(!v)return;
+  const p=gi('session-player');if(!p)return;
+  p.innerHTML=`<p style="font-size:.82rem;margin-bottom:.4rem">جلسه ${idx+1} — ${esc(v.name)}</p><video src="${v.src}" controls autoplay controlsList="nodownload noremoteplayback" disablepictureinpicture disableremoteplayback oncontextmenu="return false" style="width:100%;max-width:480px;border-radius:4px"></video>`;
+}
+function buyOfflineCourse(wid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  if(!confirm('برای ادامه به درگاه پرداخت آنلاین هدایت می‌شوید (نمونه‌سازی). ادامه می‌دهید؟'))return;
+  if(!purchasedOffline.includes(wid))purchasedOffline.push(wid);
+  savePurchasedOffline();
+  pendingPurchaseWid=wid;
+  closeOv('detail-page');
+  openOv('payment-success-page');
+}
+function goToPurchasedCourse(){
+  closeOv('payment-success-page');
+  if(pendingPurchaseWid)openDp('workshop',pendingPurchaseWid);
+}
+function dpInlineEdit(field){
+  if(!isAdmin||!dpCurrent)return;
+  const item=getDpItem(dpCurrent.type,dpCurrent.id);if(!item)return;
+  const fieldMap={tag:{k:(dpCurrent.type==='book'||dpCurrent.type==='workshop'||dpCurrent.type==='film')?'cat':'date',lbl:'دسته‌بندی/تاریخ',long:false},title:{k:'title',lbl:'عنوان',long:false},author:{k:'author',lbl:'نویسنده/مدرس',long:false},date:{k:'date',lbl:'تاریخ',long:false},desc:{k:'full',lbl:'متن کامل',long:true}};
+  const fm=fieldMap[field];if(!fm)return;
+  editTarget={t:'dp',dpType:dpCurrent.type,dpId:dpCurrent.id,k:fm.k,field};
+  gi('m-title').textContent='ویرایش';gi('m-sub').textContent=fm.lbl;
+  const val=item[fm.k]||'';
+  gi('m-body').innerHTML=`<label>${fm.lbl}</label>${fm.long?`<textarea id="mv" style="min-height:120px">${esc(val)}</textarea>`:`<input id="mv" value="${esc(val)}"/>`}`;
+  gi('edit-modal').classList.remove('hidden');
+  setTimeout(()=>{const el=gi('mv');if(el)el.focus();},80);
+}
+function dpImgUpload(e){
+  const f=e.target.files[0];if(!f||!dpCurrent)return;
+  const r=new FileReader();r.onload=ev=>{
+    const src=ev.target.result;gi('dp-img').src=src;gi('dp-img').style.display='block';gi('dp-img-ph').style.display='none';
+    const item=getDpItem(dpCurrent.type,dpCurrent.id);
+    if(item){item.img=src;renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();renderFilms();}
+  };r.readAsDataURL(f);
+}
+function handleBioPhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{
+    const img=gi('bio-photo');img.src=ev.target.result;img.style.display='block';gi('bio-photo-ph').style.display='none';
+    bioPhotoPos.x=50;bioPhotoPos.y=50;img.style.objectPosition='50% 50%';
+  };r.readAsDataURL(f);
+}
+let bioPhotoPos={x:50,y:50};
+function setBioPhotoPos(x,y){
+  bioPhotoPos.x=Math.max(0,Math.min(100,x));
+  bioPhotoPos.y=Math.max(0,Math.min(100,y));
+  gi('bio-photo').style.objectPosition=`${bioPhotoPos.x}% ${bioPhotoPos.y}%`;
+}
+function initBioPhotoDrag(){
+  const img=gi('bio-photo'),frame=img.parentElement;
+  let dragging=false,startX=0,startY=0,startPos={x:50,y:50};
+  function move(clientX,clientY){
+    const rect=frame.getBoundingClientRect();
+    const dx=clientX-startX,dy=clientY-startY;
+    setBioPhotoPos(startPos.x-dx/rect.width*100,startPos.y-dy/rect.height*100);
+  }
+  img.addEventListener('mousedown',e=>{
+    dragging=true;startX=e.clientX;startY=e.clientY;startPos={...bioPhotoPos};e.preventDefault();
+  });
+  window.addEventListener('mousemove',e=>{if(dragging)move(e.clientX,e.clientY);});
+  window.addEventListener('mouseup',()=>{dragging=false;});
+  img.addEventListener('touchstart',e=>{
+    const t=e.touches[0];dragging=true;startX=t.clientX;startY=t.clientY;startPos={...bioPhotoPos};
+  },{passive:true});
+  window.addEventListener('touchmove',e=>{
+    if(!dragging)return;const t=e.touches[0];move(t.clientX,t.clientY);
+  },{passive:true});
+  window.addEventListener('touchend',()=>{dragging=false;});
+}
+initBioPhotoDrag();
+
+/* ======= HERO PHOTO ======= */
+function handleHero(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{
+    const img=gi('hero-photo');img.src=ev.target.result;img.style.display='block';gi('hero-photo-ph').style.display='none';
+    enableDrag(img);
+    const ap=gi('hero-prev-ap');if(ap){ap.src=ev.target.result;ap.style.display='block';gi('hero-ph-ap').style.display='none';}
+  };r.readAsDataURL(f);
+}
+function handleHeroPanel(e){handleHero(e)}
+/* ======= GRIEF IMAGE ======= */
+function handleGriefImg(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{
+    S['grief-img']=ev.target.result;
+    const img=gi('grief-img');img.src=ev.target.result;img.style.display='block';
+    gi('grief-img-ph').style.display='none';
+  };r.readAsDataURL(f);
+}
+function enableDrag(img){
+  let drag=false,sy=0,sp=30,pos=30;
+  img.style.objectPosition=`center ${pos}%`;
+  img.addEventListener('mousedown',e=>{if(!isAdmin)return;drag=true;sy=e.clientY;sp=pos;img.classList.add('dragging');e.preventDefault();});
+  document.addEventListener('mousemove',e=>{if(!drag)return;const d=(e.clientY-sy)/img.offsetHeight*100;pos=Math.min(100,Math.max(0,sp+d));img.style.objectPosition=`center ${pos}%`;});
+  document.addEventListener('mouseup',()=>{drag=false;img.classList.remove('dragging');});
+}
+function prevImg(input,prevId,phId,dataId){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{
+    const img=gi(prevId);if(img){img.src=ev.target.result;img.style.display='block';}
+    const ph=gi(phId);if(ph)ph.style.display='none';
+    const d=gi(dataId);if(d)d.value=ev.target.result;
+  };r.readAsDataURL(f);
+}
+
+/* ======= INLINE EDIT ======= */
+const EM={
+  eyebrow:{lbl:'تخصص',t:'input',g:()=>S.eyebrow,s:v=>{S.eyebrow=v;setText('hero-eyebrow',v)}},
+  sub:{lbl:'متن زیر تیتر',t:'textarea',g:()=>S.sub,s:v=>{S.sub=v;setText('hero-sub',v)}},
+  cta:{lbl:'متن دکمه',t:'input',g:()=>S.cta,s:v=>{S.cta=v;setText('hero-cta-btn',v)}},
+  'about-h':{lbl:'عنوان درباره من',t:'input',g:()=>S['about-h'],s:v=>{S['about-h']=v;setText('about-heading',v)}},
+  'about-p1':{lbl:'پاراگراف اول',t:'textarea',g:()=>S['about-p1'],s:v=>{S['about-p1']=v;setText('about-p1',v)}},
+  'about-p2':{lbl:'پاراگراف دوم',t:'textarea',g:()=>S['about-p2'],s:v=>{S['about-p2']=v;setText('about-p2',v)}},
+  'cta-h':{lbl:'عنوان CTA',t:'input',g:()=>S['cta-h'],s:v=>{S['cta-h']=v;setText('cta-h',v)}},
+  'cta-p':{lbl:'متن CTA',t:'textarea',g:()=>S['cta-p'],s:v=>{S['cta-p']=v;setText('cta-p',v)}},
+  'nl-h':{lbl:'عنوان خبرنامه',t:'input',g:()=>S['nl-h'],s:v=>{S['nl-h']=v;setText('nl-h',v)}},
+  'nl-p':{lbl:'متن خبرنامه',t:'textarea',g:()=>S['nl-p'],s:v=>{S['nl-p']=v;setText('nl-p',v)}},
+  headline:{lbl:'تیتر',t:'headline',g:()=>({h1:S.h1,hem:S.hem,h2:S.h2}),s:v=>{S.h1=v.h1;S.hem=v.hem;S.h2=v.h2;setText('h-l1',v.h1);setText('h-em',v.hem);setText('h-l2',v.h2)}},
+  'tg-text':{lbl:'متن صفحه رزرو تلگرام',t:'textarea',g:()=>S['tg-text'],s:v=>{S['tg-text']=v;setText('tg-text',v)}},
+  'tg-id':{lbl:'آیدی تلگرام',t:'input',g:()=>S['tg-id'],s:v=>{S['tg-id']=v;setText('tg-id-box',v)}},
+  'tg-h':{lbl:'عنوان صفحه رزرو تلگرام',t:'input',g:()=>S['tg-h'],s:v=>{S['tg-h']=v;setText('tg-h',v)}},
+  'grief-intro':{lbl:'متن معرفی بخش اشتراک‌گذاری',t:'textarea',g:()=>S['grief-intro'],s:v=>{S['grief-intro']=v;setText('grief-intro-text',v)}},
+  'grief-img-caption':{lbl:'توضیح تصویر',t:'textarea',g:()=>S['grief-img-caption'],s:v=>{S['grief-img-caption']=v;setText('grief-img-caption',v)}},
+  'about-website-h':{lbl:'عنوان بخش درباره وب‌سایت',t:'input',g:()=>S['about-website-h'],s:v=>{S['about-website-h']=v;setText('about-website-h',v)}},
+  'about-website-text':{lbl:'متن بخش درباره وب‌سایت',t:'textarea',g:()=>S['about-website-text'],s:v=>{S['about-website-text']=v;setText('about-website-text',v)}}
+};
+function handleTgIdClick(){
+  if(isAdmin){inlineEdit('tg-id');return}
+  window.open(S['tg-id-url']||'https://t.me/shahab_yousefii','_blank');
+}
+function inlineEdit(key){
+  if(!isAdmin)return;
+  const m=EM[key];if(!m)return;
+  editTarget={t:'inline',key};
+  gi('m-title').textContent='ویرایش متن';gi('m-sub').textContent=m.lbl;
+  const val=m.g();
+  if(m.t==='headline')gi('m-body').innerHTML=`<label>خط اول</label><input id="mv-h1" value="${esc(val.h1)}"/><label>کلمه برجسته</label><input id="mv-hem" value="${esc(val.hem)}"/><label>ادامه</label><input id="mv-h2" value="${esc(val.h2)}"/>`;
+  else if(m.t==='textarea')gi('m-body').innerHTML=`<label>${m.lbl}</label><textarea id="mv" style="min-height:110px">${esc(val)}</textarea>`;
+  else gi('m-body').innerHTML=`<label>${m.lbl}</label><input id="mv" value="${esc(val)}"/>`;
+  gi('edit-modal').classList.remove('hidden');
+  setTimeout(()=>{const el=gi('mv')||gi('mv-h1');if(el)el.focus();},80);
+}
+
+/* ======= MODAL SAVE ======= */
+function saveEdit(){
+  if(!editTarget)return;
+  const t=editTarget.t;
+  if(t==='inline'){
+    const m=EM[editTarget.key];
+    if(editTarget.key==='headline')m.s({h1:gv('mv-h1'),hem:gv('mv-hem'),h2:gv('mv-h2')});
+    else m.s(gv('mv'));
+  } else if(t==='dp'){
+    const item=getDpItem(editTarget.dpType,editTarget.dpId);
+    if(item){item[editTarget.k]=gv('mv');setText('dp-'+editTarget.field,item[editTarget.k]);renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();renderFilms();}
+  } else if(t==='bio'){
+    const s=bioSections[editTarget.i];
+    if(editTarget.field==='title')s.t=gv('mv');else s.p=gv('mv');
+    renderBioContent();
+  } else if(t==='book'){
+    const b=books.find(x=>x.id===editTarget.id);
+    b.title=gv('mv-title');b.author=gv('mv-author');b.cat=gv('mv-cat');b.desc=gv('mv-desc');b.full=gv('mv-full');
+    const ni=gv('mv-img');if(ni)b.img=ni;
+    fbSet('books',b);
+    renderBooks();renderAPBooks();
+    if(dpCurrent&&dpCurrent.type==='book'&&dpCurrent.id===b.id)openDp('book',b.id);
+  } else if(t==='film'){
+    const f=films.find(x=>x.id===editTarget.id);
+    f.title=gv('mv-title');f.author=gv('mv-author');f.cat=gv('mv-cat');f.desc=gv('mv-desc');f.full=gv('mv-full');
+    const ni=gv('mv-img');if(ni)f.img=ni;
+    fbSet('films',f);
+    renderFilms();renderAPFilms();
+    if(dpCurrent&&dpCurrent.type==='film'&&dpCurrent.id===f.id)openDp('film',f.id);
+  } else if(t==='article'){
+    const a=articles.find(x=>x.id===editTarget.id);
+    a.title=gv('mv-title');a.date=gv('mv-date');a.summary=gv('mv-desc');a.full=gv('mv-full');a.link=gv('mv-link');
+    const ni=gv('mv-img');if(ni)a.img=ni;
+    fbSet('articles',a);
+    renderArticles();renderAPArticles();
+    if(dpCurrent&&dpCurrent.type==='article'&&dpCurrent.id===a.id)openDp('article',a.id);
+  } else if(t==='history'){
+    const a=psychoHistory.find(x=>x.id===editTarget.id);
+    a.title=gv('mv-title');a.date=gv('mv-date');a.summary=gv('mv-desc');a.full=gv('mv-full');a.link=gv('mv-link');
+    const ni=gv('mv-img');if(ni)a.img=ni;
+    fbSet('psychoHistory',a);
+    renderPsychoHistory();renderAPPsychoHistory();
+    if(dpCurrent&&dpCurrent.type==='history'&&dpCurrent.id===a.id)openDp('history',a.id);
+  } else if(t==='workshop'){
+    const w=workshops.find(x=>x.id===editTarget.id);
+    w.title=gv('mv-title');w.author=gv('mv-author');w.cat=gv('mv-cat');w.desc=gv('mv-desc');w.full=gv('mv-full');
+    const ni=gv('mv-img');if(ni)w.img=ni;
+    const{registrations,...wRest}=w;fbSet('workshops',wRest);
+    renderWorkshops();renderAPWorkshops();
+    if(dpCurrent&&dpCurrent.type==='workshop'&&dpCurrent.id===w.id)openDp('workshop',w.id);
+  } else if(t==='new'){
+    const type=editTarget.type;
+    const title=gv('mv-title'),desc=gv('mv-desc');
+    if(!title||!desc){alert('عنوان و خلاصه الزامی است');return;}
+    const img=gv('mv-img');
+    if(type==='book'){
+      const b={id:Date.now(),title,author:gv('mv-author'),cat:gv('mv-cat'),desc,full:gv('mv-full'),img};
+      books.push(b);fbSet('books',b);
+      renderBooks();renderAPBooks();
+    } else if(type==='article'){
+      const a={id:Date.now(),title,date:gv('mv-date'),summary:desc,full:gv('mv-full'),link:gv('mv-link'),img};
+      articles.unshift(a);fbSet('articles',a);
+      renderArticles();renderAPArticles();
+    } else if(type==='history'){
+      const a={id:Date.now(),title,date:gv('mv-date'),summary:desc,full:gv('mv-full'),link:gv('mv-link'),img};
+      psychoHistory.unshift(a);fbSet('psychoHistory',a);
+      renderPsychoHistory();renderAPPsychoHistory();
+    } else if(type==='workshop'){
+      const w={id:Date.now(),title,author:gv('mv-author'),cat:gv('mv-cat'),desc,full:gv('mv-full'),img,regQuestions:[],registrations:[],regOpen:true,offlineEnabled:false,offlinePrice:'',offlineVideos:[]};
+      workshops.push(w);
+      const{registrations,...wRest}=w;fbSet('workshops',wRest);
+      renderWorkshops();renderAPWorkshops();
+    } else if(type==='film'){
+      const f={id:Date.now(),title,author:gv('mv-author'),cat:gv('mv-cat'),desc,full:gv('mv-full'),img};
+      films.push(f);fbSet('films',f);
+      renderFilms();renderAPFilms();
+    }
+  } else if(t==='wsettings'){
+    const w=workshops.find(x=>x.id===editTarget.wid);
+    if(w){
+      w.regOpen=wsDraft.regOpen;w.offlineEnabled=wsDraft.offlineEnabled;w.offlinePrice=wsDraft.offlinePrice;w.offlineVideos=wsDraft.offlineVideos;
+      const{registrations,...wRest}=w;fbSet('workshops',wRest);
+      renderWorkshops();renderAPWorkshops();
+      if(dpCurrent&&dpCurrent.type==='workshop'&&dpCurrent.id===w.id)openDp('workshop',w.id);
+    }
+  } else if(t==='qedit'){
+    /* editing a single question's label inside the q-builder draft */
+    const q=qBuilderDraft.find(x=>x.id===editTarget.qid);
+    if(q){q.label=gv('mv');renderQBuilderDraft();}
+  }
+  closeModal();
+}
+function closeModal(){gi('edit-modal').classList.add('hidden');editTarget=null}
+
+/* ======= BOOKS ======= */
+const bkBg=id=>['#e8e4dc','#dce8e4','#dcdce8','#e8dce4'][(id-1)%4];
+function renderBooks(){
+  const g=gi('books-grid');
+  let html=books.map(b=>`<div class="book-card reveal" onclick="${isAdmin?`editBook(${b.id})`:`openDp('book',${b.id})`}">
+    <div class="book-cover eimg" style="background:${bkBg(b.id)}">${b.img?`<img src="${b.img}"/>`:`<div class="book-cover-ph">📚</div>`}<div class="eimg-badge" onclick="event.stopPropagation();if(isAdmin)editBook(${b.id})"><span>📷</span><span>ویرایش</span></div>${isAdmin?`<button class="card-view-btn" onclick="event.stopPropagation();openDp('book',${b.id})" title="مشاهده صفحه عمومی">👁</button><button class="card-del-btn" onclick="event.stopPropagation();delBook(${b.id})" title="حذف">✕</button>`:''}</div>
+    <div class="book-body"><p class="book-tag">${b.cat}</p><h3 class="book-title">${b.title}</h3><p class="book-author">${b.author}</p><p class="book-desc">${b.desc}</p></div>
+  </div>`).join('');
+  if(isAdmin)html+=addTileHtml('book','افزودن کتاب جدید','book-card',240);
+  g.innerHTML=html||'<p style="color:var(--mid);grid-column:1/-1">کتابی ثبت نشده.</p>';
+  g.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+function editBook(id){
+  if(!isAdmin)return;const b=books.find(x=>x.id===id);editTarget={t:'book',id};
+  gi('m-title').textContent='ویرایش کتاب';gi('m-sub').textContent=b.title;
+  gi('m-body').innerHTML=`<label>تصویر جلد</label><div class="iup" style="height:100px" onclick="gi('m-b-f').click()"><img id="m-b-prev" src="${b.img||''}" style="${b.img?'display:block':'display:none'};position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-b-ph" class="iup-lbl" style="${b.img?'display:none':''}"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-b-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-b-prev','m-b-ph','mv-img')"/><input type="hidden" id="mv-img" value="${b.img}"/>
+  <label>عنوان</label><input id="mv-title" value="${esc(b.title)}"/>
+  <label>نویسنده</label><input id="mv-author" value="${esc(b.author)}"/>
+  <label>دسته‌بندی</label><input id="mv-cat" value="${esc(b.cat)}"/>
+  <label>خلاصه (کارت)</label><textarea id="mv-desc">${esc(b.desc)}</textarea>
+  <label>متن کامل</label><textarea id="mv-full" style="min-height:100px">${esc(b.full)}</textarea>`;
+  gi('edit-modal').classList.remove('hidden');
+}
+function renderAPBooks(){
+  const l=gi('ap-books-list');if(!books.length){l.innerHTML='<p style="color:var(--mid)">کتابی ثبت نشده.</p>';return}
+  l.innerHTML=books.map(b=>`<div class="ap-item"><div class="ap-thumb">${b.img?`<img src="${b.img}"/>`:'📚'}</div><div class="ap-it"><strong>${b.title}</strong><span>${b.author}</span></div><div class="ap-ia"><button class="edit-b" onclick="editBook(${b.id});closePanel()">ویرایش</button><button class="del" onclick="delBook(${b.id})">حذف</button></div></div>`).join('');
+}
+function addBook(){
+  const t=gv('b-title'),d=gv('b-desc'),img=gv('b-img-d');if(!t||!d){alert('عنوان و خلاصه الزامی');return}
+  const b={id:Date.now(),title:t,author:gv('b-author'),cat:gv('b-cat'),desc:d,full:gv('b-full'),img};
+  books.push(b);fbSet('books',b);
+  ['b-title','b-author','b-cat','b-desc','b-full','b-img-d'].forEach(id=>{const el=gi(id);if(el)el.value='';});
+  gi('b-img-prev').style.display='none';gi('b-img-ph').style.display='flex';
+  renderBooks();renderAPBooks();alert('کتاب اضافه شد!');
+}
+function delBook(id){if(confirm('حذف شود؟')){books=books.filter(b=>b.id!==id);fbDelete('books',id);renderBooks();renderAPBooks();}}
+
+/* ======= FILMS ======= */
+function renderFilms(){
+  const g=gi('films-grid');if(!g)return;
+  let html=films.map(f=>`<div class="book-card reveal" onclick="${isAdmin?`editFilm(${f.id})`:`openDp('film',${f.id})`}">
+    <div class="book-cover eimg" style="background:${bkBg(f.id)}">${f.img?`<img src="${f.img}"/>`:`<div class="book-cover-ph">🎬</div>`}<div class="eimg-badge" onclick="event.stopPropagation();if(isAdmin)editFilm(${f.id})"><span>📷</span><span>ویرایش</span></div>${isAdmin?`<button class="card-view-btn" onclick="event.stopPropagation();openDp('film',${f.id})" title="مشاهده صفحه عمومی">👁</button><button class="card-del-btn" onclick="event.stopPropagation();delFilm(${f.id})" title="حذف">✕</button>`:''}</div>
+    <div class="book-body"><p class="book-tag">${f.cat}</p><h3 class="book-title">${f.title}</h3><p class="book-author">${f.author}</p><p class="book-desc">${f.desc}</p></div>
+  </div>`).join('');
+  if(isAdmin)html+=addTileHtml('film','افزودن تحلیل نقاشی / انیمیشن جدید','book-card',240);
+  g.innerHTML=html||'<p style="color:var(--mid);grid-column:1/-1">تحلیلی ثبت نشده.</p>';
+  g.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+function editFilm(id){
+  if(!isAdmin)return;const f=films.find(x=>x.id===id);editTarget={t:'film',id};
+  gi('m-title').textContent='ویرایش تحلیل نقاشی / انیمیشن';gi('m-sub').textContent=f.title;
+  gi('m-body').innerHTML=`<label>تصویر</label><div class="iup" style="height:100px" onclick="gi('m-f-f').click()"><img id="m-f-prev" src="${f.img||''}" style="${f.img?'display:block':'display:none'};position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-f-ph" class="iup-lbl" style="${f.img?'display:none':''}"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-f-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-f-prev','m-f-ph','mv-img')"/><input type="hidden" id="mv-img" value="${f.img}"/>
+  <label>عنوان</label><input id="mv-title" value="${esc(f.title)}"/>
+  <label>کارگردان</label><input id="mv-author" value="${esc(f.author)}"/>
+  <label>دسته‌بندی</label><input id="mv-cat" value="${esc(f.cat)}"/>
+  <label>خلاصه (کارت)</label><textarea id="mv-desc">${esc(f.desc)}</textarea>
+  <label>متن کامل</label><textarea id="mv-full" style="min-height:100px">${esc(f.full)}</textarea>`;
+  gi('edit-modal').classList.remove('hidden');
+}
+function renderAPFilms(){
+  const l=gi('ap-films-list');if(!l)return;if(!films.length){l.innerHTML='<p style="color:var(--mid)">تحلیلی ثبت نشده.</p>';return}
+  l.innerHTML=films.map(f=>`<div class="ap-item"><div class="ap-thumb">${f.img?`<img src="${f.img}"/>`:'🎬'}</div><div class="ap-it"><strong>${f.title}</strong><span>${f.author}</span></div><div class="ap-ia"><button class="edit-b" onclick="editFilm(${f.id});closePanel()">ویرایش</button><button class="del" onclick="delFilm(${f.id})">حذف</button></div></div>`).join('');
+}
+function addFilm(){
+  const t=gv('f-title'),d=gv('f-desc'),img=gv('f-img-d');if(!t||!d){alert('عنوان و خلاصه الزامی');return}
+  const f={id:Date.now(),title:t,author:gv('f-author'),cat:gv('f-cat'),desc:d,full:gv('f-full'),img};
+  films.push(f);fbSet('films',f);
+  ['f-title','f-author','f-cat','f-desc','f-full','f-img-d'].forEach(id=>{const el=gi(id);if(el)el.value='';});
+  gi('f-img-prev').style.display='none';gi('f-img-ph').style.display='flex';
+  renderFilms();renderAPFilms();alert('تحلیل نقاشی / انیمیشن اضافه شد!');
+}
+function delFilm(id){if(confirm('حذف شود؟')){films=films.filter(f=>f.id!==id);fbDelete('films',id);renderFilms();renderAPFilms();}}
+
+/* ======= ARTICLES ======= */
+function renderArticles(){
+  const g=gi('articles-grid');
+  let html=articles.map(a=>`<div class="article-card reveal" onclick="${isAdmin?`editArticle(${a.id})`:`openDp('article',${a.id})`}">
+    <div class="art-img eimg">${a.img?`<img src="${a.img}"/>`:`<div class="art-img-ph">📝</div>`}<div class="eimg-badge" onclick="event.stopPropagation();if(isAdmin)editArticle(${a.id})"><span>📷</span><span>ویرایش</span></div>${isAdmin?`<button class="card-view-btn" onclick="event.stopPropagation();openDp('article',${a.id})" title="مشاهده صفحه عمومی">👁</button><button class="card-del-btn" onclick="event.stopPropagation();delArticle(${a.id})" title="حذف">✕</button>`:''}</div>
+    <div class="art-body"><p class="art-date">${a.date}</p><h3 class="art-title">${a.title}</h3><p class="art-summary">${a.summary}</p></div>
+  </div>`).join('');
+  if(isAdmin)html+=addTileHtml('article','افزودن پادکست جدید','article-card',220);
+  g.innerHTML=html||'<p style="color:var(--mid);grid-column:1/-1">پادکستی ثبت نشده.</p>';
+  g.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+function editArticle(id){
+  if(!isAdmin)return;const a=articles.find(x=>x.id===id);editTarget={t:'article',id};
+  gi('m-title').textContent='ویرایش پادکست';gi('m-sub').textContent=a.title;
+  gi('m-body').innerHTML=`<label>تصویر</label><div class="iup" style="height:100px" onclick="gi('m-a-f').click()"><img id="m-a-prev" src="${a.img||''}" style="${a.img?'display:block':'display:none'};position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-a-ph" class="iup-lbl" style="${a.img?'display:none':''}"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-a-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-a-prev','m-a-ph','mv-img')"/><input type="hidden" id="mv-img" value="${a.img}"/>
+  <label>عنوان</label><input id="mv-title" value="${esc(a.title)}"/>
+  <label>تاریخ</label><input id="mv-date" value="${esc(a.date)}"/>
+  <label>خلاصه</label><textarea id="mv-desc">${esc(a.summary)}</textarea>
+  <label>متن کامل</label><textarea id="mv-full" style="min-height:100px">${esc(a.full)}</textarea>
+  <label>لینک خارجی</label><input id="mv-link" value="${esc(a.link)}"/>`;
+  gi('edit-modal').classList.remove('hidden');
+}
+function renderAPArticles(){
+  const l=gi('ap-articles-list');if(!articles.length){l.innerHTML='<p style="color:var(--mid)">پادکستی ثبت نشده.</p>';return}
+  l.innerHTML=articles.map(a=>`<div class="ap-item"><div class="ap-thumb">${a.img?`<img src="${a.img}"/>`:'📝'}</div><div class="ap-it"><strong>${a.title}</strong><span>${a.date}</span></div><div class="ap-ia"><button class="edit-b" onclick="editArticle(${a.id});closePanel()">ویرایش</button><button class="del" onclick="delArticle(${a.id})">حذف</button></div></div>`).join('');
+}
+function addArticle(){
+  const t=gv('a-title'),s=gv('a-summary'),img=gv('a-img-d');if(!t||!s){alert('عنوان و خلاصه الزامی');return}
+  const a={id:Date.now(),title:t,date:gv('a-date'),summary:s,full:gv('a-full'),link:gv('a-link'),img};
+  articles.unshift(a);fbSet('articles',a);
+  ['a-title','a-date','a-summary','a-full','a-link','a-img-d'].forEach(id=>{const el=gi(id);if(el)el.value='';});
+  gi('a-img-prev').style.display='none';gi('a-img-ph').style.display='flex';
+  renderArticles();renderAPArticles();alert('پادکست اضافه شد!');
+}
+function delArticle(id){if(confirm('حذف شود؟')){articles=articles.filter(a=>a.id!==id);fbDelete('articles',id);renderArticles();renderAPArticles();}}
+
+/* ======= PSYCHO HISTORY ======= */
+function renderPsychoHistory(){
+  const g=gi('psycho-history-grid');
+  let html=psychoHistory.map(a=>`<div class="article-card reveal" onclick="${isAdmin?`editPsychoHistory(${a.id})`:`openDp('history',${a.id})`}">
+    <div class="art-img eimg">${a.img?`<img src="${a.img}"/>`:`<div class="art-img-ph">📜</div>`}<div class="eimg-badge" onclick="event.stopPropagation();if(isAdmin)editPsychoHistory(${a.id})"><span>📷</span><span>ویرایش</span></div>${isAdmin?`<button class="card-view-btn" onclick="event.stopPropagation();openDp('history',${a.id})" title="مشاهده صفحه عمومی">👁</button><button class="card-del-btn" onclick="event.stopPropagation();delPsychoHistory(${a.id})" title="حذف">✕</button>`:''}</div>
+    <div class="art-body"><p class="art-date">${a.date}</p><h3 class="art-title">${a.title}</h3><p class="art-summary">${a.summary}</p></div>
+  </div>`).join('');
+  if(isAdmin)html+=addTileHtml('history','افزودن مورد جدید به سوژه و جهان','article-card',220);
+  g.innerHTML=html||'<p style="color:var(--mid);grid-column:1/-1">موردی ثبت نشده.</p>';
+  g.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+function editPsychoHistory(id){
+  if(!isAdmin)return;const a=psychoHistory.find(x=>x.id===id);editTarget={t:'history',id};
+  gi('m-title').textContent='ویرایش مورد';gi('m-sub').textContent=a.title;
+  gi('m-body').innerHTML=`<label>تصویر</label><div class="iup" style="height:100px" onclick="gi('m-h-f').click()"><img id="m-h-prev" src="${a.img||''}" style="${a.img?'display:block':'display:none'};position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-h-ph" class="iup-lbl" style="${a.img?'display:none':''}"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-h-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-h-prev','m-h-ph','mv-img')"/><input type="hidden" id="mv-img" value="${a.img}"/>
+  <label>عنوان</label><input id="mv-title" value="${esc(a.title)}"/>
+  <label>تاریخ</label><input id="mv-date" value="${esc(a.date)}"/>
+  <label>خلاصه</label><textarea id="mv-desc">${esc(a.summary)}</textarea>
+  <label>متن کامل</label><textarea id="mv-full" style="min-height:100px">${esc(a.full)}</textarea>
+  <label>لینک خارجی</label><input id="mv-link" value="${esc(a.link)}"/>`;
+  gi('edit-modal').classList.remove('hidden');
+}
+function renderAPPsychoHistory(){
+  const l=gi('ap-history-list');if(!psychoHistory.length){l.innerHTML='<p style="color:var(--mid)">موردی ثبت نشده.</p>';return}
+  l.innerHTML=psychoHistory.map(a=>`<div class="ap-item"><div class="ap-thumb">${a.img?`<img src="${a.img}"/>`:'📜'}</div><div class="ap-it"><strong>${a.title}</strong><span>${a.date}</span></div><div class="ap-ia"><button class="edit-b" onclick="editPsychoHistory(${a.id});closePanel()">ویرایش</button><button class="del" onclick="delPsychoHistory(${a.id})">حذف</button></div></div>`).join('');
+}
+function addPsychoHistory(){
+  const t=gv('h-title'),s=gv('h-summary'),img=gv('h-img-d');if(!t||!s){alert('عنوان و خلاصه الزامی');return}
+  const a={id:Date.now(),title:t,date:gv('h-date'),summary:s,full:gv('h-full'),link:gv('h-link'),img};
+  psychoHistory.unshift(a);fbSet('psychoHistory',a);
+  ['h-title','h-date','h-summary','h-full','h-link','h-img-d'].forEach(id=>{const el=gi(id);if(el)el.value='';});
+  gi('h-img-prev').style.display='none';gi('h-img-ph').style.display='flex';
+  renderPsychoHistory();renderAPPsychoHistory();alert('رویداد اضافه شد!');
+}
+function delPsychoHistory(id){if(confirm('حذف شود؟')){psychoHistory=psychoHistory.filter(a=>a.id!==id);fbDelete('psychoHistory',id);renderPsychoHistory();renderAPPsychoHistory();}}
+
+/* ======= WORKSHOPS ======= */
+function renderWorkshops(){
+  const g=gi('workshops-grid');
+  let html=workshops.map(w=>`<div class="book-card reveal" onclick="${isAdmin?`editWorkshop(${w.id})`:`openDp('workshop',${w.id})`}">
+    <div class="book-cover eimg" style="background:${bkBg(w.id)}">${w.img?`<img src="${w.img}"/>`:`<div class="book-cover-ph">🛠️</div>`}<div class="eimg-badge" onclick="event.stopPropagation();if(isAdmin)editWorkshop(${w.id})"><span>📷</span><span>ویرایش</span></div>${isAdmin?`<button class="card-view-btn" onclick="event.stopPropagation();openDp('workshop',${w.id})" title="مشاهده صفحه عمومی">👁</button><button class="card-del-btn" onclick="event.stopPropagation();delWorkshop(${w.id})" title="حذف">✕</button>`:''}</div>
+    <div class="book-body"><p class="book-tag">${w.cat}</p><h3 class="book-title">${w.title}</h3><p class="book-author">${w.author}</p><p class="book-desc">${w.desc}</p></div>
+  </div>`).join('');
+  if(isAdmin)html+=addTileHtml('workshop','افزودن کارگاه جدید','book-card',240);
+  g.innerHTML=html||'<p style="color:var(--mid);grid-column:1/-1">کارگاهی ثبت نشده.</p>';
+  g.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+function editWorkshop(id){
+  if(!isAdmin)return;const w=workshops.find(x=>x.id===id);editTarget={t:'workshop',id};
+  gi('m-title').textContent='ویرایش کارگاه';gi('m-sub').textContent=w.title;
+  gi('m-body').innerHTML=`<label>تصویر کارگاه</label><div class="iup" style="height:100px" onclick="gi('m-w-f').click()"><img id="m-w-prev" src="${w.img||''}" style="${w.img?'display:block':'display:none'};position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-w-ph" class="iup-lbl" style="${w.img?'display:none':''}"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-w-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-w-prev','m-w-ph','mv-img')"/><input type="hidden" id="mv-img" value="${w.img}"/>
+  <label>عنوان</label><input id="mv-title" value="${esc(w.title)}"/>
+  <label>مدرس</label><input id="mv-author" value="${esc(w.author)}"/>
+  <label>دسته‌بندی</label><input id="mv-cat" value="${esc(w.cat)}"/>
+  <label>خلاصه (کارت)</label><textarea id="mv-desc">${esc(w.desc)}</textarea>
+  <label>متن کامل</label><textarea id="mv-full" style="min-height:100px">${esc(w.full)}</textarea>`;
+  gi('edit-modal').classList.remove('hidden');
+}
+function renderAPWorkshops(){
+  const l=gi('ap-workshops-list');if(!workshops.length){l.innerHTML='<p style="color:var(--mid)">کارگاهی ثبت نشده.</p>';return}
+  l.innerHTML=workshops.map(w=>{
+    const pendingCount=(w.registrations||[]).filter(r=>r.status==='pending').length;
+    return `<div class="ap-item" style="flex-direction:column;align-items:stretch">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem">
+        <div style="display:flex;gap:.9rem;align-items:flex-start">
+          <div class="ap-thumb">${w.img?`<img src="${w.img}"/>`:'🛠️'}</div>
+          <div class="ap-it"><strong>${w.title}</strong><span>${w.author||''} ${pendingCount?` · <b style="color:#92400e">${pendingCount} درخواست جدید</b>`:''}</span></div>
+        </div>
+        <div class="ap-ia">
+          <button class="edit-b" onclick="editWorkshop(${w.id});closePanel()">ویرایش</button>
+          <button class="blue-b" style="border-color:var(--blue);color:var(--blue)" onclick="openQBuilder(${w.id})">سوالات ثبت‌نام</button>
+          <button class="blue-b" style="border-color:var(--gold);color:var(--gold)" onclick="openWorkshopSettings(${w.id})">تنظیمات ثبت‌نام/آفلاین</button>
+          <button class="del" onclick="delWorkshop(${w.id})">حذف</button>
+        </div>
+      </div>
+      <div style="margin-top:.8rem">
+        <button class="abtn gold" style="padding:.4rem 1rem;font-size:.74rem;margin-top:0" onclick="toggleRegList(${w.id})">مشاهده ثبت‌نام‌ها (${(w.registrations||[]).length})</button>
+        <div id="reglist-${w.id}" class="hidden" style="margin-top:.8rem;display:flex;flex-direction:column;gap:.6rem"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleRegList(wid){
+  const box=gi('reglist-'+wid);
+  if(!box)return;
+  if(box.classList.contains('hidden')){box.classList.remove('hidden');renderRegList(wid);}
+  else box.classList.add('hidden');
+}
+const REG_STATUS_LABEL={pending:'در انتظار بررسی',approved:'تایید شده - منتظر پرداخت',paid:'پرداخت شده',finalized:'نهایی شده',rejected:'رد شده'};
+const REG_STATUS_BADGE={pending:'pending',approved:'confirmed',paid:'paid',finalized:'finalized',rejected:'rejected'};
+function renderRegList(wid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  const box=gi('reglist-'+wid);if(!box)return;
+  const regs=w.registrations||[];
+  if(!regs.length){box.innerHTML='<p style="color:var(--mid);font-size:.8rem">هنوز ثبت‌نامی انجام نشده.</p>';return;}
+  const mainHtml=regs.slice().reverse().map(r=>{
+    const statusBadge=`<span class="badge ${REG_STATUS_BADGE[r.status]||'pending'}">${REG_STATUS_LABEL[r.status]||'در انتظار بررسی'}</span>`;
+    const answersHtml=(r.answers||[]).map(a=>`<div><b>${esc(a.q)}:</b> ${esc(a.a)||'—'}</div>`).join('');
+    return `<div style="border:1px solid var(--light);border-radius:4px;padding:.8rem;background:var(--surface)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem">
+        <span style="font-size:.83rem"><strong>${esc(r.name)}</strong></span>
+        ${statusBadge}
+      </div>
+      <div style="font-size:.78rem;color:var(--mid);margin-bottom:.5rem">${esc(r.email)} · ${esc(r.phone)}</div>
+      ${answersHtml?`<div class="answers-view">${answersHtml}</div>`:''}
+      ${(r.status==='paid'||r.status==='finalized')?`<div style="margin-top:.5rem;font-size:.78rem;color:#1e40af;background:#eff6ff;padding:.5rem;border-radius:3px">💳 هزینه ثبت‌نام پرداخت شده است.</div>`:''}
+      <div class="ap-ia" style="margin-top:.6rem">
+        ${r.status==='pending'?`<button class="ok" onclick="approveReg(${wid},${r.id})">✓ تایید درخواست</button><button class="rej" onclick="rejectReg(${wid},${r.id})">✕ رد درخواست</button>`:''}
+        ${r.status==='approved'?`<button class="ok" onclick="markPaid(${wid},${r.id})">💳 ثبت دریافت پرداخت</button>`:''}
+        <button class="del" onclick="deleteReg(${wid},${r.id})">حذف</button>
+      </div>
+    </div>`;
+  }).join('');
+  box.innerHTML=mainHtml+renderCompletedSection(w);
+}
+function renderCompletedSection(w){
+  const regs=(w.registrations||[]).filter(r=>r.status==='paid'||r.status==='finalized');
+  if(!regs.length)return'';
+  return `<div class="aps" style="margin-top:1rem;background:var(--surface2);padding:1rem">
+    <h3 style="font-size:.85rem;margin-bottom:.9rem">✅ ثبت‌نام‌های تکمیل‌شده کارگاه «${esc(w.title)}»</h3>
+    <div class="ap-items">
+    ${regs.map(r=>`<div class="ap-item" style="flex-direction:column;align-items:stretch">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem">
+        <span style="font-size:.83rem"><strong>${esc(r.name)}</strong> · ${esc(r.phone)} · ${esc(r.email)}</span>
+        <span class="badge ${r.status==='finalized'?'finalized':'paid'}">${r.status==='finalized'?'نهایی شده':'پرداخت شده'}</span>
+      </div>
+      <label style="font-size:.74rem;margin-top:.6rem">لینک جلسه</label>
+      <input id="link-${r.id}" value="${esc(r.sessionLink||'')}" placeholder="https://..." style="width:100%;padding:.55rem;border:1px solid var(--light);border-radius:3px;font-size:.8rem;direction:ltr;text-align:left"/>
+      <label style="font-size:.74rem;margin-top:.5rem">جزئیات جلسه (شرایط، تاریخ، ساعت)</label>
+      <textarea id="info-${r.id}" style="width:100%;padding:.55rem;border:1px solid var(--light);border-radius:3px;font-size:.8rem;min-height:70px;direction:rtl;text-align:right">${esc(r.sessionInfo||'')}</textarea>
+      <button class="abtn green" style="margin-top:.55rem" onclick="finalizeReg(${w.id},${r.id})">ذخیره و نهایی‌سازی</button>
+    </div>`).join('')}
+    </div>
+  </div>`;
+}
+function fbSetReg(wid,r){
+  return db.collection('workshops').doc(String(wid)).collection('registrations').doc(String(r.id)).set(r).catch(e=>console.error('fbSetReg',e));
+}
+function finalizeReg(wid,rid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  const r=(w.registrations||[]).find(x=>x.id===rid);if(!r)return;
+  const link=gv('link-'+rid);
+  const infoEl=gi('info-'+rid);const info=infoEl?infoEl.value.trim():'';
+  if(!link||!info){alert('لطفاً لینک جلسه و جزئیات (شرایط، تاریخ، ساعت) را وارد کنید.');return;}
+  r.sessionLink=link;r.sessionInfo=info;r.status='finalized';
+  fbSetReg(wid,r);
+  renderRegList(wid);renderAPWorkshops();
+  alert('اطلاعات جلسه ذخیره شد و اکنون در صفحه پیگیری ثبت‌نام برای کاربر نمایش داده می‌شود.');
+}
+function approveReg(wid,rid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  const r=(w.registrations||[]).find(x=>x.id===rid);if(!r)return;
+  if(!confirm('این درخواست تایید شود؟ کاربر برای پرداخت به صفحه پیگیری ثبت‌نام هدایت می‌شود.'))return;
+  r.status='approved';
+  fbSetReg(wid,r);
+  renderRegList(wid);renderAPWorkshops();setTimeout(()=>toggleRegList(wid),0);
+}
+function rejectReg(wid,rid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  const r=(w.registrations||[]).find(x=>x.id===rid);if(!r)return;
+  if(!confirm('این درخواست رد شود؟'))return;
+  r.status='rejected';
+  fbSetReg(wid,r);
+  renderRegList(wid);renderAPWorkshops();
+}
+function deleteReg(wid,rid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  if(!confirm('این ثبت‌نام حذف شود؟'))return;
+  w.registrations=(w.registrations||[]).filter(x=>x.id!==rid);
+  db.collection('workshops').doc(String(wid)).collection('registrations').doc(String(rid)).delete().catch(e=>console.error('deleteReg',e));
+  renderRegList(wid);renderAPWorkshops();
+}
+function addWorkshop(){
+  const t=gv('w-title'),d=gv('w-desc'),img=gv('w-img-d');if(!t||!d){alert('عنوان و خلاصه الزامی');return}
+  const w={id:Date.now(),title:t,author:gv('w-author'),cat:gv('w-cat'),desc:d,full:gv('w-full'),img,regQuestions:[],registrations:[],regOpen:true,offlineEnabled:false,offlinePrice:'',offlineVideos:[]};
+  workshops.push(w);
+  const{registrations,...wRest}=w;fbSet('workshops',wRest);
+  ['w-title','w-author','w-cat','w-desc','w-full','w-img-d'].forEach(id=>{const el=gi(id);if(el)el.value='';});
+  gi('w-img-prev').style.display='none';gi('w-img-ph').style.display='flex';
+  renderWorkshops();renderAPWorkshops();alert('کارگاه اضافه شد!');
+}
+function delWorkshop(id){if(confirm('حذف شود؟ تمام ثبت‌نام‌های این کارگاه نیز حذف می‌شوند.')){workshops=workshops.filter(w=>w.id!==id);fbDelete('workshops',id);renderWorkshops();renderAPWorkshops();}}
+
+/* ======= WORKSHOP REGISTRATION / OFFLINE SETTINGS (admin) ======= */
+let wsDraft=null;
+function openWorkshopSettings(wid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  editTarget={t:'wsettings',wid};
+  wsDraft={regOpen:w.regOpen!==false,offlineEnabled:!!w.offlineEnabled,offlinePrice:w.offlinePrice||'',offlineVideos:(w.offlineVideos||[]).slice()};
+  gi('m-title').textContent='تنظیمات ثبت‌نام و دوره آفلاین';
+  gi('m-sub').textContent=w.title;
+  gi('m-body').innerHTML=`<div id="ws-body"></div>`;
+  renderWsSettingsDraft();
+  gi('edit-modal').classList.remove('hidden');
+}
+function renderWsSettingsDraft(){
+  const c=gi('ws-body');if(!c)return;
+  c.innerHTML=`<label style="display:flex;align-items:center;gap:.5rem;cursor:pointer"><input type="checkbox" id="ws-regopen" ${wsDraft.regOpen?'checked':''} onchange="wsDraft.regOpen=this.checked"/> ثبت‌نام عمومی باز است (در صورت پایان مدت کارگاه، غیرفعال کنید)</label>
+  <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;margin-top:.8rem"><input type="checkbox" id="ws-offline" ${wsDraft.offlineEnabled?'checked':''} onchange="wsDraft.offlineEnabled=this.checked;renderWsSettingsDraft()"/> فعال‌سازی خرید دوره آفلاین (ضبط‌شده) — در صورت فعال بودن، دکمه ثبت‌نام عمومی غیرفعال می‌شود</label>
+  ${wsDraft.offlineEnabled?`<div style="margin-top:.8rem">
+    <label>قیمت دوره آفلاین</label><input id="ws-price" value="${esc(wsDraft.offlinePrice)}" placeholder="مثلاً ۸۵۰,۰۰۰ تومان" onchange="wsDraft.offlinePrice=this.value"/>
+    <label style="margin-top:.6rem">ویدیوهای جلسات</label>
+    <div id="ws-video-list" style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.5rem">
+      ${wsDraft.offlineVideos.map((v,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;font-size:.8rem;border:1px solid var(--light);border-radius:3px;padding:.4rem .6rem"><span>🎞️ ${esc(v.name)}</span><button type="button" style="border:none;background:none;color:#e53e3e;cursor:pointer" onclick="wsDraft.offlineVideos.splice(${i},1);renderWsSettingsDraft()">حذف</button></div>`).join('')||'<p style="color:var(--mid);font-size:.78rem">ویدیویی آپلود نشده.</p>'}
+    </div>
+    <input type="file" id="ws-video-f" accept="video/*" multiple onchange="wsAddVideos(event)"/>
+  </div>`:''}`;
+}
+function wsAddVideos(e){
+  const files=[...e.target.files];
+  files.forEach(f=>{
+    const url=URL.createObjectURL(f);
+    wsDraft.offlineVideos.push({id:Date.now()+Math.random().toString(36).slice(2,6),name:f.name,src:url});
+  });
+  renderWsSettingsDraft();
+}
+
+/* ======= REGISTRATION QUESTION BUILDER (admin) ======= */
+function openQBuilder(wid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  editTarget={t:'qbuilder',wid};
+  qBuilderDraft=JSON.parse(JSON.stringify(w.regQuestions||[]));
+  gi('m-title').textContent='سوالات ثبت‌نام';
+  gi('m-sub').textContent=w.title;
+  gi('m-body').innerHTML=`<div id="qb-list"></div>
+    <button type="button" class="abtn blue" style="margin-top:.6rem" onclick="qbAddQuestion()">+ افزودن سوال</button>
+    <p style="font-size:.74rem;color:var(--mid);margin-top:.8rem">نام، ایمیل و شماره تلفن همیشه از متقاضی پرسیده می‌شود و نیازی به افزودن آن‌ها نیست.</p>`;
+  renderQBuilderDraft();
+  gi('edit-modal').classList.remove('hidden');
+}
+function renderQBuilderDraft(){
+  const c=gi('qb-list');if(!c)return;
+  if(!qBuilderDraft.length){c.innerHTML='<p style="color:var(--mid);font-size:.8rem">هنوز سوالی اضافه نشده.</p>';return;}
+  c.innerHTML=qBuilderDraft.map((q,i)=>`<div class="reg-q-builder-item">
+    <div class="qhead">
+      <strong>${i+1}. ${esc(q.label)||'(بدون عنوان)'}</strong>
+      <div style="display:flex;gap:.4rem">
+        <button type="button" style="border:1px solid var(--blue);color:var(--blue);background:var(--surface);border-radius:3px;font-size:.72rem;padding:.2rem .6rem;cursor:pointer" onclick="qbEditLabel('${q.id}')">ویرایش متن</button>
+        <button type="button" style="border:1px solid #e53e3e;color:#e53e3e;background:var(--surface);border-radius:3px;font-size:.72rem;padding:.2rem .6rem;cursor:pointer" onclick="qbRemoveQuestion('${q.id}')">حذف</button>
+      </div>
+    </div>
+    <label style="font-size:.74rem">نوع پاسخ</label>
+    <select onchange="qbSetType('${q.id}',this.value)" style="width:100%;padding:.45rem;border:1px solid var(--light);border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:.8rem">
+      <option value="text" ${q.type==='text'?'selected':''}>متن آزاد</option>
+      <option value="choice" ${q.type==='choice'?'selected':''}>چند گزینه‌ای</option>
+    </select>
+    ${q.type==='choice'?`<div style="margin-top:.6rem">
+      <label style="font-size:.74rem">گزینه‌ها</label>
+      ${q.options.map((o,oi)=>`<div class="opt-row"><input value="${esc(o)}" onchange="qbSetOption('${q.id}',${oi},this.value)"/><button type="button" onclick="qbRemoveOption('${q.id}',${oi})">حذف</button></div>`).join('')}
+      <button type="button" style="font-size:.74rem;border:1px dashed var(--gold);background:var(--surface);border-radius:3px;padding:.3rem .7rem;cursor:pointer;margin-top:.3rem" onclick="qbAddOption('${q.id}')">+ افزودن گزینه</button>
+    </div>`:''}
+  </div>`).join('');
+}
+function qbAddQuestion(){
+  qBuilderDraft.push({id:'q'+Date.now()+Math.random().toString(36).slice(2,6),label:'سوال جدید',type:'text',options:[]});
+  renderQBuilderDraft();
+}
+function qbRemoveQuestion(qid){qBuilderDraft=qBuilderDraft.filter(q=>q.id!==qid);renderQBuilderDraft();}
+function qbSetType(qid,val){const q=qBuilderDraft.find(x=>x.id===qid);if(q){q.type=val;if(val==='choice'&&!q.options.length)q.options=['گزینه ۱'];renderQBuilderDraft();}}
+function qbAddOption(qid){const q=qBuilderDraft.find(x=>x.id===qid);if(q){q.options.push('گزینه جدید');renderQBuilderDraft();}}
+function qbSetOption(qid,oi,val){const q=qBuilderDraft.find(x=>x.id===qid);if(q)q.options[oi]=val;}
+function qbRemoveOption(qid,oi){const q=qBuilderDraft.find(x=>x.id===qid);if(q){q.options.splice(oi,1);renderQBuilderDraft();}}
+function qbEditLabel(qid){
+  const q=qBuilderDraft.find(x=>x.id===qid);if(!q)return;
+  const val=prompt('متن سوال:',q.label);
+  if(val===null)return;
+  q.label=val.trim()||'سوال';
+  renderQBuilderDraft();
+}
+
+/* override saveEdit's qbuilder branch via wrapping original — handled by adding case above already in saveEdit; need also 'qbuilder' commit case */
+const _origSaveEdit=saveEdit;
+saveEdit=function(){
+  if(editTarget&&editTarget.t==='qbuilder'){
+    const w=workshops.find(x=>x.id===editTarget.wid);
+    if(w){
+      w.regQuestions=qBuilderDraft.filter(q=>q.label&&q.label.trim()).map(q=>({...q,options:(q.options||[]).filter(o=>o&&o.trim())}));
+      const{registrations,...wRest}=w;fbSet('workshops',wRest);
+    }
+    closeModal();
+    return;
+  }
+  _origSaveEdit();
+};
+
+/* ======= GRIEF ======= */
+function renderGrief(){
+  const p=gi('grief-posts');const pub=grief.filter(g=>g.replied);
+  if(!pub.length){p.innerHTML='';return}
+  p.innerHTML=pub.map(g=>`<div class="grief-post reveal"><p class="grief-post-name">${esc(g.name||'ناشناس')}</p><p class="grief-post-text">${esc(g.text)}</p>${g.reply?`<div class="grief-reply"><p class="grief-reply-label">پاسخ دکتر فتح‌الله‌زاده</p><p class="grief-reply-text">${esc(g.reply)}</p></div>`:''}</div>`).join('');
+  p.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+function renderAPGrief(){
+  const l=gi('ap-grief-list');if(!grief.length){l.innerHTML='<p style="color:var(--mid)">پیامی دریافت نشده.</p>';return}
+  l.innerHTML=grief.map(g=>`<div class="ap-item" style="flex-direction:column;gap:.5rem"><div style="display:flex;justify-content:space-between"><span><strong>${esc(g.name)}</strong> <span class="badge ${g.replied?'replied':'new'}">${g.replied?'پاسخ داده شد':'جدید'}</span></span><button style="border:none;background:none;cursor:pointer;color:#e53e3e" onclick="delGrief(${g.id})">حذف</button></div><p style="font-size:.83rem;color:var(--text2);line-height:1.8">${esc(g.text)}</p>${g.reply?`<div style="background:#f0fdf4;padding:.6rem;border-radius:3px;font-size:.8rem;color:#065f46">↩ ${esc(g.reply)}</div>`:''}${!g.replied?`<div><textarea id="rep-${g.id}" style="width:100%;padding:.6rem;border:1px solid var(--light);border-radius:3px;font-family:Vazirmatn,sans-serif;min-height:55px;direction:rtl;text-align:right;margin-top:.4rem" placeholder="پاسخ..."></textarea><button class="abtn gold" onclick="replyGrief(${g.id})" style="padding:.35rem .85rem;font-size:.75rem;margin-top:.3rem">ارسال</button></div>`:''}</div>`).join('');
+}
+function submitGrief(){
+  const name=gi('grief-name').value||'ناشناس';const text=gi('grief-text').value.trim();if(!text){alert('متن را بنویسید');return}
+  const g={id:Date.now(),name,text,reply:'',replied:false,showPending:false};
+  grief.push(g);fbSet('grief',g);
+  gi('grief-name').value='';gi('grief-text').value='';gi('grief-ok').classList.remove('hidden');setTimeout(()=>gi('grief-ok').classList.add('hidden'),4000);renderGrief();
+}
+function replyGrief(id){
+  const rep=gi('rep-'+id).value.trim();if(!rep){alert('پاسخ را وارد کنید');return}
+  const g=grief.find(x=>x.id===id);g.reply=rep;g.replied=true;
+  fbSet('grief',g);
+  renderAPGrief();renderGrief();
+}
+function delGrief(id){if(confirm('حذف شود؟')){grief=grief.filter(g=>g.id!==id);fbDelete('grief',id);renderAPGrief();renderGrief();}}
+/* ======= WORKSHOP REGISTRATION (public form + submit) ======= */
+function openRegisterForm(){
+  if(!dpCurrent||dpCurrent.type!=='workshop'){alert('خطا: کارگاهی انتخاب نشده است.');return;}
+  registerCurrentWorkshopId=dpCurrent.id;
+  renderRegisterForm();
+  closeOv('detail-page');
+  openOv('register-page');
+}
+function renderRegisterForm(){
+  const w=workshops.find(x=>x.id===registerCurrentWorkshopId);
+  if(!w){gi('register-page-body').innerHTML='<div class="reg-form-wrap"><p>کارگاه مورد نظر پیدا نشد.</p></div>';return;}
+  const qs=w.regQuestions||[];
+  const qHtml=qs.map(q=>{
+    if(q.type==='choice'){
+      return `<div class="reg-field"><label class="req">${esc(q.label)}</label><div class="reg-options">${(q.options||[]).map((o,oi)=>`<label class="reg-option"><input type="radio" name="rq-${q.id}" value="${esc(o)}" onchange="checkRegFormValid()"/> ${esc(o)}</label>`).join('')}</div></div>`;
+    }
+    return `<div class="reg-field"><label class="req">${esc(q.label)}</label><textarea id="rq-${q.id}" oninput="checkRegFormValid()"></textarea></div>`;
+  }).join('');
+  const qSection=qs.length?`<div style="margin-top:.5rem;padding-top:1rem;border-top:1px solid var(--light)"><p style="font-size:.78rem;color:var(--mid);margin-bottom:1rem">برای تکمیل ثبت‌نام، لطفاً به سوالات زیر که توسط دکتر فتح‌الله‌زاده برای این کارگاه طراحی شده پاسخ دهید.</p>${qHtml}</div>`:'<p style="font-size:.8rem;color:var(--mid);margin:.5rem 0 1.3rem">سوال اضافه‌ای برای این کارگاه تعریف نشده — فقط اطلاعات تماس کافی است.</p>';
+  gi('register-page-body').innerHTML=`<div class="reg-form-wrap">
+    <h2>ثبت‌نام در «${esc(w.title)}»</h2>
+    <p class="reg-sub">پس از تکمیل فرم، دکتر فتح‌الله‌زاده درخواست شما را بررسی کرده و از طریق ایمیل یا تماس تلفنی با شما در ارتباط خواهد بود.</p>
+    <div class="reg-field"><label class="req">نام و نام خانوادگی</label><input id="rg-name" oninput="checkRegFormValid()"/></div>
+    <div class="reg-field"><label class="req">ایمیل</label><input id="rg-email" type="email" oninput="checkRegFormValid()"/></div>
+    <div class="reg-field"><label class="req">شماره تلفن</label><input id="rg-phone" type="text" placeholder="مثلاً 09123456789" oninput="checkRegFormValid()"/></div>
+    ${qSection}
+    <p id="reg-valid-msg" style="color:#e53e3e;font-size:.82rem;margin-top:.3rem;display:none">لطفاً پیش از ارسال، تمام موارد ستاره‌دار (نام، ایمیل، شماره تلفن و سوالات) را تکمیل کنید.</p>
+    <button class="reg-submit-btn" id="reg-submit-btn" onclick="submitRegistration()" disabled style="opacity:.5;cursor:not-allowed">ارسال درخواست ثبت‌نام</button>
+  </div>`;
+  checkRegFormValid();
+}
+function isRegFormValid(){
+  const w=workshops.find(x=>x.id===registerCurrentWorkshopId);if(!w)return false;
+  if(!gv('rg-name')||!gv('rg-email')||!gv('rg-phone'))return false;
+  for(const q of (w.regQuestions||[])){
+    if(q.type==='choice'){
+      if(!document.querySelector(`input[name="rq-${q.id}"]:checked`))return false;
+    } else if(!gv('rq-'+q.id)){
+      return false;
+    }
+  }
+  return true;
+}
+function checkRegFormValid(){
+  const btn=gi('reg-submit-btn');if(!btn)return;
+  const ok=isRegFormValid();
+  btn.disabled=!ok;
+  btn.style.opacity=ok?'1':'.5';
+  btn.style.cursor=ok?'pointer':'not-allowed';
+  const msg=gi('reg-valid-msg');if(msg)msg.style.display='none';
+}
+function submitRegistration(){
+  const w=workshops.find(x=>x.id===registerCurrentWorkshopId);if(!w)return;
+  if(!isRegFormValid()){
+    const msg=gi('reg-valid-msg');if(msg)msg.style.display='block';
+    return;
+  }
+  const name=gv('rg-name'),email=gv('rg-email'),phone=gv('rg-phone');
+  const answers=(w.regQuestions||[]).map(q=>{
+    let a='';
+    if(q.type==='choice'){
+      const sel=document.querySelector(`input[name="rq-${q.id}"]:checked`);
+      a=sel?sel.value:'';
+    } else {
+      a=gv('rq-'+q.id);
+    }
+    return {q:q.label,a};
+  });
+  if(!w.registrations)w.registrations=[];
+  const r={id:Date.now(),name,email,phone,answers,status:'pending',sessionLink:'',sessionInfo:''};
+  w.registrations.push(r);
+  fbSetReg(w.id,r);
+  gi('register-page-body').innerHTML=`<div class="reg-success">
+    <div class="ico">✓</div>
+    <h2>درخواست شما ثبت شد</h2>
+    <p>درخواست ثبت‌نام شما در «${esc(w.title)}» دریافت شد. دکتر فتح‌الله‌زاده پس از بررسی، از طریق ایمیل (${esc(email)}) یا تماس با شماره (${esc(phone)}) نتیجه را به اطلاع شما خواهد رساند.</p>
+    <p style="margin-top:1rem;font-weight:600">برای پیگیری وضعیت ثبت‌نام خود، لطفاً با ادمین تلگرام @admin_Drshahabyousefi پیام دهید.</p>
+  </div>`;
+  renderAPWorkshops();
+}
+
+function markPaid(wid,rid){
+  const w=workshops.find(x=>x.id===wid);if(!w)return;
+  const r=(w.registrations||[]).find(x=>x.id===rid);if(!r)return;
+  if(!confirm('آیا رسید واریزی این متقاضی از طریق تلگرام دریافت و تایید شده است؟'))return;
+  r.status='paid';
+  fbSetReg(wid,r);
+  renderRegList(wid);renderAPWorkshops();
+}
+
+/* ======= SITE SETTINGS ======= */
+function loadSiteForm(){
+  const sv=(id,v)=>{const el=gi(id);if(el)el.value=v||''};
+  sv('s-eyebrow',S.eyebrow);sv('s-h1',S.h1);sv('s-hem',S.hem);sv('s-h2',S.h2);sv('s-sub',S.sub);sv('s-cta',S.cta);
+  sv('s-about-h',S['about-h']);sv('s-about-p1',S['about-p1']);sv('s-about-p2',S['about-p2']);
+  sv('s-tg',S.tg);sv('s-li',S.li);sv('s-ig',S.ig);sv('s-tgurl',S['tg-id-url']);
+  sv('s-payinfo',S.paymentInstructions);
+  bioSections.forEach((s,i)=>{sv('bio-t'+(i+1),s.t);sv('bio-p'+(i+1),s.p);});
+}
+function savePayInfo(){S.paymentInstructions=gv('s-payinfo');alert('ذخیره شد!');}
+function saveHero(){S.eyebrow=gv('s-eyebrow');S.h1=gv('s-h1');S.hem=gv('s-hem');S.h2=gv('s-h2');S.sub=gv('s-sub');S.cta=gv('s-cta');setText('hero-eyebrow',S.eyebrow);setText('h-l1',S.h1);setText('h-em',S.hem);setText('h-l2',S.h2);setText('hero-sub',S.sub);setText('hero-cta-btn',S.cta);alert('ذخیره شد!');}
+function saveAbout(){S['about-h']=gv('s-about-h');S['about-p1']=gv('s-about-p1');S['about-p2']=gv('s-about-p2');if(S['about-h'])setText('about-heading',S['about-h']);if(S['about-p1'])setText('about-p1',S['about-p1']);if(S['about-p2'])setText('about-p2',S['about-p2']);alert('ذخیره شد!');}
+function saveFooter(){
+  S.tg=gv('s-tg');S.li=gv('s-li');S.ig=gv('s-ig');
+  const tg=gi('lnk2-tg'),li=gi('lnk2-li'),ig=gi('lnk2-ig');
+  if(tg)tg.href=S.tg||'#';if(li)li.href=S.li||'#';if(ig)ig.href=S.ig||'#';
+  alert('ذخیره شد!');
+}
+function saveTgUrl(){
+  S['tg-id-url']=gv('s-tgurl');
+  alert('ذخیره شد!');
+}
+
+/* ======= HELPERS ======= */
+function renderAll(){renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();renderFilms();}
+function gi(id){return document.getElementById(id)}
+function gv(id){const el=gi(id);return el?el.value.trim():''}
+function setText(id,v){const el=gi(id);if(el)el.textContent=v}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* INIT */
+setNotesReadonly();
+renderAll();
+loadAllFromFirestore();
+(function(){const tg=gi('lnk2-tg'),li=gi('lnk2-li'),ig=gi('lnk2-ig');if(tg)tg.href=S.tg;if(li)li.href=S.li;if(ig)ig.href=S.ig;})();
+</script>
+</body>
+</html>
