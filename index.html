@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--black:#F0E8DC;--white:#192428;--mid:#5E8A94;--light:#3D5E68;--bg:#263A3F;--gold:#C8B49A;--blue:#8AB4BC;--surface:#2E4750;--surface2:#1F2E32;--text2:#A8C0C4;--ink:#121C1F}
+:root{--black:#F0EBE3;--white:#1B2426;--mid:#6A9296;--light:#415C5F;--bg:#243234;--gold:#C8B49A;--blue:#96ACAF;--surface:#2C3F42;--surface2:#1E2C2E;--text2:#BAC9CB;--ink:#131D1F}
 body{font-family:'Vazirmatn',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;direction:rtl}
 a{text-decoration:none;color:inherit}
 .hidden{display:none!important}
@@ -53,10 +53,10 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .ov-back{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--mid);cursor:pointer;transition:color .2s}
 .ov-back:hover{color:var(--black)}
 /* admin bar */
-#admin-bar{background:#121C1F;color:#fff;padding:.5rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;position:sticky;top:0;z-index:200}
+#admin-bar{background:#131D1F;color:#fff;padding:.5rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;position:sticky;top:0;z-index:200}
 #admin-bar em{color:var(--gold);font-style:normal;font-weight:500}
 #admin-bar button{background:var(--gold);color:#fff;border:none;padding:.28rem .9rem;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.75rem;margin-right:.4rem}
-#admin-bar .btn-out{background:#3D5E68;color:#fff}
+#admin-bar .btn-out{background:#415C5F;color:#fff}
 /* login */
 #login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:600;display:flex;align-items:center;justify-content:center}
 .lbox{background:var(--surface);padding:2.5rem;border-radius:6px;width:310px;max-width:100%;text-align:center}
@@ -68,12 +68,12 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .lerr{color:#e53e3e;font-size:.8rem;margin-top:.4rem}
 /* admin panel */
 #admin-panel{position:fixed;inset:0;background:var(--surface2);z-index:400;overflow-y:auto;direction:rtl}
-.aph{background:#121C1F;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.aph{background:#131D1F;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
 .aph h2{font-size:.95rem;font-weight:500}
 .aph button{background:var(--gold);color:#fff;border:none;padding:.38rem 1.1rem;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.78rem}
 .apb{max-width:960px;margin:2rem auto;padding:0 1.5rem}
 .ap-tabs{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
-.ap-tab{padding:.48rem 1.1rem;border:1px solid #3D5E68;border-radius:3px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.82rem;background:var(--surface)}
+.ap-tab{padding:.48rem 1.1rem;border:1px solid #415C5F;border-radius:3px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.82rem;background:var(--surface)}
 .ap-tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
 .aps{background:var(--surface);border-radius:6px;padding:1.4rem;margin-bottom:1.4rem}
 .aps h3{font-size:.92rem;font-weight:600;margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--light)}
@@ -94,7 +94,7 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .ap-thumb img{width:100%;height:100%;object-fit:cover}
 .ap-it{flex:1}.ap-it strong{display:block;margin-bottom:.25rem}.ap-it span{color:var(--mid);font-size:.76rem}
 .ap-ia{display:flex;gap:.4rem;flex-shrink:0;flex-wrap:wrap}
-.ap-ia button{padding:.28rem .75rem;border:1px solid #3D5E68;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.73rem;background:var(--surface)}
+.ap-ia button{padding:.28rem .75rem;border:1px solid #415C5F;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.73rem;background:var(--surface)}
 .ap-ia button.del{border-color:#e53e3e;color:#e53e3e}
 .ap-ia button.edit-b{border-color:var(--blue);color:var(--blue)}
 .ap-ia button.ok{border-color:var(--gold);color:var(--gold)}
@@ -119,7 +119,7 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .msub{font-size:.76rem;color:var(--mid);margin-bottom:1.1rem;padding-bottom:.75rem;border-bottom:1px solid var(--light)}
 .mac{display:flex;gap:.7rem;margin-top:1.1rem;flex-direction:row-reverse}
 .mac button{padding:.62rem 1.3rem;border:none;border-radius:3px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.84rem}
-.mac .save{background:var(--ink);color:#fff}.mac .cancel{background:#2E4750;color:var(--ink)}
+.mac .save{background:var(--ink);color:#fff}.mac .cancel{background:#2C3F42;color:var(--ink)}
 /* nav */
 nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.05rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08);background:rgba(30,45,61,.92);backdrop-filter:blur(8px)}
 .nav-logo{font-size:1.32rem;font-weight:800;white-space:nowrap;flex-shrink:0;margin-inline-end:2.2rem;letter-spacing:.2px}
@@ -160,14 +160,14 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .img-frame{width:100%;height:100%;position:relative;overflow:hidden}
 #hero-photo{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:none;cursor:grab;user-select:none}
 #hero-photo.dragging{cursor:grabbing}
-#hero-photo-ph{width:100%;height:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#263A3F,#1F2E32);gap:1rem}
+#hero-photo-ph{width:100%;height:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#243234,#1E2C2E);gap:1rem}
 .photo-upload-btn{position:absolute;bottom:1rem;left:1rem;background:rgba(255,255,255,.92);border:1px solid var(--light);padding:.45rem .9rem;border-radius:3px;font-size:.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;z-index:5;display:none}
 .admin-mode .photo-upload-btn{display:block}
 .bio-photo-frame{width:calc(100% - 2cm);aspect-ratio:1/1;border-radius:8px;position:relative;overflow:hidden;margin:1cm;border:1px solid var(--light)}
 .bio-photo-frame .photo-upload-btn{bottom:.4rem;left:.4rem;padding:.3rem .55rem;font-size:.65rem}
 #bio-photo{width:100%;height:100%;object-fit:cover;display:none;cursor:grab;-webkit-user-drag:none}
 #bio-photo:active{cursor:grabbing}
-#bio-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#263A3F,#1F2E32);gap:.4rem}
+#bio-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#243234,#1E2C2E);gap:.4rem}
 .paper-plane-anim{display:inline-block;color:var(--gold);margin-bottom:1.2rem;animation:planeFlutter 3.2s ease-in-out infinite}
 @keyframes planeFlutter{
   0%{transform:translateY(0) rotate(-6deg)}
@@ -238,13 +238,13 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 @keyframes waPen{0%{left:8px}33%{left:38px}34%{left:8px}67%{left:30px}68%{left:8px}99%{left:34px}100%{left:8px}}
 
 /* FaceTime/iMessage-style chat bubbles exchange (sharing page) */
-.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#2A3E44;border-radius:10px;border:1px solid var(--mid)}
+.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#233032;border-radius:10px;border:1px solid var(--mid)}
 .chat-anim .ca-bubble{position:absolute;height:12px;border-radius:9px;opacity:0;box-shadow:0 1px 2px rgba(0,0,0,.18);animation:caPop 3.6s ease-in-out infinite}
 .chat-anim .ca-bubble::after{content:'';position:absolute;bottom:-1px;width:7px;height:7px;border-radius:50%}
 .chat-anim .ca-1{top:6px;left:6px;width:30px;background:#fff;animation-delay:0s}
 .chat-anim .ca-1::after{left:-2px;background:#fff}
-.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#8AB4BC;animation-delay:.9s}
-.chat-anim .ca-2::after{right:-2px;background:#8AB4BC}
+.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#96ACAF;animation-delay:.9s}
+.chat-anim .ca-2::after{right:-2px;background:#96ACAF}
 .chat-anim .ca-3{top:34px;left:6px;width:22px;background:#fff;animation-delay:1.8s}
 .chat-anim .ca-3::after{left:-2px;background:#fff}
 @keyframes caPop{0%{opacity:0;transform:translateY(4px) scale(.8)}10%,75%{opacity:1;transform:translateY(0) scale(1)}90%,100%{opacity:0;transform:translateY(0) scale(1)}}
@@ -281,7 +281,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .sessions .section-title{color:#fff}
 .sessions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.1);margin-top:2.8rem}
 .session-item{background:var(--ink);padding:2.3rem 1.8rem;transition:background .2s}
-.session-item:hover{background:#121C1F}
+.session-item:hover{background:#131D1F}
 .session-type{font-size:.7rem;color:var(--gold);margin-bottom:.9rem;font-weight:500}
 .session-name{font-size:1.1rem;font-weight:500;margin-bottom:.7rem;line-height:1.5}
 .session-desc{font-size:.81rem;line-height:2;color:rgba(255,255,255,.5);font-weight:300;margin-bottom:1.3rem}
@@ -304,7 +304,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.8rem}
 .article-card{overflow:hidden;border-radius:4px;border:1px solid var(--light);transition:box-shadow .2s;cursor:pointer;position:relative}
 .article-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.art-img{height:148px;background:#263A3F;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.art-img{height:148px;background:#243234;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .art-img img{width:100%;height:100%;object-fit:cover}
 .art-img-ph{font-size:2rem;color:rgba(180,170,200,.25)}
 .art-body{padding:1.2rem}
@@ -348,7 +348,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .lamp-glow{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:8px;background:radial-gradient(ellipse 60% 55% at 76% 42%,rgba(255,228,130,.18) 0%,rgba(255,228,130,0) 80%);opacity:0;transition:opacity .45s ease;pointer-events:none}
 .lamp-glow.lamp-on{opacity:1}
 .book-session-btn{margin-top:1.6rem;padding:1.1rem 3.4rem;background:var(--ink);color:#fff;border:none;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background .25s,box-shadow .25s,transform .15s}
-.book-session-btn:hover{background:#0D1719;box-shadow:0 6px 28px rgba(0,0,0,.28);transform:translateY(-2px)}
+.book-session-btn:hover{background:#111B1D;box-shadow:0 6px 28px rgba(0,0,0,.28);transform:translateY(-2px)}
 .book-session-btn:active{transform:translateY(0)}
 /* keep legacy cta classes intact for any remaining references */
 .cta-strip{padding:5.5rem 3.5rem;background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
@@ -386,7 +386,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 .dp-body{display:grid;grid-template-columns:2fr 3fr;min-height:calc(100vh - 62px)}
 .dp-img-side{background:var(--bg);display:flex;align-items:center;justify-content:center;padding:19px;position:relative;min-height:400px}
 .dp-img-side img{width:100%;height:100%;object-fit:cover;border-radius:6px;box-shadow:0 16px 48px rgba(0,0,0,.12)}
-.dp-img-ph{width:100%;height:100%;background:linear-gradient(160deg,#263A3F,#1F2E32);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(180,170,200,.25)}
+.dp-img-ph{width:100%;height:100%;background:linear-gradient(160deg,#243234,#1E2C2E);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(180,170,200,.25)}
 .dp-text-side{padding:4rem 3.5rem;overflow-y:auto}
 .dp-tag{font-size:.72rem;color:var(--gold);font-weight:600;margin-bottom:1rem}
 .dp-title{font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;line-height:1.4;margin-bottom:.6rem}
@@ -870,59 +870,59 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
         <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <radialGradient id="lampConeGrad" cx="50%" cy="0%" r="100%" gradientUnits="userSpaceOnUse" cx2="532" cy2="155" r2="160">
-          <stop offset="0%" stop-color="#8AB4BC" stop-opacity=".32"/>
-          <stop offset="100%" stop-color="#8AB4BC" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#96ACAF" stop-opacity=".32"/>
+          <stop offset="100%" stop-color="#96ACAF" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#8AB4BC" stop-opacity=".35"/>
-          <stop offset="100%" stop-color="#8AB4BC" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#96ACAF" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#96ACAF" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="coneGrad" x1="532" y1="155" x2="532" y2="305" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#8AB4BC" stop-opacity=".28"/>
-          <stop offset="100%" stop-color="#8AB4BC" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#96ACAF" stop-opacity=".28"/>
+          <stop offset="100%" stop-color="#96ACAF" stop-opacity="0"/>
         </radialGradient>
       </defs>
 
       <!-- wall (matches --white site background) -->
-      <rect x="0" y="0" width="700" height="310" fill="#192428"/>
+      <rect x="0" y="0" width="700" height="310" fill="#1B2426"/>
       <!-- floor (matches --bg) -->
-      <rect x="0" y="310" width="700" height="50" fill="#263A3F"/>
+      <rect x="0" y="310" width="700" height="50" fill="#243234"/>
       <!-- wall/floor divider -->
-      <line x1="0" y1="310" x2="700" y2="310" stroke="#3D5E68" stroke-width="1" opacity=".15"/>
+      <line x1="0" y1="310" x2="700" y2="310" stroke="#415C5F" stroke-width="1" opacity=".15"/>
 
       <!-- ===== SOFA (puffy, comfortable) ===== -->
       <!-- sofa base frame -->
-      <rect x="150" y="232" width="360" height="78" rx="18" fill="#1A2830"/>
+      <rect x="150" y="232" width="360" height="78" rx="18" fill="#1B2A2C"/>
       <!-- seat base platform -->
-      <rect x="158" y="248" width="344" height="58" rx="14" fill="#263A3F"/>
+      <rect x="158" y="248" width="344" height="58" rx="14" fill="#243234"/>
       <!-- left seat cushion (puffy) -->
-      <rect x="166" y="244" width="158" height="58" rx="14" fill="#3D5E68"/>
-      <rect x="172" y="248" width="146" height="44" rx="12" fill="#5E8A94"/>
-      <rect x="178" y="252" width="134" height="28" rx="10" fill="#8AB4BC" opacity=".7"/>
+      <rect x="166" y="244" width="158" height="58" rx="14" fill="#415C5F"/>
+      <rect x="172" y="248" width="146" height="44" rx="12" fill="#6A9296"/>
+      <rect x="178" y="252" width="134" height="28" rx="10" fill="#96ACAF" opacity=".7"/>
       <!-- right seat cushion (puffy) -->
-      <rect x="334" y="244" width="158" height="58" rx="14" fill="#3D5E68"/>
-      <rect x="340" y="248" width="146" height="44" rx="12" fill="#5E8A94"/>
-      <rect x="346" y="252" width="134" height="28" rx="10" fill="#8AB4BC" opacity=".7"/>
+      <rect x="334" y="244" width="158" height="58" rx="14" fill="#415C5F"/>
+      <rect x="340" y="248" width="146" height="44" rx="12" fill="#6A9296"/>
+      <rect x="346" y="252" width="134" height="28" rx="10" fill="#96ACAF" opacity=".7"/>
       <!-- cushion gap shadow -->
-      <rect x="320" y="248" width="18" height="52" rx="3" fill="#1A2830" opacity=".4"/>
+      <rect x="320" y="248" width="18" height="52" rx="3" fill="#1B2A2C" opacity=".4"/>
       <!-- backrest base -->
-      <rect x="142" y="172" width="376" height="68" rx="18" fill="#1A2830"/>
+      <rect x="142" y="172" width="376" height="68" rx="18" fill="#1B2A2C"/>
       <!-- left back cushion (puffy) -->
-      <rect x="150" y="176" width="174" height="58" rx="14" fill="#263A3F"/>
-      <rect x="156" y="180" width="162" height="46" rx="12" fill="#3D5E68"/>
-      <rect x="162" y="184" width="150" height="32" rx="10" fill="#5E8A94" opacity=".65"/>
+      <rect x="150" y="176" width="174" height="58" rx="14" fill="#243234"/>
+      <rect x="156" y="180" width="162" height="46" rx="12" fill="#415C5F"/>
+      <rect x="162" y="184" width="150" height="32" rx="10" fill="#6A9296" opacity=".65"/>
       <!-- right back cushion (puffy) -->
-      <rect x="334" y="176" width="174" height="58" rx="14" fill="#263A3F"/>
-      <rect x="340" y="180" width="162" height="46" rx="12" fill="#3D5E68"/>
-      <rect x="346" y="184" width="150" height="32" rx="10" fill="#5E8A94" opacity=".65"/>
+      <rect x="334" y="176" width="174" height="58" rx="14" fill="#243234"/>
+      <rect x="340" y="180" width="162" height="46" rx="12" fill="#415C5F"/>
+      <rect x="346" y="184" width="150" height="32" rx="10" fill="#6A9296" opacity=".65"/>
       <!-- back cushion gap -->
-      <rect x="320" y="178" width="18" height="60" rx="3" fill="#1A2830" opacity=".4"/>
+      <rect x="320" y="178" width="18" height="60" rx="3" fill="#1B2A2C" opacity=".4"/>
       <!-- left armrest (puffy rounded) -->
-      <rect x="130" y="188" width="36" height="118" rx="16" fill="#1A2830"/>
-      <rect x="133" y="188" width="30" height="24" rx="12" fill="#263A3F"/>
+      <rect x="130" y="188" width="36" height="118" rx="16" fill="#1B2A2C"/>
+      <rect x="133" y="188" width="30" height="24" rx="12" fill="#243234"/>
       <!-- right armrest (puffy rounded) -->
-      <rect x="494" y="188" width="36" height="118" rx="16" fill="#1A2830"/>
-      <rect x="494" y="188" width="30" height="24" rx="12" fill="#263A3F"/>
+      <rect x="494" y="188" width="36" height="118" rx="16" fill="#1B2A2C"/>
+      <rect x="494" y="188" width="30" height="24" rx="12" fill="#243234"/>
       <!-- sofa legs -->
       <rect x="163" y="304" width="14" height="10" rx="4" fill="#141E22"/>
       <rect x="482" y="304" width="14" height="10" rx="4" fill="#141E22"/>
@@ -933,8 +933,8 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 
       <!-- ===== SIDE TABLE ===== -->
       <!-- table top surface -->
-      <rect x="518" y="220" width="72" height="10" rx="4" fill="#1A2830"/>
-      <rect x="520" y="222" width="68" height="6" rx="3" fill="#1A2830"/>
+      <rect x="518" y="220" width="72" height="10" rx="4" fill="#1B2A2C"/>
+      <rect x="520" y="222" width="68" height="6" rx="3" fill="#1B2A2C"/>
       <!-- left leg -->
       <rect x="524" y="230" width="8" height="80" rx="3" fill="#141E22"/>
       <!-- right leg -->
@@ -945,18 +945,18 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- ===== FLOOR LAMP ===== -->
       <!-- lamp base (heavy disc) -->
       <ellipse cx="556" cy="309" rx="20" ry="5" fill="#141E22"/>
-      <rect x="552" y="230" width="8" height="80" rx="4" fill="#1A2830"/>
+      <rect x="552" y="230" width="8" height="80" rx="4" fill="#1B2A2C"/>
       <!-- lamp shade -->
       <polygon points="526,155 588,155 578,110 536,110" fill="#C8B49A"/>
-      <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#8AB4BC" stroke-width="1.5"/>
+      <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#96ACAF" stroke-width="1.5"/>
       <!-- shade inner dark (off) -->
-      <polygon points="530,153 584,153 575,114 539,114" fill="#3D5E68" opacity=".5"/>
+      <polygon points="530,153 584,153 575,114 539,114" fill="#415C5F" opacity=".5"/>
       <!-- shade inner bright (on) -->
-      <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#F0E8DC" opacity="0"/>
+      <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#F0EBE3" opacity="0"/>
       <!-- bulb -->
-      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#8AB4BC" opacity=".3"/>
+      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#96ACAF" opacity=".3"/>
       <!-- pole below shade -->
-      <rect x="553" y="155" width="8" height="75" rx="4" fill="#1A2830"/>
+      <rect x="553" y="155" width="8" height="75" rx="4" fill="#1B2A2C"/>
 
       <!-- light cone (hover only) -->
       <polygon id="lamp-cone" points="526,157 588,157 640,308 474,308" fill="url(#coneGrad)" opacity="0"/>
@@ -965,10 +965,10 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 
       <!-- ===== FLOWER POT (left side of sofa) ===== -->
       <!-- pot body -->
-      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="#263A3F"/>
-      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="none" stroke="#1A2830" stroke-width="1.2"/>
+      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="#243234"/>
+      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="none" stroke="#1B2A2C" stroke-width="1.2"/>
       <!-- pot rim -->
-      <rect x="62" y="252" width="36" height="7" rx="3" fill="#3D5E68"/>
+      <rect x="62" y="252" width="36" height="7" rx="3" fill="#415C5F"/>
       <!-- soil -->
       <ellipse cx="80" cy="255" rx="16" ry="4" fill="#2a2a2a"/>
       <!-- stem -->
@@ -1382,7 +1382,7 @@ function renderWorkshopRegBox(w){
   if(w.offlineEnabled){
     if(purchased){
       html+=`<div style="margin-bottom:1rem"><h4 style="font-size:.92rem;margin-bottom:.6rem">🎬 ویدیوهای دوره</h4>${
-        (w.offlineVideos||[]).length?`<div class="session-thumb-grid" style="display:flex;flex-wrap:wrap;gap:1rem">${w.offlineVideos.map((v,i)=>`<div class="session-thumb" style="width:130px;text-align:center;cursor:pointer" onclick="playSessionVideo(${w.id},${i})"><div style="width:130px;height:90px;border-radius:6px;background:linear-gradient(160deg,#2e2e2e,#1c1a17);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#F0E8DC">▶</div><p style="font-size:.78rem;margin-top:.4rem">جلسه ${i+1}</p></div>`).join('')}</div><div id="session-player" style="margin-top:1rem"></div>`:'<p style="color:var(--mid);font-size:.85rem">هنوز ویدیویی برای این دوره آپلود نشده.</p>'
+        (w.offlineVideos||[]).length?`<div class="session-thumb-grid" style="display:flex;flex-wrap:wrap;gap:1rem">${w.offlineVideos.map((v,i)=>`<div class="session-thumb" style="width:130px;text-align:center;cursor:pointer" onclick="playSessionVideo(${w.id},${i})"><div style="width:130px;height:90px;border-radius:6px;background:linear-gradient(160deg,#2e2e2e,#1c1a17);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#F0EBE3">▶</div><p style="font-size:.78rem;margin-top:.4rem">جلسه ${i+1}</p></div>`).join('')}</div><div id="session-player" style="margin-top:1rem"></div>`:'<p style="color:var(--mid);font-size:.85rem">هنوز ویدیویی برای این دوره آپلود نشده.</p>'
       }</div>`;
     } else {
       html+=`<button class="dp-register-btn" onclick="buyOfflineCourse(${w.id})">خرید دوره آفلاین</button>
@@ -1639,7 +1639,7 @@ function saveEdit(){
 function closeModal(){gi('edit-modal').classList.add('hidden');editTarget=null}
 
 /* ======= BOOKS ======= */
-const bkBg=id=>['#263A3F','#dce8e4','#dcdce8','#e8dce4'][(id-1)%4];
+const bkBg=id=>['#243234','#dce8e4','#dcdce8','#e8dce4'][(id-1)%4];
 function renderBooks(){
   const g=gi('books-grid');
   let html=books.map(b=>`<div class="book-card reveal" onclick="${isAdmin?`editBook(${b.id})`:`openDp('book',${b.id})`}">
