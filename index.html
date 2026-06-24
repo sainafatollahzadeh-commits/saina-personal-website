@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--black:#F3EFEA;--white:#1E2D3D;--mid:#9FB7C9;--light:#3A5266;--bg:#263B4E;--gold:#D9C2A0;--blue:#5FA8D3;--surface:#33495E;--surface2:#2A3C4F;--text2:#C7D8E3;--ink:#15212C}
+:root{--black:#2D3B36;--white:#FFFFFF;--mid:#5C8D80;--light:#EAF4F0;--bg:#F4FAF8;--gold:#3D7A6A;--blue:#5C8D80;--surface:#EAF4F0;--surface2:#F4FAF8;--text2:#5A7A72;--ink:#1A2E28}
 body{font-family:'Vazirmatn',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;direction:rtl}
 a{text-decoration:none;color:inherit}
 .hidden{display:none!important}
@@ -53,7 +53,7 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .ov-back{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--mid);cursor:pointer;transition:color .2s}
 .ov-back:hover{color:var(--black)}
 /* admin bar */
-#admin-bar{background:#15212C;color:#fff;padding:.5rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;position:sticky;top:0;z-index:200}
+#admin-bar{background:#1A2E28;color:#fff;padding:.5rem 2rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;position:sticky;top:0;z-index:200}
 #admin-bar em{color:var(--gold);font-style:normal;font-weight:500}
 #admin-bar button{background:var(--gold);color:#fff;border:none;padding:.28rem .9rem;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.75rem;margin-right:.4rem}
 #admin-bar .btn-out{background:var(--mid);color:#fff}
@@ -68,7 +68,7 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .lerr{color:#e53e3e;font-size:.8rem;margin-top:.4rem}
 /* admin panel */
 #admin-panel{position:fixed;inset:0;background:var(--surface2);z-index:400;overflow-y:auto;direction:rtl}
-.aph{background:#15212C;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.aph{background:#1A2E28;color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
 .aph h2{font-size:.95rem;font-weight:500}
 .aph button{background:var(--gold);color:#fff;border:none;padding:.38rem 1.1rem;border-radius:2px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.78rem}
 .apb{max-width:960px;margin:2rem auto;padding:0 1.5rem}
@@ -119,9 +119,9 @@ body:not(.admin-mode) .no-copy .editable,body:not(.admin-mode) .no-copy .eimg-ba
 .msub{font-size:.76rem;color:var(--mid);margin-bottom:1.1rem;padding-bottom:.75rem;border-bottom:1px solid var(--light)}
 .mac{display:flex;gap:.7rem;margin-top:1.1rem;flex-direction:row-reverse}
 .mac button{padding:.62rem 1.3rem;border:none;border-radius:3px;cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:.84rem}
-.mac .save{background:var(--ink);color:#fff}.mac .cancel{background:#2A3C4F;color:#F3EFEA}
+.mac .save{background:var(--ink);color:#fff}.mac .cancel{background:#F4FAF8;color:#2D3B36}
 /* nav */
-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.05rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08);background:rgba(30,45,61,.92);backdrop-filter:blur(8px)}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.05rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.96);backdrop-filter:blur(8px)}
 .nav-logo{font-size:1.32rem;font-weight:800;white-space:nowrap;flex-shrink:0;margin-inline-end:2.2rem;letter-spacing:.2px}
 .nav-links{display:flex;gap:1.8rem;align-items:center;flex:1;min-width:0}
 .nav-links-right{display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap}
@@ -160,14 +160,14 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .img-frame{width:100%;height:100%;position:relative;overflow:hidden}
 #hero-photo{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:none;cursor:grab;user-select:none}
 #hero-photo.dragging{cursor:grabbing}
-#hero-photo-ph{width:100%;height:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#263B4E,#1E2D3D);gap:1rem}
+#hero-photo-ph{width:100%;height:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#F4FAF8,#FFFFFF);gap:1rem}
 .photo-upload-btn{position:absolute;bottom:1rem;left:1rem;background:rgba(255,255,255,.92);border:1px solid var(--light);padding:.45rem .9rem;border-radius:3px;font-size:.75rem;cursor:pointer;font-family:'Vazirmatn',sans-serif;z-index:5;display:none}
 .admin-mode .photo-upload-btn{display:block}
 .bio-photo-frame{width:calc(100% - 2cm);aspect-ratio:1/1;border-radius:8px;position:relative;overflow:hidden;margin:1cm;border:1px solid var(--light)}
 .bio-photo-frame .photo-upload-btn{bottom:.4rem;left:.4rem;padding:.3rem .55rem;font-size:.65rem}
 #bio-photo{width:100%;height:100%;object-fit:cover;display:none;cursor:grab;-webkit-user-drag:none}
 #bio-photo:active{cursor:grabbing}
-#bio-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#263B4E,#1E2D3D);gap:.4rem}
+#bio-photo-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#F4FAF8,#FFFFFF);gap:.4rem}
 .paper-plane-anim{display:inline-block;color:var(--gold);margin-bottom:1.2rem;animation:planeFlutter 3.2s ease-in-out infinite}
 @keyframes planeFlutter{
   0%{transform:translateY(0) rotate(-6deg)}
@@ -193,17 +193,17 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 /* dual-circle merge/separate animation (subject & world page) */
 .klein-anim{position:relative;width:54px;height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .klein-anim svg{width:54px;height:54px;overflow:visible}
-.kc-r1{fill:none;stroke:#fff;stroke-width:2;animation:kcLeft 3s ease-in-out infinite}
+.kc-r1{fill:none;stroke:#5C8D80;stroke-width:2;animation:kcLeft 3s ease-in-out infinite}
 .kc-r2{fill:none;stroke:var(--gold);stroke-width:2;animation:kcRight 3s ease-in-out infinite}
 @keyframes kcLeft{0%,100%{transform:translateX(-14px)}40%,60%{transform:translateX(-4px)}}
 @keyframes kcRight{0%,100%{transform:translateX(14px)}40%,60%{transform:translateX(4px)}}
 
 /* open book with flipping pages (books page) */
 .book-anim{position:relative;width:60px;height:42px;flex-shrink:0;perspective:240px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
-.book-anim .ba-half{position:absolute;top:0;bottom:0;width:30px;background:var(--black);border:1.5px solid var(--ink);border-radius:1px}
+.book-anim .ba-half{position:absolute;top:0;bottom:0;width:30px;background:#FFFFFF;border:1.5px solid var(--ink);border-radius:1px}
 .book-anim .ba-left{left:0;border-radius:3px 1px 1px 3px;border-left-width:2.5px}
 .book-anim .ba-right{right:0;border-radius:1px 3px 3px 1px;border-right-width:2.5px}
-.book-anim .ba-page{position:absolute;top:0;bottom:0;right:0;width:30px;background:var(--text2);border:1.5px solid var(--ink);border-radius:1px 3px 3px 1px;transform-origin:left center;animation:baFlip 2.2s ease-in-out infinite}
+.book-anim .ba-page{position:absolute;top:0;bottom:0;right:0;width:30px;background:#EAF4F0;border:1.5px solid var(--ink);border-radius:1px 3px 3px 1px;transform-origin:left center;animation:baFlip 2.2s ease-in-out infinite}
 @keyframes baFlip{0%,8%{transform:rotateY(0deg)}45%,55%{transform:rotateY(-160deg)}92%,100%{transform:rotateY(0deg)}}
 
 /* waveform recording animation (podcast page) */
@@ -224,7 +224,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 
 /* writing pen on paper (workshops page) */
 .write-anim{position:relative;width:54px;height:46px;flex-shrink:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
-.write-anim .wa-paper{position:absolute;inset:0;background:var(--black);border:1.5px solid var(--ink);border-radius:2px}
+.write-anim .wa-paper{position:absolute;inset:0;background:#FFFFFF;border:1.5px solid var(--ink);border-radius:2px}
 .write-anim .wa-line{position:absolute;left:8px;height:2px;background:var(--mid);border-radius:1px;overflow:hidden}
 .write-anim .wa-line span{position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:right center;animation:waFill 2.4s ease-in-out infinite}
 .write-anim .wa-l1{top:13px;width:30px}
@@ -238,15 +238,15 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 @keyframes waPen{0%{left:8px}33%{left:38px}34%{left:8px}67%{left:30px}68%{left:8px}99%{left:34px}100%{left:8px}}
 
 /* FaceTime/iMessage-style chat bubbles exchange (sharing page) */
-.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#2A3C4F;border-radius:10px;border:1px solid var(--mid)}
+.chat-anim{position:relative;width:66px;height:48px;flex-shrink:0;background:#F4FAF8;border-radius:10px;border:1px solid var(--mid)}
 .chat-anim .ca-bubble{position:absolute;height:12px;border-radius:9px;opacity:0;box-shadow:0 1px 2px rgba(0,0,0,.18);animation:caPop 3.6s ease-in-out infinite}
 .chat-anim .ca-bubble::after{content:'';position:absolute;bottom:-1px;width:7px;height:7px;border-radius:50%}
-.chat-anim .ca-1{top:6px;left:6px;width:30px;background:var(--black);animation-delay:0s}
-.chat-anim .ca-1::after{left:-2px;background:var(--black)}
-.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#D9C2A0;animation-delay:.9s}
-.chat-anim .ca-2::after{right:-2px;background:#D9C2A0}
+.chat-anim .ca-1{top:6px;left:6px;width:30px;background:#FFFFFF;animation-delay:0s}
+.chat-anim .ca-1::after{left:-2px;background:#FFFFFF}
+.chat-anim .ca-2{top:21px;right:6px;width:32px;background:#3D7A6A;animation-delay:.9s}
+.chat-anim .ca-2::after{right:-2px;background:#3D7A6A}
 .chat-anim .ca-3{top:34px;left:6px;width:22px;background:var(--surface2);animation-delay:1.8s}
-.chat-anim .ca-3::after{left:-2px;background:var(--black)}
+.chat-anim .ca-3::after{left:-2px;background:#FFFFFF}
 @keyframes caPop{0%{opacity:0;transform:translateY(4px) scale(.8)}10%,75%{opacity:1;transform:translateY(0) scale(1)}90%,100%{opacity:0;transform:translateY(0) scale(1)}}
 
 /* paintbrush splashing color (drawing analysis page) */
@@ -281,7 +281,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .sessions .section-title{color:#fff}
 .sessions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.1);margin-top:2.8rem}
 .session-item{background:var(--ink);padding:2.3rem 1.8rem;transition:background .2s}
-.session-item:hover{background:#2A3C4F}
+.session-item:hover{background:#F4FAF8}
 .session-type{font-size:.7rem;color:var(--gold);margin-bottom:.9rem;font-weight:500}
 .session-name{font-size:1.1rem;font-weight:500;margin-bottom:.7rem;line-height:1.5}
 .session-desc{font-size:.81rem;line-height:2;color:rgba(255,255,255,.5);font-weight:300;margin-bottom:1.3rem}
@@ -304,7 +304,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.8rem}
 .article-card{overflow:hidden;border-radius:4px;border:1px solid var(--light);transition:box-shadow .2s;cursor:pointer;position:relative}
 .article-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.art-img{height:148px;background:#263B4E;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.art-img{height:148px;background:#F4FAF8;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .art-img img{width:100%;height:100%;object-fit:cover}
 .art-img-ph{font-size:2rem;color:rgba(90,60,30,.25)}
 .art-body{padding:1.2rem}
@@ -322,7 +322,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .grief-form-box button{background:var(--ink);color:#fff;border:none;padding:.72rem 1.8rem;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:.84rem;cursor:pointer}
 .grief-image-box{background:var(--surface);border-radius:6px;padding:1.8rem;border:1px solid var(--light)}
 .grief-image-box h3{font-size:.92rem;font-weight:600;margin-bottom:1.1rem}
-.grief-image-upload{width:100%;max-width:220px;aspect-ratio:2/3;height:auto;margin:0 auto;border-radius:4px;overflow:hidden;position:relative;background:var(--black)}
+.grief-image-upload{width:100%;max-width:220px;aspect-ratio:2/3;height:auto;margin:0 auto;border-radius:4px;overflow:hidden;position:relative;background:#FFFFFF}
 .grief-image-upload img{width:100%;height:100%;object-fit:cover;display:none}
 .grief-image-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mid);gap:.4rem}
 .grief-image-caption{margin-top:1rem;font-size:.87rem;line-height:1.9;color:var(--text2);font-weight:300}
@@ -348,7 +348,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .lamp-glow{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:8px;background:radial-gradient(ellipse 60% 55% at 76% 42%,rgba(255,228,130,.18) 0%,rgba(255,228,130,0) 80%);opacity:0;transition:opacity .45s ease;pointer-events:none}
 .lamp-glow.lamp-on{opacity:1}
 .book-session-btn{margin-top:1.6rem;padding:1.1rem 3.4rem;background:var(--blue);color:#fff;border:none;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background .25s,box-shadow .25s,transform .15s}
-.book-session-btn:hover{background:#0d1a25;box-shadow:0 6px 28px rgba(0,0,0,.28);transform:translateY(-2px)}
+.book-session-btn:hover{background:#1A2E28;box-shadow:0 6px 28px rgba(0,0,0,.28);transform:translateY(-2px)}
 .book-session-btn:active{transform:translateY(0)}
 /* keep legacy cta classes intact for any remaining references */
 .cta-strip{padding:5.5rem 3.5rem;background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
@@ -386,7 +386,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 .dp-body{display:grid;grid-template-columns:2fr 3fr;min-height:calc(100vh - 62px)}
 .dp-img-side{background:var(--bg);display:flex;align-items:center;justify-content:center;padding:19px;position:relative;min-height:400px}
 .dp-img-side img{width:100%;height:100%;object-fit:cover;border-radius:6px;box-shadow:0 16px 48px rgba(0,0,0,.12)}
-.dp-img-ph{width:100%;height:100%;background:linear-gradient(160deg,#263B4E,#1E2D3D);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(90,60,30,.25)}
+.dp-img-ph{width:100%;height:100%;background:linear-gradient(160deg,#F4FAF8,#FFFFFF);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:4rem;color:rgba(90,60,30,.25)}
 .dp-text-side{padding:4rem 3.5rem;overflow-y:auto}
 .dp-tag{font-size:.72rem;color:var(--gold);font-weight:600;margin-bottom:1rem}
 .dp-title{font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;line-height:1.4;margin-bottom:.6rem}
@@ -440,7 +440,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 .status-pay-box h4{font-size:.82rem;color:var(--gold);margin-bottom:.6rem;font-weight:600}
 .status-pay-box p{font-size:.85rem;line-height:2;color:var(--text2);white-space:pre-wrap}
 .reg-q-builder{border:1px solid var(--light);border-radius:5px;padding:1rem;margin-top:.7rem}
-.reg-q-builder-item{border:1px solid var(--light);border-radius:4px;padding:.8rem;margin-bottom:.7rem;background:var(--black)}
+.reg-q-builder-item{border:1px solid var(--light);border-radius:4px;padding:.8rem;margin-bottom:.7rem;background:#FFFFFF}
 .reg-q-builder-item .qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
 .reg-q-builder-item .qhead strong{font-size:.8rem}
 .opt-row{display:flex;gap:.4rem;margin-bottom:.4rem}
@@ -870,25 +870,25 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
         <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <radialGradient id="lampConeGrad" cx="50%" cy="0%" r="100%" gradientUnits="userSpaceOnUse" cx2="532" cy2="155" r2="160">
-          <stop offset="0%" stop-color="#D9C2A0" stop-opacity=".32"/>
-          <stop offset="100%" stop-color="#D9C2A0" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#3D7A6A" stop-opacity=".32"/>
+          <stop offset="100%" stop-color="#3D7A6A" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#D9C2A0" stop-opacity=".35"/>
-          <stop offset="100%" stop-color="#D9C2A0" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#3D7A6A" stop-opacity=".35"/>
+          <stop offset="100%" stop-color="#3D7A6A" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="coneGrad" x1="532" y1="155" x2="532" y2="305" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#D9C2A0" stop-opacity=".28"/>
-          <stop offset="100%" stop-color="#D9C2A0" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#3D7A6A" stop-opacity=".28"/>
+          <stop offset="100%" stop-color="#3D7A6A" stop-opacity="0"/>
         </radialGradient>
       </defs>
 
       <!-- wall (matches --white site background) -->
-      <rect x="0" y="0" width="700" height="310" fill="#1E2D3D"/>
+      <rect x="0" y="0" width="700" height="310" fill="#FFFFFF"/>
       <!-- floor (matches --bg) -->
       <rect x="0" y="310" width="700" height="50" fill="#8b6b43"/>
       <!-- wall/floor divider -->
-      <line x1="0" y1="310" x2="700" y2="310" stroke="#5FA8D3" stroke-width="1" opacity=".15"/>
+      <line x1="0" y1="310" x2="700" y2="310" stroke="#5C8D80" stroke-width="1" opacity=".15"/>
 
       <!-- ===== SOFA (puffy, comfortable) ===== -->
       <!-- sofa base frame -->
@@ -896,27 +896,27 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- seat base platform -->
       <rect x="158" y="248" width="344" height="58" rx="14" fill="#8b6b43"/>
       <!-- left seat cushion (puffy) -->
-      <rect x="166" y="244" width="158" height="58" rx="14" fill="#5FA8D3"/>
-      <rect x="172" y="248" width="146" height="44" rx="12" fill="#5FA8D3"/>
-      <rect x="178" y="252" width="134" height="28" rx="10" fill="#D9C2A0" opacity=".7"/>
+      <rect x="166" y="244" width="158" height="58" rx="14" fill="#5C8D80"/>
+      <rect x="172" y="248" width="146" height="44" rx="12" fill="#5C8D80"/>
+      <rect x="178" y="252" width="134" height="28" rx="10" fill="#3D7A6A" opacity=".7"/>
       <!-- right seat cushion (puffy) -->
-      <rect x="334" y="244" width="158" height="58" rx="14" fill="#5FA8D3"/>
-      <rect x="340" y="248" width="146" height="44" rx="12" fill="#5FA8D3"/>
-      <rect x="346" y="252" width="134" height="28" rx="10" fill="#D9C2A0" opacity=".7"/>
+      <rect x="334" y="244" width="158" height="58" rx="14" fill="#5C8D80"/>
+      <rect x="340" y="248" width="146" height="44" rx="12" fill="#5C8D80"/>
+      <rect x="346" y="252" width="134" height="28" rx="10" fill="#3D7A6A" opacity=".7"/>
       <!-- cushion gap shadow -->
-      <rect x="320" y="248" width="18" height="52" rx="3" fill="#263B4E" opacity=".4"/>
+      <rect x="320" y="248" width="18" height="52" rx="3" fill="#F4FAF8" opacity=".4"/>
       <!-- backrest base -->
       <rect x="142" y="172" width="376" height="68" rx="18" fill="#8b6b43"/>
       <!-- left back cushion (puffy) -->
       <rect x="150" y="176" width="174" height="58" rx="14" fill="#8b6b43"/>
-      <rect x="156" y="180" width="162" height="46" rx="12" fill="#5FA8D3"/>
-      <rect x="162" y="184" width="150" height="32" rx="10" fill="#5FA8D3" opacity=".65"/>
+      <rect x="156" y="180" width="162" height="46" rx="12" fill="#5C8D80"/>
+      <rect x="162" y="184" width="150" height="32" rx="10" fill="#5C8D80" opacity=".65"/>
       <!-- right back cushion (puffy) -->
       <rect x="334" y="176" width="174" height="58" rx="14" fill="#8b6b43"/>
-      <rect x="340" y="180" width="162" height="46" rx="12" fill="#5FA8D3"/>
-      <rect x="346" y="184" width="150" height="32" rx="10" fill="#5FA8D3" opacity=".65"/>
+      <rect x="340" y="180" width="162" height="46" rx="12" fill="#5C8D80"/>
+      <rect x="346" y="184" width="150" height="32" rx="10" fill="#5C8D80" opacity=".65"/>
       <!-- back cushion gap -->
-      <rect x="320" y="178" width="18" height="60" rx="3" fill="#263B4E" opacity=".4"/>
+      <rect x="320" y="178" width="18" height="60" rx="3" fill="#F4FAF8" opacity=".4"/>
       <!-- left armrest (puffy rounded) -->
       <rect x="130" y="188" width="36" height="118" rx="16" fill="#8b6b43"/>
       <rect x="133" y="188" width="30" height="24" rx="12" fill="#8b6b43"/>
@@ -929,7 +929,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <rect x="218" y="304" width="12" height="8" rx="3" fill="#141E22"/>
       <rect x="428" y="304" width="12" height="8" rx="3" fill="#141E22"/>
       <!-- highlight sheen on seat -->
-      <rect x="170" y="248" width="318" height="4" rx="2" fill="#D9C2A0" opacity=".18"/>
+      <rect x="170" y="248" width="318" height="4" rx="2" fill="#3D7A6A" opacity=".18"/>
 
       <!-- ===== SIDE TABLE ===== -->
       <!-- table top surface -->
@@ -947,14 +947,14 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <ellipse cx="556" cy="309" rx="20" ry="5" fill="#141E22"/>
       <rect x="552" y="230" width="8" height="80" rx="4" fill="#8b6b43"/>
       <!-- lamp shade -->
-      <polygon points="526,155 588,155 578,110 536,110" fill="#D9C2A0"/>
+      <polygon points="526,155 588,155 578,110 536,110" fill="#3D7A6A"/>
       <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#8B3C2C" stroke-width="1.5"/>
       <!-- shade inner dark (off) -->
-      <polygon points="530,153 584,153 575,114 539,114" fill="#5FA8D3" opacity=".5"/>
+      <polygon points="530,153 584,153 575,114 539,114" fill="#5C8D80" opacity=".5"/>
       <!-- shade inner bright (on) -->
       <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#3D2010" opacity="0"/>
       <!-- bulb -->
-      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#D9C2A0" opacity=".3"/>
+      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#3D7A6A" opacity=".3"/>
       <!-- pole below shade -->
       <rect x="553" y="155" width="8" height="75" rx="4" fill="#8b6b43"/>
 
@@ -966,9 +966,9 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- ===== FLOWER POT (left side of sofa) ===== -->
       <!-- pot body -->
       <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="#8b6b43"/>
-      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="none" stroke="#263B4E" stroke-width="1.2"/>
+      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="none" stroke="#F4FAF8" stroke-width="1.2"/>
       <!-- pot rim -->
-      <rect x="62" y="252" width="36" height="7" rx="3" fill="#5FA8D3"/>
+      <rect x="62" y="252" width="36" height="7" rx="3" fill="#5C8D80"/>
       <!-- soil -->
       <ellipse cx="80" cy="255" rx="16" ry="4" fill="#3D2010"/>
       <!-- stem -->
@@ -985,7 +985,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- leaf on right branch -->
       <ellipse cx="98" cy="210" rx="9" ry="5" fill="#6aae5e" transform="rotate(20,98,210)"/>
       <!-- small highlight on pot -->
-      <path d="M70,262 Q68,272 69,282" fill="none" stroke="#D9C2A0" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
+      <path d="M70,262 Q68,272 69,282" fill="none" stroke="#3D7A6A" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
         </svg>
         <button class="book-session-btn" onclick="openOv('telegram-page')"
                 onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
@@ -1382,7 +1382,7 @@ function renderWorkshopRegBox(w){
   if(w.offlineEnabled){
     if(purchased){
       html+=`<div style="margin-bottom:1rem"><h4 style="font-size:.92rem;margin-bottom:.6rem">🎬 ویدیوهای دوره</h4>${
-        (w.offlineVideos||[]).length?`<div class="session-thumb-grid" style="display:flex;flex-wrap:wrap;gap:1rem">${w.offlineVideos.map((v,i)=>`<div class="session-thumb" style="width:130px;text-align:center;cursor:pointer" onclick="playSessionVideo(${w.id},${i})"><div style="width:130px;height:90px;border-radius:6px;background:linear-gradient(160deg,#263B4E,#1E2D3D);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#3D2010">▶</div><p style="font-size:.78rem;margin-top:.4rem">جلسه ${i+1}</p></div>`).join('')}</div><div id="session-player" style="margin-top:1rem"></div>`:'<p style="color:var(--mid);font-size:.85rem">هنوز ویدیویی برای این دوره آپلود نشده.</p>'
+        (w.offlineVideos||[]).length?`<div class="session-thumb-grid" style="display:flex;flex-wrap:wrap;gap:1rem">${w.offlineVideos.map((v,i)=>`<div class="session-thumb" style="width:130px;text-align:center;cursor:pointer" onclick="playSessionVideo(${w.id},${i})"><div style="width:130px;height:90px;border-radius:6px;background:linear-gradient(160deg,#F4FAF8,#FFFFFF);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#3D2010">▶</div><p style="font-size:.78rem;margin-top:.4rem">جلسه ${i+1}</p></div>`).join('')}</div><div id="session-player" style="margin-top:1rem"></div>`:'<p style="color:var(--mid);font-size:.85rem">هنوز ویدیویی برای این دوره آپلود نشده.</p>'
       }</div>`;
     } else {
       html+=`<button class="dp-register-btn" onclick="buyOfflineCourse(${w.id})">خرید دوره آفلاین</button>
@@ -1639,7 +1639,7 @@ function saveEdit(){
 function closeModal(){gi('edit-modal').classList.add('hidden');editTarget=null}
 
 /* ======= BOOKS ======= */
-const bkBg=id=>['#263B4E','#dce8e4','#dcdce8','#e8dce4'][(id-1)%4];
+const bkBg=id=>['#F4FAF8','#dce8e4','#dcdce8','#e8dce4'][(id-1)%4];
 function renderBooks(){
   const g=gi('books-grid');
   let html=books.map(b=>`<div class="book-card reveal" onclick="${isAdmin?`editBook(${b.id})`:`openDp('book',${b.id})`}">
