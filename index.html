@@ -345,7 +345,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .lamp-cone{transition:opacity .45s ease}
 #lamp-bulb{transition:opacity .45s ease}
 #floor-glow{transition:opacity .45s ease}
-.lamp-glow{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:8px;background:radial-gradient(ellipse 60% 55% at 76% 42%,rgba(255,228,130,.18) 0%,rgba(255,228,130,0) 80%);opacity:0;transition:opacity .45s ease;pointer-events:none}
+.lamp-glow{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:8px;background:radial-gradient(ellipse 55% 50% at 79% 38%,rgba(255,210,60,.55) 0%,rgba(255,210,60,.22) 35%,rgba(255,210,60,0) 75%);opacity:0;transition:opacity .45s ease;pointer-events:none}
 .lamp-glow.lamp-on{opacity:1}
 .book-session-btn{margin-top:1.6rem;padding:1.1rem 3.4rem;background:var(--blue);color:#fff;border:none;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background .25s,box-shadow .25s,transform .15s}
 .book-session-btn:hover{background:#16201C;box-shadow:0 6px 28px rgba(0,0,0,.28);transform:translateY(-2px)}
@@ -840,17 +840,18 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
         <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <radialGradient id="lampConeGrad" cx="50%" cy="0%" r="100%" gradientUnits="userSpaceOnUse" cx2="532" cy2="155" r2="160">
-          <stop offset="0%" stop-color="#2E8B6F" stop-opacity=".32"/>
-          <stop offset="100%" stop-color="#2E8B6F" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#F5C518" stop-opacity=".7"/>
+          <stop offset="100%" stop-color="#F5C518" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#2E8B6F" stop-opacity=".35"/>
-          <stop offset="100%" stop-color="#2E8B6F" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#F5C518" stop-opacity=".65"/>
+          <stop offset="100%" stop-color="#F5C518" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="coneGrad" x1="532" y1="155" x2="532" y2="305" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#2E8B6F" stop-opacity=".28"/>
-          <stop offset="100%" stop-color="#2E8B6F" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#FFD966" stop-opacity=".55"/>
+          <stop offset="100%" stop-color="#FFD966" stop-opacity="0"/>
         </radialGradient>
+        <filter id="glowBlur"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
 
       <!-- wall (matches --white site background) -->
@@ -922,9 +923,9 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- shade inner dark (off) -->
       <polygon points="530,153 584,153 575,114 539,114" fill="#2E8B6F" opacity=".5"/>
       <!-- shade inner bright (on) -->
-      <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#3D2010" opacity="0"/>
+      <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#FFE066" opacity="0"/>
       <!-- bulb -->
-      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#2E8B6F" opacity=".3"/>
+      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#FFE066" opacity=".3" filter="url(#glowBlur)"/>
       <!-- pole below shade -->
       <rect x="553" y="155" width="8" height="75" rx="4" fill="#7A5C42"/>
 
