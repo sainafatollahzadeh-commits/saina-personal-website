@@ -340,6 +340,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .therapy-room-section{display:none}/* hidden: sofa now lives inside hero-text-col */
 .hero-sofa-wrap{position:relative;display:flex;flex-direction:column;align-items:center;width:100%;margin-top:auto}
 .therapy-room-wrap{position:relative;display:flex;flex-direction:column;align-items:center;width:100%}
+.sofa-img{width:100%;max-width:560px;display:block;margin:0 auto}
 .therapy-svg{width:100%;height:auto;display:block}
 .lamp-shade{transition:fill .45s ease}
 .lamp-cone{transition:opacity .45s ease}
@@ -835,108 +836,9 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
     <p class="editable" onclick="inlineEdit('subtitle')" id="hero-subtitle" style="font-size:.82rem;letter-spacing:.06em;color:var(--mid);margin-bottom:2.4rem;font-weight:400;direction:rtl">روانشناس بالینی · روان‌درمانگر</p>
     <!-- sofa sits below the text, filling the remaining column space -->
     <div class="hero-sofa-wrap" id="next-step">
-      <div class="therapy-room-wrap" id="therapy-room-wrap" data-next-step="1">
-        <div class="lamp-glow" id="lamp-glow"></div>
-        <svg class="therapy-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <radialGradient id="lampConeGrad" cx="50%" cy="0%" r="100%" gradientUnits="userSpaceOnUse" cx2="532" cy2="155" r2="160">
-          <stop offset="0%" stop-color="#F5C518" stop-opacity=".7"/>
-          <stop offset="100%" stop-color="#F5C518" stop-opacity="0"/>
-        </radialGradient>
-        <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#F5C518" stop-opacity=".65"/>
-          <stop offset="100%" stop-color="#F5C518" stop-opacity="0"/>
-        </radialGradient>
-        <radialGradient id="coneGrad" x1="532" y1="155" x2="532" y2="305" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#FFD966" stop-opacity=".55"/>
-          <stop offset="100%" stop-color="#FFD966" stop-opacity="0"/>
-        </radialGradient>
-        <filter id="glowBlur"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <!-- make white paper of watercolor transparent so it blends with wall -->
-        <filter id="noWhite" color-interpolation-filters="sRGB">
-          <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -3 -3 -3 10 -1"/>
-        </filter>
-        <!-- clip image at floor line y=310 -->
-        <clipPath id="sofaClip">
-          <rect x="-30" y="0" width="760" height="310"/>
-        </clipPath>
-      </defs>
-
-      <!-- wall (matches --white site background) -->
-      <rect x="0" y="0" width="700" height="310" fill="#F1EAE0"/>
-      <!-- floor (matches --bg) -->
-      <rect x="0" y="310" width="700" height="50" fill="#7A5C42"/>
-      <!-- wall/floor divider -->
-      <line x1="0" y1="310" x2="700" y2="310" stroke="#2E8B6F" stroke-width="1" opacity=".25"/>
-
-      <!-- ===== SOFA — actual watercolor image ===== -->
-      <image href="https://i.postimg.cc/7hJZhtqL/image-1782853178010.png"
-             x="-30" y="80" width="760" height="240"
-             preserveAspectRatio="xMidYMax meet"
-             clip-path="url(#sofaClip)"
-             filter="url(#noWhite)"/>
-
-      <!-- ===== SIDE TABLE ===== -->
-      <!-- table top surface -->
-      <rect x="518" y="220" width="72" height="10" rx="4" fill="#7A5C42"/>
-      <rect x="520" y="222" width="68" height="6" rx="3" fill="#7A5C42"/>
-      <!-- left leg -->
-      <rect x="524" y="230" width="8" height="80" rx="3" fill="#141E22"/>
-      <!-- right leg -->
-      <rect x="572" y="230" width="8" height="80" rx="3" fill="#141E22"/>
-      <!-- stretcher bar -->
-      <rect x="524" y="280" width="56" height="6" rx="3" fill="#141E22"/>
-
-      <!-- ===== FLOOR LAMP ===== -->
-      <!-- lamp base (heavy disc) -->
-      <ellipse cx="556" cy="309" rx="20" ry="5" fill="#141E22"/>
-      <rect x="552" y="230" width="8" height="80" rx="4" fill="#7A5C42"/>
-      <!-- lamp shade -->
-      <polygon points="526,155 588,155 578,110 536,110" fill="#C87890"/>
-      <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#8B4A5A" stroke-width="1.5"/>
-      <!-- shade inner dark (off) -->
-      <polygon points="530,153 584,153 575,114 539,114" fill="#B06878" opacity=".5"/>
-      <!-- shade inner bright (on) -->
-      <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#FFE066" opacity="0"/>
-      <!-- bulb -->
-      <circle id="lamp-bulb" cx="557" cy="153" r="7" fill="#FFE066" opacity=".3" filter="url(#glowBlur)"/>
-      <!-- pole below shade -->
-      <rect x="553" y="155" width="8" height="75" rx="4" fill="#7A5C42"/>
-
-      <!-- light cone (hover only) -->
-      <polygon id="lamp-cone" points="526,157 588,157 640,308 474,308" fill="url(#coneGrad)" opacity="0"/>
-      <!-- floor glow pool -->
-      <ellipse id="floor-glow" cx="557" cy="308" rx="110" ry="16" fill="url(#glowGrad)" opacity="0"/>
-
-      <!-- ===== FLOWER POT (left side, sitting on floor y=310) ===== -->
-      <!-- pot body (bottom at y=310) -->
-      <path d="M68,310 Q60,285 64,275 L96,275 Q100,285 92,310 Z" fill="#7A5C42"/>
-      <path d="M68,310 Q60,285 64,275 L96,275 Q100,285 92,310 Z" fill="none" stroke="#F1EAE0" stroke-width="1.2"/>
-      <!-- pot rim -->
-      <rect x="62" y="272" width="36" height="7" rx="3" fill="#C87890"/>
-      <!-- soil -->
-      <ellipse cx="80" cy="275" rx="16" ry="4" fill="#3D2010"/>
-      <!-- stem -->
-      <line x1="80" y1="275" x2="80" y2="240" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/>
-      <!-- branch left -->
-      <path d="M80,258 Q65,250 62,238" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round"/>
-      <!-- branch right -->
-      <path d="M80,250 Q95,242 98,230" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round"/>
-      <!-- leaves on main stem -->
-      <ellipse cx="80" cy="238" rx="10" ry="6" fill="#5a9e4e" transform="rotate(-15,80,238)"/>
-      <ellipse cx="80" cy="246" rx="9" ry="5" fill="#4a8c3e" transform="rotate(10,80,246)"/>
-      <!-- leaf on left branch -->
-      <ellipse cx="62" cy="238" rx="9" ry="5" fill="#5a9e4e" transform="rotate(-30,62,238)"/>
-      <!-- leaf on right branch -->
-      <ellipse cx="98" cy="230" rx="9" ry="5" fill="#6aae5e" transform="rotate(20,98,230)"/>
-      <!-- small highlight on pot -->
-      <path d="M70,282 Q68,292 69,302" fill="none" stroke="#C87890" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
-        </svg>
-        <button class="book-session-btn" onclick="openOv('telegram-page')"
-                onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
-                onmouseleave="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','.3');document.getElementById('lamp-cone').setAttribute('opacity','0');document.getElementById('floor-glow').setAttribute('opacity','0');document.getElementById('shade-on').setAttribute('opacity','0')"
-                ontouchstart="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('shade-on').setAttribute('opacity','1')"
-                ontouchend="document.getElementById('lamp-glow').classList.remove('lamp-on');document.getElementById('shade-on').setAttribute('opacity','0')">
+      <div class="therapy-room-wrap" id="therapy-room-wrap">
+        <img src="https://i.postimg.cc/7hJZhtqL/image-1782853178010.png" alt="کاناپه" class="sofa-img"/>
+        <button class="book-session-btn" onclick="openOv('telegram-page')">
           رزرو جلسه
         </button>
       </div><!-- end therapy-room-wrap -->
