@@ -542,7 +542,6 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <button class="ap-tab" onclick="switchTab('articles',this)">🎙️ پادکست</button>
       <button class="ap-tab" onclick="switchTab('history',this)">🌀 سوژه و جهان</button>
       <button class="ap-tab" onclick="switchTab('workshops',this)">🛠️ کارگاه‌ها</button>
-      <button class="ap-tab" onclick="switchTab('films',this)">🎨 تحلیل نقاشی</button>
       <button class="ap-tab" onclick="switchTab('site',this)">🌐 تنظیمات</button>
     </div>
     <!-- BOOKS -->
@@ -600,20 +599,6 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
         <label>متن کامل (صفحه جزئیات)</label><textarea id="w-full" placeholder="متن کامل‌تر..." style="min-height:100px"></textarea>
       </div><button class="abtn" onclick="addWorkshop()">+ افزودن</button></div>
       <div class="aps"><h3>کارگاه‌های موجود و ثبت‌نام‌ها</h3><div class="ap-items" id="ap-workshops-list"></div></div>
-    </div>
-    <!-- FILMS -->
-    <div id="tab-films" class="hidden">
-      <div class="aps"><h3>افزودن تحلیل نقاشی / انیمیشن جدید</h3><div class="af">
-        <label class="req">تصویر</label>
-        <div class="iup" onclick="gi('f-img-f').click()"><img id="f-img-prev" src="" style="display:none"/><div id="f-img-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود تصویر</span></div></div>
-        <input type="file" id="f-img-f" accept="image/*" style="display:none" onchange="prevImg(this,'f-img-prev','f-img-ph','f-img-d')"/><input type="hidden" id="f-img-d"/>
-        <label class="req">عنوان اثر</label><input id="f-title" placeholder="نام اثر"/>
-        <label>کارگردان</label><input id="f-author" placeholder="نام کارگردان"/>
-        <label>دسته‌بندی</label><input id="f-cat" placeholder="سوگ، تروما ..."/>
-        <label class="req">خلاصه (کارت)</label><textarea id="f-desc" placeholder="خلاصه کوتاه..."></textarea>
-        <label>متن کامل (صفحه جزئیات)</label><textarea id="f-full" placeholder="تحلیل کامل..." style="min-height:100px"></textarea>
-      </div><button class="abtn" onclick="addFilm()">+ افزودن</button></div>
-      <div class="aps"><h3>تحلیل‌های نقاشی و انیمیشن موجود</h3><div class="ap-items" id="ap-films-list"></div></div>
     </div>
     <!-- SITE -->
     <div id="tab-site" class="hidden">
@@ -777,20 +762,6 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
   </section>
 </div>
 
-<!-- FILM ANALYSIS PAGE -->
-<div id="film-page" class="overlay hidden no-copy">
-  <div class="ov-header">
-    <div class="ov-back" onclick="closeOv('film-page')">← بازگشت</div>
-    <span style="font-size:.82rem;color:var(--mid)">تحلیل نقاشی</span>
-  </div>
-  <section class="books" style="padding-top:3rem">
-    <div class="section-header"><div class="section-title-row"><div class="canvas-anim" aria-hidden="true"><svg viewBox="0 0 56 56"><rect class="cv-brush-handle" x="26" y="8" width="6" height="28" rx="3"/><ellipse class="cv-brush-tip" cx="29" cy="38" rx="4" ry="6"/><ellipse class="cv-drop cv-d1" cx="14" cy="42" rx="4" ry="3" style="--dx:-4px;--dy:5px"/><ellipse class="cv-drop cv-d2" cx="42" cy="38" rx="3" ry="4" style="--dx:5px;--dy:3px"/><ellipse class="cv-drop cv-d3" cx="18" cy="30" rx="3" ry="2" style="--dx:-3px;--dy:-4px"/><ellipse class="cv-drop cv-d4" cx="40" cy="46" rx="4" ry="3" style="--dx:4px;--dy:6px"/><ellipse class="cv-drop cv-d5" cx="10" cy="50" rx="3" ry="2" style="--dx:-6px;--dy:4px"/></svg></div><h2 class="section-title">تحلیل نقاشی</h2></div></div>
-    <div class="page-notes-box"><textarea id="notes-films" placeholder="یادداشت‌ها یا توضیحات خود را درباره این صفحه اینجا بنویسید..." oninput="pageNotes.films=this.value" readonly></textarea></div>
-    <div class="books-grid" id="films-grid"></div>
-  </section>
-</div>
-
-
 <!-- WORKSHOP REGISTRATION FORM PAGE -->
 <div id="register-page" class="overlay hidden">
   <div class="ov-header">
@@ -827,7 +798,6 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <a href="#" onclick="openOv('books-page');closeNavMenu();return false;">سلف سایکولوژی</a>
       <a href="#" onclick="openOv('articles-page');closeNavMenu();return false;">پادکست</a>
       <a href="#" onclick="openOv('workshops-page');closeNavMenu();return false;">کارگاه‌ها</a>
-      <a href="#" onclick="openOv('film-page');closeNavMenu();return false;">تحلیل نقاشی</a>
     </div>
     <div class="nav-links-left">
       <button class="nav-cta" onclick="scrollToNextStep();closeNavMenu()">رزرو جلسه</button>
@@ -839,7 +809,7 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
 <div class="search-bar-wrap">
   <div class="search-bar">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="site-search-input" placeholder="جستجو در سلف سایکولوژی، پادکست، کارگاه‌ها، تحلیل نقاشی و سوژه و جهان..." oninput="siteSearch(this.value)" onfocus="if(this.value)siteSearch(this.value)"/>
+    <input type="text" id="site-search-input" placeholder="جستجو در سلف سایکولوژی، پادکست، کارگاه‌ها و سوژه و جهان..." oninput="siteSearch(this.value)" onfocus="if(this.value)siteSearch(this.value)"/>
     <button class="search-clear" id="search-clear-btn" onclick="gi('site-search-input').value='';siteSearch('')" style="display:none">✕</button>
   </div>
   <div class="search-results hidden" id="search-results"></div>
@@ -1050,9 +1020,6 @@ let books=[
   {id:2,title:'بدن حساب می‌کند',author:'بسل ون در کولک',cat:'تروما',desc:'پژوهشی درباره تروما در بدن.',full:'چگونه تروما در بدن ذخیره می‌شود و چطور می‌توان به بهبودی رسید.',img:''},
   {id:3,title:'مرز بین من و تو',author:'نجمه دهقانی',cat:'اختلالات شخصیت',desc:'راهنمای اختلال شخصیت مرزی.',full:'راهنمای عملی برای اختلال شخصیت مرزی و ایجاد ثبات عاطفی.',img:''}
 ];
-let films=[
-  {id:1,title:'افسانه‌های خشم',author:'کارگردان نمونه',cat:'سوگ',desc:'تحلیلی روان‌شناختی از مراحل سوگواری در این فیلم.',full:'تحلیل کامل فیلم از منظر روان‌درمانی و مراحل پردازش فقدان.',img:''}
-];
 let articles=[
   {id:1,title:'وقتی غم نمی‌رود',date:'۱۴۰۵/۰۲/۱۰',summary:'سوگ پیچیده زمانی رخ می‌دهد که فرآیند طبیعی اندوه متوقف می‌شود.',full:'سوگ پیچیده وضعیتی جدی است که نیاز به درمان تخصصی دارد.',img:'',link:''},
   {id:2,title:'تروما و حافظه',date:'۱۴۰۵/۰۱/۲۵',summary:'تروما در سیستم عصبی و بدن ذخیره می‌شود.',full:'تحقیقات نوروبیولوژی اثرات عمیق تروما بر مغز را نشان می‌دهند.',img:'',link:''},
@@ -1129,17 +1096,15 @@ async function loadWorkshopRegistrations(w){
 async function loadAllFromFirestore(){
   try{
     await fbSeedIfEmpty('books',books);
-    await fbSeedIfEmpty('films',films);
     await fbSeedIfEmpty('articles',articles);
     await fbSeedIfEmpty('psychoHistory',psychoHistory);
     await fbSeedIfEmpty('workshops',workshops,w=>{const{registrations,...rest}=w;return rest;});
     books=await fbLoadCollection('books');
-    films=await fbLoadCollection('films');
     articles=await fbLoadCollection('articles');
     psychoHistory=await fbLoadCollection('psychoHistory');
     workshops=await fbLoadCollection('workshops');
     if(isAdmin)for(const w of workshops)await loadWorkshopRegistrations(w);
-    renderAll();renderAPBooks();renderAPArticles();renderAPPsychoHistory();renderAPWorkshops();renderAPFilms();
+    renderAll();renderAPBooks();renderAPArticles();renderAPPsychoHistory();renderAPWorkshops();
   }catch(e){
     console.error('Firestore load failed, keeping local defaults',e);
   }
@@ -1154,7 +1119,7 @@ async function loadGrief(){
   renderGrief();
   if(isAdmin)renderAPGrief();
 }
-/* ======= CONTENT PROTECTION (books/articles/history/film-analysis) ======= */
+/* ======= CONTENT PROTECTION (books/articles/history) ======= */
 document.addEventListener('contextmenu',e=>{
   if(!isAdmin&&e.target.closest('.no-copy'))e.preventDefault();
 });
@@ -1215,19 +1180,19 @@ auth.onAuthStateChanged(user=>{
   renderAll();
 });
 function setNotesReadonly(){
-  ['history','books','articles','workshops','films'].forEach(n=>{
+  ['history','books','articles','workshops'].forEach(n=>{
     const el=gi('notes-'+n);if(!el)return;
     if(isAdmin)el.removeAttribute('readonly');else el.setAttribute('readonly','readonly');
   });
 }
 function openPanel(){
   gi('admin-panel').classList.remove('hidden');
-  renderAPBooks();renderAPArticles();renderAPPsychoHistory();renderAPWorkshops();renderAPFilms();
+  renderAPBooks();renderAPArticles();renderAPPsychoHistory();renderAPWorkshops();
   loadSiteForm();
 }
 function closePanel(){gi('admin-panel').classList.add('hidden')}
 function switchTab(n,el){
-  ['books','articles','history','workshops','films','site'].forEach(t=>gi('tab-'+t).classList.add('hidden'));
+  ['books','articles','history','workshops','site'].forEach(t=>gi('tab-'+t).classList.add('hidden'));
   document.querySelectorAll('.ap-tab').forEach(b=>b.classList.remove('active'));
   gi('tab-'+n).classList.remove('hidden');el.classList.add('active');
 }
@@ -1253,13 +1218,13 @@ function addTileHtml(type,label,cardClass,minH){
 function openNewItemModal(type){
   if(!isAdmin)return;
   editTarget={t:'new',type};
-  const titles={book:'افزودن مورد جدید به سلف سایکولوژی',article:'افزودن پادکست جدید',history:'افزودن مورد جدید به سوژه و جهان',workshop:'افزودن کارگاه جدید',film:'افزودن تحلیل نقاشی / انیمیشن جدید'};
+  const titles={book:'افزودن مورد جدید به سلف سایکولوژی',article:'افزودن پادکست جدید',history:'افزودن مورد جدید به سوژه و جهان',workshop:'افزودن کارگاه جدید'};
   gi('m-title').textContent=titles[type]||'افزودن مورد جدید';
   gi('m-sub').textContent='';
   let fields=`<label>تصویر</label><div class="iup" style="height:100px" onclick="gi('m-n-f').click()"><img id="m-n-prev" src="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-n-ph" class="iup-lbl"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-n-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-n-prev','m-n-ph','mv-img')"/><input type="hidden" id="mv-img" value=""/>
   <label class="req">عنوان</label><input id="mv-title" placeholder="عنوان"/>`;
-  if(type==='book'||type==='workshop'||type==='film'){
-    fields+=`<label>${type==='book'?'نویسنده':type==='film'?'کارگردان':'مدرس'}</label><input id="mv-author" placeholder="${type==='book'?'نام نویسنده':type==='film'?'نام کارگردان':'نام مدرس'}"/>
+  if(type==='book'||type==='workshop'){
+    fields+=`<label>${type==='book'?'نویسنده':'مدرس'}</label><input id="mv-author" placeholder="${type==='book'?'نام نویسنده':'نام مدرس'}"/>
     <label>دسته‌بندی</label><input id="mv-cat" placeholder="دسته‌بندی"/>`;
   } else {
     fields+=`<label>تاریخ</label><input id="mv-date" placeholder="تاریخ"/>`;
@@ -1326,10 +1291,9 @@ function getDpItem(type,id){
   if(type==='article')return articles.find(x=>x.id===id);
   if(type==='history')return psychoHistory.find(x=>x.id===id);
   if(type==='workshop')return workshops.find(x=>x.id===id);
-  if(type==='film')return films.find(x=>x.id===id);
   return null;
 }
-const SEARCH_CATS={book:'سلف سایکولوژی',article:'پادکست',workshop:'کارگاه',film:'تحلیل نقاشی',history:'سوژه و جهان'};
+const SEARCH_CATS={book:'سلف سایکولوژی',article:'پادکست',workshop:'کارگاه',history:'سوژه و جهان'};
 function siteSearch(q){
   const box=gi('search-results'),clearBtn=gi('search-clear-btn');
   clearBtn.style.display=q?'block':'none';
@@ -1339,7 +1303,6 @@ function siteSearch(q){
     ...books.map(x=>({type:'book',id:x.id,title:x.title,sub:x.author||x.desc||''})),
     ...articles.map(x=>({type:'article',id:x.id,title:x.title,sub:x.summary||''})),
     ...workshops.map(x=>({type:'workshop',id:x.id,title:x.title,sub:x.author||x.desc||''})),
-    ...films.map(x=>({type:'film',id:x.id,title:x.title,sub:x.desc||''})),
     ...psychoHistory.map(x=>({type:'history',id:x.id,title:x.title,sub:x.summary||''}))
   ];
   const results=pools.filter(r=>r.title.toLowerCase().includes(term));
@@ -1357,13 +1320,13 @@ document.addEventListener('click',e=>{
 function openDp(type,id){
   const item=getDpItem(type,id);if(!item)return;
   dpCurrent={type,id};
-  gi('detail-page').classList.toggle('no-copy',type==='book'||type==='article'||type==='history'||type==='film');
-  const breadcrumbs={book:'سلف سایکولوژی',article:'پادکست',history:'سوژه و جهان',workshop:'کارگاه‌ها',film:'تحلیل نقاشی'};
+  gi('detail-page').classList.toggle('no-copy',type==='book'||type==='article'||type==='history');
+  const breadcrumbs={book:'سلف سایکولوژی',article:'پادکست',history:'سوژه و جهان',workshop:'کارگاه‌ها'};
   gi('dp-breadcrumb').textContent=breadcrumbs[type]||'';
   const img=gi('dp-img'),ph=gi('dp-img-ph');
   if(item.img){img.src=item.img;img.style.display='block';ph.style.display='none';}
-  else{img.style.display='none';ph.style.display='flex';const icons={book:'📚',article:'📝',history:'📜',workshop:'🛠️',film:'🎬'};ph.textContent=icons[type]||'📄';}
-  setText('dp-tag',(type==='book'||type==='workshop'||type==='film')?item.cat:item.date);
+  else{img.style.display='none';ph.style.display='flex';const icons={book:'📚',article:'📝',history:'📜',workshop:'🛠️'};ph.textContent=icons[type]||'📄';}
+  setText('dp-tag',(type==='book'||type==='workshop')?item.cat:item.date);
   setText('dp-title',item.title);
   setText('dp-author',item.author||'');gi('dp-author').style.display=item.author?'block':'none';
   setText('dp-date',item.date||'');gi('dp-date').style.display='none';
@@ -1417,7 +1380,7 @@ function goToPurchasedCourse(){
 function dpInlineEdit(field){
   if(!isAdmin||!dpCurrent)return;
   const item=getDpItem(dpCurrent.type,dpCurrent.id);if(!item)return;
-  const fieldMap={tag:{k:(dpCurrent.type==='book'||dpCurrent.type==='workshop'||dpCurrent.type==='film')?'cat':'date',lbl:'دسته‌بندی/تاریخ',long:false},title:{k:'title',lbl:'عنوان',long:false},author:{k:'author',lbl:'نویسنده/مدرس',long:false},date:{k:'date',lbl:'تاریخ',long:false},desc:{k:'full',lbl:'متن کامل',long:true}};
+  const fieldMap={tag:{k:(dpCurrent.type==='book'||dpCurrent.type==='workshop')?'cat':'date',lbl:'دسته‌بندی/تاریخ',long:false},title:{k:'title',lbl:'عنوان',long:false},author:{k:'author',lbl:'نویسنده/مدرس',long:false},date:{k:'date',lbl:'تاریخ',long:false},desc:{k:'full',lbl:'متن کامل',long:true}};
   const fm=fieldMap[field];if(!fm)return;
   editTarget={t:'dp',dpType:dpCurrent.type,dpId:dpCurrent.id,k:fm.k,field};
   gi('m-title').textContent='ویرایش';gi('m-sub').textContent=fm.lbl;
@@ -1431,7 +1394,7 @@ function dpImgUpload(e){
   const r=new FileReader();r.onload=ev=>{
     const src=ev.target.result;gi('dp-img').src=src;gi('dp-img').style.display='block';gi('dp-img-ph').style.display='none';
     const item=getDpItem(dpCurrent.type,dpCurrent.id);
-    if(item){item.img=src;renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();renderFilms();}
+    if(item){item.img=src;renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();}
   };r.readAsDataURL(f);
 }
 function handleBioPhoto(e){
@@ -1554,7 +1517,7 @@ function saveEdit(){
     else m.s(gv('mv'));
   } else if(t==='dp'){
     const item=getDpItem(editTarget.dpType,editTarget.dpId);
-    if(item){item[editTarget.k]=gv('mv');setText('dp-'+editTarget.field,item[editTarget.k]);renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();renderFilms();}
+    if(item){item[editTarget.k]=gv('mv');setText('dp-'+editTarget.field,item[editTarget.k]);renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();}
   } else if(t==='bio'){
     const s=bioSections[editTarget.i];
     if(editTarget.field==='title')s.t=gv('mv');else s.p=gv('mv');
@@ -1566,13 +1529,6 @@ function saveEdit(){
     fbSet('books',b);
     renderBooks();renderAPBooks();
     if(dpCurrent&&dpCurrent.type==='book'&&dpCurrent.id===b.id)openDp('book',b.id);
-  } else if(t==='film'){
-    const f=films.find(x=>x.id===editTarget.id);
-    f.title=gv('mv-title');f.author=gv('mv-author');f.cat=gv('mv-cat');f.desc=gv('mv-desc');f.full=gv('mv-full');
-    const ni=gv('mv-img');if(ni)f.img=ni;
-    fbSet('films',f);
-    renderFilms();renderAPFilms();
-    if(dpCurrent&&dpCurrent.type==='film'&&dpCurrent.id===f.id)openDp('film',f.id);
   } else if(t==='article'){
     const a=articles.find(x=>x.id===editTarget.id);
     a.title=gv('mv-title');a.date=gv('mv-date');a.summary=gv('mv-desc');a.full=gv('mv-full');a.link=gv('mv-link');
@@ -1616,10 +1572,6 @@ function saveEdit(){
       workshops.push(w);
       const{registrations,...wRest}=w;fbSet('workshops',wRest);
       renderWorkshops();renderAPWorkshops();
-    } else if(type==='film'){
-      const f={id:Date.now(),title,author:gv('mv-author'),cat:gv('mv-cat'),desc,full:gv('mv-full'),img};
-      films.push(f);fbSet('films',f);
-      renderFilms();renderAPFilms();
     }
   } else if(t==='wsettings'){
     const w=workshops.find(x=>x.id===editTarget.wid);
@@ -1675,41 +1627,6 @@ function addBook(){
 }
 function delBook(id){if(confirm('حذف شود؟')){books=books.filter(b=>b.id!==id);fbDelete('books',id);renderBooks();renderAPBooks();}}
 
-/* ======= FILMS ======= */
-function renderFilms(){
-  const g=gi('films-grid');if(!g)return;
-  let html=films.map(f=>`<div class="book-card reveal" onclick="${isAdmin?`editFilm(${f.id})`:`openDp('film',${f.id})`}">
-    <div class="book-cover eimg" style="background:${bkBg(f.id)}">${f.img?`<img src="${f.img}"/>`:`<div class="book-cover-ph">🎬</div>`}<div class="eimg-badge" onclick="event.stopPropagation();if(isAdmin)editFilm(${f.id})"><span>📷</span><span>ویرایش</span></div>${isAdmin?`<button class="card-view-btn" onclick="event.stopPropagation();openDp('film',${f.id})" title="مشاهده صفحه عمومی">👁</button><button class="card-del-btn" onclick="event.stopPropagation();delFilm(${f.id})" title="حذف">✕</button>`:''}</div>
-    <div class="book-body"><p class="book-tag">${f.cat}</p><h3 class="book-title">${f.title}</h3><p class="book-author">${f.author}</p><p class="book-desc">${f.desc}</p></div>
-  </div>`).join('');
-  if(isAdmin)html+=addTileHtml('film','افزودن تحلیل نقاشی / انیمیشن جدید','book-card',240);
-  g.innerHTML=html||'<p style="color:var(--mid);grid-column:1/-1">تحلیلی ثبت نشده.</p>';
-  g.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-}
-function editFilm(id){
-  if(!isAdmin)return;const f=films.find(x=>x.id===id);editTarget={t:'film',id};
-  gi('m-title').textContent='ویرایش تحلیل نقاشی / انیمیشن';gi('m-sub').textContent=f.title;
-  gi('m-body').innerHTML=`<label>تصویر</label><div class="iup" style="height:100px" onclick="gi('m-f-f').click()"><img id="m-f-prev" src="${f.img||''}" style="${f.img?'display:block':'display:none'};position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/><div id="m-f-ph" class="iup-lbl" style="${f.img?'display:none':''}"><span class="ico">🖼️</span><span>آپلود</span></div></div><input type="file" id="m-f-f" accept="image/*" style="display:none" onchange="prevImg(this,'m-f-prev','m-f-ph','mv-img')"/><input type="hidden" id="mv-img" value="${f.img}"/>
-  <label>عنوان</label><input id="mv-title" value="${esc(f.title)}"/>
-  <label>کارگردان</label><input id="mv-author" value="${esc(f.author)}"/>
-  <label>دسته‌بندی</label><input id="mv-cat" value="${esc(f.cat)}"/>
-  <label>خلاصه (کارت)</label><textarea id="mv-desc">${esc(f.desc)}</textarea>
-  <label>متن کامل</label><textarea id="mv-full" style="min-height:100px">${esc(f.full)}</textarea>`;
-  gi('edit-modal').classList.remove('hidden');
-}
-function renderAPFilms(){
-  const l=gi('ap-films-list');if(!l)return;if(!films.length){l.innerHTML='<p style="color:var(--mid)">تحلیلی ثبت نشده.</p>';return}
-  l.innerHTML=films.map(f=>`<div class="ap-item"><div class="ap-thumb">${f.img?`<img src="${f.img}"/>`:'🎬'}</div><div class="ap-it"><strong>${f.title}</strong><span>${f.author}</span></div><div class="ap-ia"><button class="edit-b" onclick="editFilm(${f.id});closePanel()">ویرایش</button><button class="del" onclick="delFilm(${f.id})">حذف</button></div></div>`).join('');
-}
-function addFilm(){
-  const t=gv('f-title'),d=gv('f-desc'),img=gv('f-img-d');if(!t||!d){alert('عنوان و خلاصه الزامی');return}
-  const f={id:Date.now(),title:t,author:gv('f-author'),cat:gv('f-cat'),desc:d,full:gv('f-full'),img};
-  films.push(f);fbSet('films',f);
-  ['f-title','f-author','f-cat','f-desc','f-full','f-img-d'].forEach(id=>{const el=gi(id);if(el)el.value='';});
-  gi('f-img-prev').style.display='none';gi('f-img-ph').style.display='flex';
-  renderFilms();renderAPFilms();alert('تحلیل نقاشی / انیمیشن اضافه شد!');
-}
-function delFilm(id){if(confirm('حذف شود؟')){films=films.filter(f=>f.id!==id);fbDelete('films',id);renderFilms();renderAPFilms();}}
 
 /* ======= ARTICLES ======= */
 function renderArticles(){
@@ -2170,7 +2087,7 @@ function saveTgUrl(){
 }
 
 /* ======= HELPERS ======= */
-function renderAll(){renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();renderFilms();}
+function renderAll(){renderBooks();renderArticles();renderPsychoHistory();renderWorkshops();}
 function gi(id){return document.getElementById(id)}
 function gv(id){const el=gi(id);return el?el.value.trim():''}
 function setText(id,v){const el=gi(id);if(el)el.textContent=v}
