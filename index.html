@@ -861,46 +861,73 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- wall/floor divider -->
       <line x1="0" y1="310" x2="700" y2="310" stroke="#2E8B6F" stroke-width="1" opacity=".25"/>
 
-      <!-- ===== SOFA (puffy, comfortable) ===== -->
-      <!-- sofa base frame -->
-      <rect x="150" y="232" width="360" height="78" rx="18" fill="#7A5C42"/>
-      <!-- seat base platform -->
-      <rect x="158" y="248" width="344" height="58" rx="14" fill="#7A5C42"/>
-      <!-- left seat cushion (puffy) -->
-      <rect x="166" y="244" width="158" height="58" rx="14" fill="#2E8B6F"/>
-      <rect x="172" y="248" width="146" height="44" rx="12" fill="#2E8B6F"/>
-      <rect x="178" y="252" width="134" height="28" rx="10" fill="#2E8B6F" opacity=".7"/>
-      <!-- right seat cushion (puffy) -->
-      <rect x="334" y="244" width="158" height="58" rx="14" fill="#2E8B6F"/>
-      <rect x="340" y="248" width="146" height="44" rx="12" fill="#2E8B6F"/>
-      <rect x="346" y="252" width="134" height="28" rx="10" fill="#2E8B6F" opacity=".7"/>
-      <!-- cushion gap shadow -->
-      <rect x="320" y="248" width="18" height="52" rx="3" fill="#F1EAE0" opacity=".4"/>
-      <!-- backrest base -->
-      <rect x="142" y="172" width="376" height="68" rx="18" fill="#7A5C42"/>
-      <!-- left back cushion (puffy) -->
-      <rect x="150" y="176" width="174" height="58" rx="14" fill="#7A5C42"/>
-      <rect x="156" y="180" width="162" height="46" rx="12" fill="#2E8B6F"/>
-      <rect x="162" y="184" width="150" height="32" rx="10" fill="#2E8B6F" opacity=".65"/>
-      <!-- right back cushion (puffy) -->
-      <rect x="334" y="176" width="174" height="58" rx="14" fill="#7A5C42"/>
-      <rect x="340" y="180" width="162" height="46" rx="12" fill="#2E8B6F"/>
-      <rect x="346" y="184" width="150" height="32" rx="10" fill="#2E8B6F" opacity=".65"/>
-      <!-- back cushion gap -->
-      <rect x="320" y="178" width="18" height="60" rx="3" fill="#F1EAE0" opacity=".4"/>
-      <!-- left armrest (puffy rounded) -->
-      <rect x="130" y="188" width="36" height="118" rx="16" fill="#7A5C42"/>
-      <rect x="133" y="188" width="30" height="24" rx="12" fill="#7A5C42"/>
-      <!-- right armrest (puffy rounded) -->
-      <rect x="494" y="188" width="36" height="118" rx="16" fill="#7A5C42"/>
-      <rect x="494" y="188" width="30" height="24" rx="12" fill="#7A5C42"/>
-      <!-- sofa legs -->
-      <rect x="163" y="304" width="14" height="10" rx="4" fill="#141E22"/>
-      <rect x="482" y="304" width="14" height="10" rx="4" fill="#141E22"/>
-      <rect x="218" y="304" width="12" height="8" rx="3" fill="#141E22"/>
-      <rect x="428" y="304" width="12" height="8" rx="3" fill="#141E22"/>
-      <!-- highlight sheen on seat -->
-      <rect x="170" y="248" width="318" height="4" rx="2" fill="#2E8B6F" opacity=".18"/>
+      <!-- ===== SOFA (watercolor sage-green, 3-cushion) ===== -->
+      <!-- shadow under sofa -->
+      <ellipse cx="330" cy="312" rx="195" ry="7" fill="#B8B89A" opacity=".22"/>
+      <!-- sofa legs (dark walnut) -->
+      <rect x="162" y="300" width="12" height="14" rx="5" fill="#3E2010"/>
+      <rect x="176" y="300" width="10" height="14" rx="5" fill="#3E2010"/>
+      <rect x="472" y="300" width="12" height="14" rx="5" fill="#3E2010"/>
+      <rect x="460" y="300" width="10" height="14" rx="5" fill="#3E2010"/>
+      <!-- main body / base platform -->
+      <rect x="140" y="248" width="378" height="58" rx="10" fill="#A8B865"/>
+      <!-- bottom front face of sofa (depth) -->
+      <rect x="148" y="288" width="362" height="18" rx="6" fill="#96A552"/>
+      <!-- === BACK CUSHIONS (3) === -->
+      <!-- back cushion base bar -->
+      <rect x="145" y="178" width="368" height="76" rx="16" fill="#9CB060"/>
+      <!-- back cushion left -->
+      <rect x="150" y="182" width="112" height="68" rx="14" fill="#C8D888"/>
+      <rect x="155" y="187" width="102" height="56" rx="11" fill="#D4E296" opacity=".9"/>
+      <rect x="160" y="192" width="90" height="30" rx="8" fill="#DCE89E" opacity=".5"/>
+      <!-- back cushion centre -->
+      <rect x="268" y="182" width="122" height="68" rx="14" fill="#C8D888"/>
+      <rect x="273" y="187" width="112" height="56" rx="11" fill="#D4E296" opacity=".9"/>
+      <rect x="278" y="192" width="100" height="30" rx="8" fill="#DCE89E" opacity=".5"/>
+      <!-- back cushion right -->
+      <rect x="396" y="182" width="112" height="68" rx="14" fill="#C8D888"/>
+      <rect x="401" y="187" width="102" height="56" rx="11" fill="#D4E296" opacity=".9"/>
+      <rect x="406" y="192" width="90" height="30" rx="8" fill="#DCE89E" opacity=".5"/>
+      <!-- back cushion gaps (shadow) -->
+      <rect x="262" y="184" width="8" height="66" rx="3" fill="#8BA048" opacity=".45"/>
+      <rect x="390" y="184" width="8" height="66" rx="3" fill="#8BA048" opacity=".45"/>
+      <!-- === ARMRESTS (rounded, puffy) === -->
+      <!-- left armrest -->
+      <rect x="122" y="198" width="44" height="110" rx="20" fill="#BACE78"/>
+      <rect x="124" y="198" width="40" height="34" rx="18" fill="#CEDD8A"/>
+      <rect x="127" y="200" width="34" height="18" rx="10" fill="#D8E896" opacity=".6"/>
+      <!-- right armrest -->
+      <rect x="492" y="198" width="44" height="110" rx="20" fill="#BACE78"/>
+      <rect x="494" y="198" width="40" height="34" rx="18" fill="#CEDD8A"/>
+      <rect x="497" y="200" width="34" height="18" rx="10" fill="#D8E896" opacity=".6"/>
+      <!-- === SEAT CUSHIONS (3) === -->
+      <!-- seat left cushion -->
+      <rect x="148" y="240" width="116" height="54" rx="12" fill="#BACE78"/>
+      <rect x="152" y="243" width="108" height="44" rx="10" fill="#CEDD8A"/>
+      <rect x="156" y="246" width="100" height="22" rx="8" fill="#D8E896" opacity=".55"/>
+      <!-- seat centre cushion -->
+      <rect x="270" y="240" width="118" height="54" rx="12" fill="#BACE78"/>
+      <rect x="274" y="243" width="110" height="44" rx="10" fill="#CEDD8A"/>
+      <rect x="278" y="246" width="102" height="22" rx="8" fill="#D8E896" opacity=".55"/>
+      <!-- seat right cushion -->
+      <rect x="394" y="240" width="116" height="54" rx="12" fill="#BACE78"/>
+      <rect x="398" y="243" width="108" height="44" rx="10" fill="#CEDD8A"/>
+      <rect x="402" y="246" width="100" height="22" rx="8" fill="#D8E896" opacity=".55"/>
+      <!-- seat cushion gaps -->
+      <rect x="264" y="242" width="8" height="52" rx="3" fill="#96A552" opacity=".5"/>
+      <rect x="388" y="242" width="8" height="52" rx="3" fill="#96A552" opacity=".5"/>
+      <!-- === THROW PILLOWS === -->
+      <!-- left pillow: colourful stripes (pink/teal/coral like reference) -->
+      <rect x="155" y="204" width="72" height="54" rx="9" fill="#E8C4A0" transform="rotate(-8,191,231)"/>
+      <rect x="157" y="208" width="68" height="8" rx="3" fill="#E87878" transform="rotate(-8,191,212)"/>
+      <rect x="157" y="218" width="68" height="6" rx="3" fill="#78B8A8" transform="rotate(-8,191,221)"/>
+      <rect x="157" y="226" width="68" height="8" rx="3" fill="#E8A87A" transform="rotate(-8,191,230)"/>
+      <rect x="157" y="236" width="68" height="6" rx="3" fill="#C8D888" transform="rotate(-8,191,239)"/>
+      <rect x="157" y="244" width="68" height="6" rx="3" fill="#E87878" transform="rotate(-8,191,247)" opacity=".7"/>
+      <!-- right pillow: pale cream/yellow -->
+      <rect x="420" y="208" width="66" height="52" rx="9" fill="#EDE8C8" transform="rotate(6,453,234)"/>
+      <rect x="423" y="212" width="60" height="44" rx="7" fill="#F4F0D8" opacity=".85" transform="rotate(6,453,234)"/>
+      <rect x="430" y="218" width="46" height="24" rx="5" fill="#FAFAF0" opacity=".5" transform="rotate(6,453,234)"/>
 
       <!-- ===== SIDE TABLE ===== -->
       <!-- table top surface -->
