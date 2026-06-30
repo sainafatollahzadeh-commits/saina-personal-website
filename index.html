@@ -1086,20 +1086,6 @@ function scrollToNextStep(){
   if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-/* lamp glow on book-session-btn hover */
-(function(){
-  function initLampHover(){
-    const btn=document.querySelector('.book-session-btn');
-    const wrap=gi('sofa-img-wrap');
-    if(!btn||!wrap)return;
-    btn.addEventListener('mouseenter',()=>wrap.classList.add('lamp-on'));
-    btn.addEventListener('mouseleave',()=>wrap.classList.remove('lamp-on'));
-    btn.addEventListener('focus',()=>wrap.classList.add('lamp-on'));
-    btn.addEventListener('blur',()=>wrap.classList.remove('lamp-on'));
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initLampHover);
-  else initLampHover();
-})();
 
 /* ======= QUICK ADD TILE (used in Books/Articles/History/Workshops grids) ======= */
 function addTileHtml(type,label,cardClass,minH){
@@ -1980,6 +1966,17 @@ setNotesReadonly();
 renderAll();
 loadAllFromFirestore();
 (function(){const tg=gi('lnk2-tg'),li=gi('lnk2-li'),ig=gi('lnk2-ig');if(tg)tg.href=S.tg;if(li)li.href=S.li;if(ig)ig.href=S.ig;})();
+
+/* lamp glow on book-session-btn hover */
+(function(){
+  const btn=document.querySelector('.book-session-btn');
+  const wrap=gi('sofa-img-wrap');
+  if(!btn||!wrap)return;
+  btn.addEventListener('mouseenter',()=>wrap.classList.add('lamp-on'));
+  btn.addEventListener('mouseleave',()=>wrap.classList.remove('lamp-on'));
+  btn.addEventListener('focus',()=>wrap.classList.add('lamp-on'));
+  btn.addEventListener('blur',()=>wrap.classList.remove('lamp-on'));
+})();
 </script>
 </body>
 </html>
