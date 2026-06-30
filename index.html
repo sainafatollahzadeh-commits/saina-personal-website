@@ -344,13 +344,14 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .sofa-img{width:100%;display:block}
 /* edge fade overlay — must be last child so it sits above glow */
 .sofa-img-wrap::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;background:linear-gradient(to right,var(--white) 0%,transparent 5%),linear-gradient(to left,var(--white) 0%,transparent 5%),linear-gradient(to bottom,var(--white) 0%,transparent 5%),linear-gradient(to top,var(--white) 0%,transparent 5%)}
-/* warm lamp glow — amber radial burst from lamp position (adjust % to match image) */
+/* warm lamp glow — amber radial burst from lamp position */
 .lamp-glow{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:4px;
   background:
-    radial-gradient(ellipse 38% 32% at 82% 22%, rgba(255,185,50,.72) 0%, rgba(255,185,50,.30) 40%, transparent 70%),
-    radial-gradient(ellipse 60% 55% at 82% 35%, rgba(255,200,80,.22) 0%, transparent 75%),
-    radial-gradient(ellipse 80% 70% at 80% 50%, rgba(255,220,120,.09) 0%, transparent 80%);
-  opacity:0;transition:opacity .55s ease}
+    radial-gradient(ellipse 28% 22% at 90% 22%, rgba(210,130,20,.55) 0%, rgba(210,130,20,.18) 50%, transparent 75%),
+    radial-gradient(ellipse 55% 50% at 90% 32%, rgba(220,150,40,.18) 0%, transparent 75%),
+    radial-gradient(ellipse 85% 75% at 85% 55%, rgba(200,140,30,.10) 0%, transparent 80%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(200,140,30,.06) 0%, transparent 85%);
+  opacity:0;transition:opacity .6s ease}
 .sofa-img-wrap.lamp-on .lamp-glow{opacity:1}
 .therapy-svg{width:100%;height:auto;display:block}
 .book-session-btn{margin-top:1.6rem;padding:1.1rem 3.4rem;background:var(--blue);color:#fff;border:none;border-radius:3px;font-family:'Vazirmatn',sans-serif;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background .25s,box-shadow .25s,transform .15s}
