@@ -852,6 +852,14 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
           <stop offset="100%" stop-color="#FFD966" stop-opacity="0"/>
         </radialGradient>
         <filter id="glowBlur"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <!-- make white paper of watercolor transparent so it blends with wall -->
+        <filter id="noWhite" color-interpolation-filters="sRGB">
+          <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -3 -3 -3 10 -1"/>
+        </filter>
+        <!-- clip image at floor line y=310 -->
+        <clipPath id="sofaClip">
+          <rect x="-30" y="0" width="760" height="310"/>
+        </clipPath>
       </defs>
 
       <!-- wall (matches --white site background) -->
@@ -865,7 +873,8 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <image href="https://i.postimg.cc/7hJZhtqL/image-1782853178010.png"
              x="-30" y="80" width="760" height="240"
              preserveAspectRatio="xMidYMax meet"
-             style="mix-blend-mode:multiply"/>
+             clip-path="url(#sofaClip)"
+             filter="url(#noWhite)"/>
 
       <!-- ===== SIDE TABLE ===== -->
       <!-- table top surface -->
@@ -883,10 +892,10 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <ellipse cx="556" cy="309" rx="20" ry="5" fill="#141E22"/>
       <rect x="552" y="230" width="8" height="80" rx="4" fill="#7A5C42"/>
       <!-- lamp shade -->
-      <polygon points="526,155 588,155 578,110 536,110" fill="#2E8B6F"/>
-      <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#8B3C2C" stroke-width="1.5"/>
+      <polygon points="526,155 588,155 578,110 536,110" fill="#C87890"/>
+      <polygon points="526,155 588,155 578,110 536,110" fill="none" stroke="#8B4A5A" stroke-width="1.5"/>
       <!-- shade inner dark (off) -->
-      <polygon points="530,153 584,153 575,114 539,114" fill="#2E8B6F" opacity=".5"/>
+      <polygon points="530,153 584,153 575,114 539,114" fill="#B06878" opacity=".5"/>
       <!-- shade inner bright (on) -->
       <polygon id="shade-on" points="530,153 584,153 575,114 539,114" fill="#FFE066" opacity="0"/>
       <!-- bulb -->
@@ -899,29 +908,29 @@ footer{padding:3.5rem 3.5rem 1.8rem;background:var(--bg)}
       <!-- floor glow pool -->
       <ellipse id="floor-glow" cx="557" cy="308" rx="110" ry="16" fill="url(#glowGrad)" opacity="0"/>
 
-      <!-- ===== FLOWER POT (left side of sofa) ===== -->
-      <!-- pot body -->
-      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="#7A5C42"/>
-      <path d="M68,290 Q60,265 64,255 L96,255 Q100,265 92,290 Z" fill="none" stroke="#F1EAE0" stroke-width="1.2"/>
+      <!-- ===== FLOWER POT (left side, sitting on floor y=310) ===== -->
+      <!-- pot body (bottom at y=310) -->
+      <path d="M68,310 Q60,285 64,275 L96,275 Q100,285 92,310 Z" fill="#7A5C42"/>
+      <path d="M68,310 Q60,285 64,275 L96,275 Q100,285 92,310 Z" fill="none" stroke="#F1EAE0" stroke-width="1.2"/>
       <!-- pot rim -->
-      <rect x="62" y="252" width="36" height="7" rx="3" fill="#2E8B6F"/>
+      <rect x="62" y="272" width="36" height="7" rx="3" fill="#C87890"/>
       <!-- soil -->
-      <ellipse cx="80" cy="255" rx="16" ry="4" fill="#3D2010"/>
+      <ellipse cx="80" cy="275" rx="16" ry="4" fill="#3D2010"/>
       <!-- stem -->
-      <line x1="80" y1="255" x2="80" y2="220" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/>
+      <line x1="80" y1="275" x2="80" y2="240" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/>
       <!-- branch left -->
-      <path d="M80,238 Q65,230 62,218" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M80,258 Q65,250 62,238" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round"/>
       <!-- branch right -->
-      <path d="M80,230 Q95,222 98,210" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M80,250 Q95,242 98,230" fill="none" stroke="#4a7c3f" stroke-width="2.5" stroke-linecap="round"/>
       <!-- leaves on main stem -->
-      <ellipse cx="80" cy="218" rx="10" ry="6" fill="#5a9e4e" transform="rotate(-15,80,218)"/>
-      <ellipse cx="80" cy="226" rx="9" ry="5" fill="#4a8c3e" transform="rotate(10,80,226)"/>
+      <ellipse cx="80" cy="238" rx="10" ry="6" fill="#5a9e4e" transform="rotate(-15,80,238)"/>
+      <ellipse cx="80" cy="246" rx="9" ry="5" fill="#4a8c3e" transform="rotate(10,80,246)"/>
       <!-- leaf on left branch -->
-      <ellipse cx="62" cy="218" rx="9" ry="5" fill="#5a9e4e" transform="rotate(-30,62,218)"/>
+      <ellipse cx="62" cy="238" rx="9" ry="5" fill="#5a9e4e" transform="rotate(-30,62,238)"/>
       <!-- leaf on right branch -->
-      <ellipse cx="98" cy="210" rx="9" ry="5" fill="#6aae5e" transform="rotate(20,98,210)"/>
+      <ellipse cx="98" cy="230" rx="9" ry="5" fill="#6aae5e" transform="rotate(20,98,230)"/>
       <!-- small highlight on pot -->
-      <path d="M70,262 Q68,272 69,282" fill="none" stroke="#2E8B6F" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
+      <path d="M70,282 Q68,292 69,302" fill="none" stroke="#C87890" stroke-width="1.5" opacity=".4" stroke-linecap="round"/>
         </svg>
         <button class="book-session-btn" onclick="openOv('telegram-page')"
                 onmouseenter="document.getElementById('lamp-glow').classList.add('lamp-on');document.getElementById('lamp-bulb').setAttribute('opacity','1');document.getElementById('lamp-cone').setAttribute('opacity','1');document.getElementById('floor-glow').setAttribute('opacity','1');document.getElementById('shade-on').setAttribute('opacity','1')"
